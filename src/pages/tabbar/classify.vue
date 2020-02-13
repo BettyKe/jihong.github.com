@@ -1,12 +1,15 @@
 <template>
     <div class="container">
         <header-box bgc="#ED1A4B" fontColor="white">
-            <div class="header-right dfc" slot="header-right">
+            <div class="header_right dfc" slot="header-right">
                 <img src="../../image/logo.png" alt="">
                 <img src="../../image/logo.png" alt="">
             </div>
         </header-box>
-        <div class="classify_left">sdghsed</div>
+        <div class="classify_box">
+            
+        </div>
+        <div class="classify_left"></div>
         <div class="classify_right"></div>
     </div>
 </template>
@@ -26,7 +29,7 @@ export default {
     box-sizing: border-box;
     background: #fff;
 }
-.header-right{
+.header_right{
     position: absolute;
     right: 30px;
     top: 0;
