@@ -1,15 +1,17 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import {Button,Cell} from 'mint-ui'
+import {Tabbar, TabItem} from 'mint-ui'
 import App from './App'
+import '@/style/normalize.less'
+import '@/style/style.less'
 import router from './router'
 import 'lib-flexible'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false  
 
-Vue.component(Button.name, Button)
-Vue.component(Cell.name,Cell)
+Vue.component(Tabbar.name, Tabbar)
+Vue.component(TabItem.name,TabItem)
 
 /* eslint-disable no-new */
 new Vue({

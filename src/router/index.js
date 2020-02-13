@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import index from '@/pages/index/index'
+import index from '@/pages/tabbar/index'
+import classify from '@/pages/tabbar/classify'
+import cart from '@/pages/tabbar/cart'
+import my from '@/pages/tabbar/my'
 
 Vue.use(Router)
 
@@ -8,8 +11,23 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Index',
+      redirect: '/index'
+    },
+    {
+      path: '/index',
       component: index
+    },
+    {
+      path: '/classify',
+      component: classify
+    },
+    {
+      path: '/cart',
+      component: cart
+    },
+    {
+      path: '/my',
+      component: my
     }
   ]
 })
