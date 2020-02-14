@@ -20,14 +20,12 @@ export default new Router({
       component: index
     },
     {
+      path: '/classify/goodsList',
+      component: goodsList
+    },
+    {
       path: '/classify',
-      component: classify,
-      children: [
-        {
-          path: '/classify/goodsList',
-          component: goodsList
-        }
-      ]
+      component: classify
     },
     {
       path: '/cart',
@@ -35,13 +33,11 @@ export default new Router({
     },
     {
       path: '/my',
-      component: my,
-      children:[
-        {
-          path:'/my/information',
-          component: information
-        }
-      ]
+      component: my
+    },
+    {
+      path:'/my/information',
+      component: information
     }
   ]
 })

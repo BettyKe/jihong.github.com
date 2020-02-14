@@ -35,9 +35,6 @@
 </template>
 <script>
 export default {
-    components: {
-        headerBox,
-    },
 }
 </script>
 <style lang="less" scoped>

@@ -3,7 +3,7 @@
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
-    <div class="tab dfa">
+    <div class="tab dfa" v-if="showTaber(path)">
       <router-link to="/index" class="tab_item dfc fdc">
         <div class="tab_icon index"></div>
         <span>首页</span>
@@ -26,7 +26,25 @@
 
 <script>
 export default {
-  name: "App"
+  name: "App",
+  data() {
+    return {
+      path: ''
+    }
+  },
+  created() {
+    this.path = this.$route.path
+  },
+  methods: {
+    showTaber(path) {
+      return path == '/index' || path == '/classify' || path == '/cart' || path == '/my' ? true : false
+    }
+  },
+  watch: {
+    $route(info) {
+      this.path = info.path
+    }
+  }
 };
 </script>
 
