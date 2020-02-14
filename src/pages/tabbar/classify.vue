@@ -2,8 +2,7 @@
     <div class="container">
         <header-box bgc="#ED1A4B" :showLeftIcon="false" fontColor="white" title="分类">
             <div class="header_right dfc" slot="header-right">
-                <img src="../../image/d_ic_grabble_white@2x.png" alt="">
-                <img src="../../image/d_ic_shopping_2@2x.png" alt="">
+                <img class="img44" src="../../image/d_ic_shopping_2@2x.png" alt="">
             </div>
         </header-box>
         <div class="classify_box df jct-between">
@@ -18,23 +17,27 @@
                 <div class="second_level" v-for="item in 2" :key="item">
                     <div class="second_top df ais">这里是二级分类</div>
                     <div class="second_con df fw">
-                        <div class="second_item dfc active">二级分类</div>
+                        <div class="second_item dfc active" @click="toGoodsList">二级分类</div>
                         <div class="second_item dfc" v-for="items in 5" :key="items">二级分类</div>
                     </div>
                 </div>
             </div>
         </div>
+        <transition-box></transition-box>
     </div>
 </template>
 <script>
-import headerBox from '@/components/header-box'
 export default {
-    components:{
-        headerBox,
-    },
     data() {
         return{
             navLeft: 0
+        }
+    },
+    methods: {
+        toGoodsList() {
+            this.$router.push({
+                path: '/classify/goodsList'
+            })
         }
     }
 }
@@ -50,13 +53,18 @@ export default {
         padding: 22px 0;
         .classify_left{
             width: 170px;
-            background: #F7F7F7;
             max-height: calc(100vh - 240px);
             overflow-y: scroll;
-            border-radius:0px 20px 20px 0px;
+            .left_item:nth-of-type(1){
+                border-radius: 0 20px 0 0;
+            }
+            .left_item:nth-last-of-type(1){
+                border-radius: 0 0 20px 0;
+            }
             .left_item{
                 height: 42px;
                 position: relative;
+                background: #F7F7F7;
                 &.active{
                     color: var(--theme-red);
                 }
@@ -147,10 +155,5 @@ export default {
     top: 0;
     bottom: 0;
     margin: auto 0;
-    img{
-        width: 32px;
-        height: 32px;
-        margin-left: 40px;
-    }
 }
 </style>

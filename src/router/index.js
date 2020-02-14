@@ -5,6 +5,7 @@ import classify from '@/pages/tabbar/classify'
 import cart from '@/pages/tabbar/cart'
 import my from '@/pages/tabbar/my'
 import information from '@/pages/my/information'
+import goodsList from '@/pages/goods/goods-list'
 
 Vue.use(Router)
 
@@ -20,7 +21,13 @@ export default new Router({
     },
     {
       path: '/classify',
-      component: classify
+      component: classify,
+      children: [
+        {
+          path: '/classify/goodsList',
+          component: goodsList
+        }
+      ]
     },
     {
       path: '/cart',

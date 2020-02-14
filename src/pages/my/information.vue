@@ -10,11 +10,7 @@
     </div>
 </template>
 <script>
-import headerBox from '@/components/header-box'
 export default {
-    components: {
-        headerBox,
-    },
     data() {
         return {
             list: [1,2,3,4,5,8],
@@ -37,7 +33,7 @@ export default {
 .info_box{
     margin: 20px 30px 64px;
     .user_avatar{
-        
+
     }
 }
 </style>
