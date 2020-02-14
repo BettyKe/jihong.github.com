@@ -5,6 +5,7 @@ import classify from '@/pages/tabbar/classify'
 import cart from '@/pages/tabbar/cart'
 import my from '@/pages/tabbar/my'
 import information from '@/pages/my/information'
+import changeName from '@/pages/my/changeName'
 import goodsList from '@/pages/goods/goods-list'
 
 Vue.use(Router)
@@ -40,7 +41,11 @@ export default new Router({
         {
           path:'/my/information',
           component: information
-        }
+        },
+        {
+          path:'/my/changeName',
+          component: changeName
+        },
       ]
     }
   ]

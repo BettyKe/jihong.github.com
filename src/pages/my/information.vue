@@ -11,7 +11,7 @@
             </div>
             <div class="box dfb">
                 <span class="fs28 c_33292B">昵称</span>
-                <div class="df ais jct-end">
+                <div class="df ais jct-end" @click="changeName">
                     <span>吉祥花木园艺店</span>
                     <img class="img32 ml20" src="../../image/f_ic_more@2x.png" alt="">
                 </div>
@@ -35,9 +35,13 @@
 </template>
 <script>
 export default {
-    components: {
-        headerBox,
-    },
+    methods:{
+        changeName(){
+            this.$router.push({
+                pth:'/my/changeName'
+            })
+        }
+    }
 }
 </script>
 <style lang="less" scoped>
