@@ -5,19 +5,19 @@
     </keep-alive>
     <div class="tab dfa">
       <router-link to="/index" class="tab_item dfc fdc">
-        <img src="./image/c_ic_home_d@2x.png" />
+        <div class="tab_icon index"></div>
         <span>首页</span>
       </router-link>
       <router-link to="/classify" class="tab_item dfc fdc">
-        <img src="./image/c_ic_classify_d@2x.png" />
+        <div class="tab_icon classify"></div>
         <span>分类</span>
       </router-link>
       <router-link to="/cart" class="tab_item dfc fdc">
-        <img src="./image/c_ic_shopping_d@2x.png" />
+        <div class="tab_icon cart"></div>
         <span>购物车</span>
       </router-link>
       <router-link to="/my" class="tab_item dfc fdc">
-        <img src="./image/c_ic_my_d@2x.png" />
+        <div class="tab_icon my"></div>
         <span>我的</span>
       </router-link>
     </div>
@@ -49,13 +49,40 @@ export default {
     span{
       line-height: 1.5;
     }
+    .tab_icon{
+      width: 40px;
+      height: 40px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100% 100%;
+    }
+    .index{
+      background-image: url('./image/c_ic_home_d@2x.png');
+    }
+    .classify{
+      background-image: url('./image/c_ic_classify_d@2x.png');
+    }
+    .cart{
+      background-image: url('./image/c_ic_shopping_d@2x.png');
+    }
+    .my{
+      background-image: url('./image/c_ic_my_d@2x.png');
+    }
     &.router-link-active{
       color: var(--theme);
+      .index{
+        background-image: url('./image/c_ic_home_s@2x.png');
+      }
+      .classify{
+        background-image: url('./image/c_ic_classify_s@2x.png');
+      }
+      .cart{
+        background-image: url('./image/c_ic_shopping_s@2x.png');
+      }
+      .my{
+        background-image: url('./image/c_ic_my_s@2x.png');
+      }
     }
-  }
-  img{
-    width: 40px;
-    height: 40px;
   }
 }
 </style>

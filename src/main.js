@@ -1,7 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import {Tabbar, TabItem} from 'mint-ui'
+import {Tabbar, TabItem, InfiniteScroll} from 'mint-ui'
 import '@/style/normalize.less'
 import '@/style/style.less'
 import router from './router'
@@ -12,6 +12,7 @@ Vue.config.productionTip = false
 
 Vue.component(Tabbar.name, Tabbar)
 Vue.component(TabItem.name,TabItem)
+// Vue.component(InfiniteScroll.name,InfiniteScroll)
 
 /* eslint-disable no-new */
 new Vue({

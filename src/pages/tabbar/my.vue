@@ -2,7 +2,7 @@
     <div class="container my-box bg_F7F5F6">
         <!-- 头部背景 S -->
         <div class="header dfb">
-            <div class="user_info flex dfb">
+            <div class="user_info flex dfb" @click="toUserInfo">
                 <img class="user_img" src="../../image/c_ic_my_d@2x.png" />
                 <div class="flex info df jct-between ais-start fdc">
                     <div class="dfb">
@@ -86,9 +86,25 @@
             </div>
         </div>
         <!-- 功能 E -->
+        <router-view></router-view>
     </div>
 </template>
-<script></script>
+<script>
+    export default{
+        data() {
+            return {
+
+            }
+        },
+        methods: {
+            toUserInfo () {
+                this.$router.push({
+                    path: '/my/information'
+                })
+            }
+        }
+    }
+</script>
 <style scoped lang="less">
 .my-box{
     height: calc(100vh - 98px);
