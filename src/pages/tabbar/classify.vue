@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <header-box bgc="#ED1A4B" fontColor="white" title="分类">
+        <header-box bgc="#ED1A4B" :showLeftIcon="false" fontColor="white" title="分类">
             <div class="header_right dfc" slot="header-right">
                 <img src="../../image/d_ic_grabble_white@2x.png" alt="">
                 <img src="../../image/d_ic_shopping_2@2x.png" alt="">

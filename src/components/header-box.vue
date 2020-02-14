@@ -1,13 +1,15 @@
 <template>
-<div>
-    <div class="header-box dfa" :style="'background:'+bgc+';color:'+(fontColor==='black'?'#33292B':'#fff')">
-        <img v-if="fontColor==='black'" class="icon_left icon_black" src="../image/b_ic_back_1@2x.png" alt="">
-        <img v-else class="icon_left icon_white" src="../image/b_ic_back_1@2x.png" alt="">
-        <span class="flex dfc">{{title}}</span>
-        <slot name="header-right"></slot>
-    </div>
-    <div class="header-replace"></div>
-</div>    
+    <div>
+        <div class="header-box dfa" :style="'background:'+bgc+';color:'+(fontColor==='black'?'#33292B':'#fff')">
+            <div class="back_icon dfc fdc" v-if="showLeftIcon">
+                <img @click="back" v-if="fontColor==='black'" class="icon_left icon_black" src="../image/b_ic_back_1@2x.png" alt="">
+                <img v-else class="icon_left icon_white" src="../image/b_ic_back_1@2x.png" alt="">
+            </div>
+            <span class="flex dfc fs32">{{title}}</span>
+            <slot name="header-right"></slot>
+        </div>
+        <div class="header-replace"></div>
+    </div>    
 </template>
 <script>
 export default {
@@ -16,15 +18,24 @@ export default {
             type: String,
             default: '#fff'
         },
+        showLeftIcon: {
+            type: Boolean,
+            default: true
+        },
         fontColor:{
-            type:String,
+            type: String,
             default:'black'
         },
         title:{
-            type:String,
+            type: String,
             default:'吉宏园艺'
         }
     },
+    methods: {
+        back() {
+            this.$router.back()
+        }
+    }
 }
 </script>
 
@@ -36,18 +47,19 @@ export default {
     left: 0;
     width: 100vw;
     height: 98px;
-    padding: 0 30px;
+    padding-right: 30px;
+    // padding: 0 30px 0;
     box-sizing: border-box;
     img{
         width: 32px;
         height: 32px;
     }
-    .icon_left{
+    .back_icon{
+        width: 98px;
+        height: 98px;
         position: absolute;
-        left: 30px;
+        left: 0;
         top: 0;
-        bottom: 0;
-        margin: auto 0;
     }
 }
 .header-replace{

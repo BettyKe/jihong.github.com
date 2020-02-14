@@ -2,7 +2,7 @@
     <div class="container my-box bg_F7F5F6">
         <!-- 头部背景 S -->
         <div class="header dfb">
-            <div class="user_info flex dfb">
+            <div class="user_info flex dfb" @click="toUserInfo">
                 <img class="user_img" src="../../image/c_ic_my_d@2x.png" />
                 <div class="flex info df jct-between ais-start fdc">
                     <div class="dfb">
@@ -86,10 +86,29 @@
             </div>
         </div>
         <!-- 功能 E -->
-        <router-view/>
+        <transition-box></transition-box>
     </div>
 </template>
-<script></script>
+<script>
+import transitionBox from '@/components/transition-box'
+    export default{
+        data() {
+            return {
+
+            }
+        },
+        methods: {
+            toUserInfo () {
+                this.$router.push({
+                    path: '/my/information'
+                })
+            }
+        },
+        components: {
+            transitionBox
+        }
+    }
+</script>
 <style scoped lang="less">
 .my-box{
     height: calc(100vh - 98px);
@@ -173,5 +192,29 @@
             margin-left: 12px;
         }
     }
+}
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
+  will-change: transform;
+  transition: all 500ms;
+  position: absolute;
+}
+.slide-right-enter {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-enter {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-leave-active {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
 }
 </style>
