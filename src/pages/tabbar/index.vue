@@ -12,11 +12,11 @@
 <style scoped lang="less">
 .container{
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh - 98px);
     background: url('../../image/c_photo_1@2x.png');
     background-size: 100% 100%;
-    padding-bottom: 98px;
     box-sizing: border-box;
+    overflow: hidden;
     .search_box{
         margin-top: 400px;
         width: 622px;

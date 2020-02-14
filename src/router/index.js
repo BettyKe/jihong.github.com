@@ -4,6 +4,7 @@ import index from '@/pages/tabbar/index'
 import classify from '@/pages/tabbar/classify'
 import cart from '@/pages/tabbar/cart'
 import my from '@/pages/tabbar/my'
+import information from '@/pages/my/information'
 
 Vue.use(Router)
 
@@ -27,7 +28,15 @@ export default new Router({
     },
     {
       path: '/my',
-      component: my
+      name: 'my',
+      component: my,
+      children:[
+        {
+          path:'/information',
+          name: 'information',
+          component:information
+        }
+      ]
     }
   ]
 })
