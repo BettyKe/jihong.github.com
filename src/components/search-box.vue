@@ -3,12 +3,12 @@
         <div class="search_left ais df">
             <img class="img32" src="../image/b_ic_back_1@2x.png" />
         </div>
-        <div class="flex search_rigth">
+        <div class="flex search_rigth dfb">
             <div class="search_input bg_F5F5F5 pdl20 pdr20">
                 <input v-model="keyword" placeholder="商品名称、供应商" />
                 <img @click="keyword = ''" v-if="keyword" class="img30" src="../image/c_ic_close_1@2x.png" />
             </div>
-            <span>搜索</span>
+            <span class="flex fs28 c_33292B">搜索</span>
         </div>
     </div>
 </template>
@@ -61,7 +61,13 @@ export default {
             top: 50%;
             transform: translateY(-50%);
         }
-     }   
+     }
+     span{
+         display: block;
+         text-align: right;
+         padding-right: 30px;
+         height: 100%;
+     }  
     }
 }
 </style>
