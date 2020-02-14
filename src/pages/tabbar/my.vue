@@ -90,7 +90,6 @@
     </div>
 </template>
 <script>
-import transitionBox from '@/components/transition-box'
     export default{
         data() {
             return {
@@ -103,9 +102,6 @@ import transitionBox from '@/components/transition-box'
                     path: '/my/information'
                 })
             }
-        },
-        components: {
-            transitionBox
         }
     }
 </script>

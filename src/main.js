@@ -6,12 +6,14 @@ import '@/style/normalize.less'
 import '@/style/style.less'
 import router from './router'
 import 'lib-flexible'
+import transitionBox from '@/components/transition-box'
 import App from './App'
 
 Vue.config.productionTip = false  
 
 Vue.component(Tabbar.name, Tabbar)
 Vue.component(TabItem.name,TabItem)
+Vue.component('transitionBox',transitionBox)
 
 /* eslint-disable no-new */
 new Vue({
