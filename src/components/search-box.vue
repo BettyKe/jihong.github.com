@@ -1,6 +1,6 @@
 <template>
     <div class="search_box bg_FFF dfb">
-        <div class="search_left ais df">
+        <div class="search_left ais df" @click="$router.back()">
             <img class="img32" src="../image/b_ic_back_1@2x.png" />
         </div>
         <div class="flex search_rigth dfb">

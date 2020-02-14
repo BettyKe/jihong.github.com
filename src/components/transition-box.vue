@@ -14,18 +14,10 @@ export default {
     $route(to, from) {
         console.log(to.matched.length, from.matched.length)
       //如果to索引大于from索引,判断为前进状态,反之则为后退状态
-      if(to.matched.length > from.matched.length){
-        //设置动画名称
-        this.transitionName = 'slide-left';
+      this.transitionName = 'slide-left';
         setTimeout(()=>{
             this.transitionName = 'slide-right';
         }, 500)
-      }else{
-        this.transitionName = 'slide-right';
-        setTimeout(()=>{
-            this.transitionName = 'slide-left';
-        }, 500)
-      }
     }
   }
 }
