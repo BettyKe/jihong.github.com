@@ -34,7 +34,6 @@
     </div>
 </template>
 <script>
-import headerBox from '@/components/header-box'
 export default {
     components: {
         headerBox,
