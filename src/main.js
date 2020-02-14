@@ -2,11 +2,11 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import {Tabbar, TabItem} from 'mint-ui'
-import App from './App'
 import '@/style/normalize.less'
 import '@/style/style.less'
 import router from './router'
 import 'lib-flexible'
+import App from './App'
 
 Vue.config.productionTip = false  
 

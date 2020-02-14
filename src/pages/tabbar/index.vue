@@ -9,7 +9,7 @@
     </div>
 </template>
 <script></script>
-<style scope lang="less">
+<style scoped lang="less">
 .container{
     width: 100vw;
     height: 100vh;
@@ -36,5 +36,5 @@
             }
         }
     }
-}
+} 
 </style>
