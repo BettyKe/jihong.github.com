@@ -1,9 +1,9 @@
 <template>
     <div class="container">
-        <header-box bgc="#ED1A4B" fontColor="white">
+        <header-box bgc="#ED1A4B" fontColor="white" title="分类">
             <div class="header_right dfc" slot="header-right">
-                <img src="../../image/logo.png" alt="">
-                <img src="../../image/logo.png" alt="">
+                <img src="../../image/d_ic_grabble_white@2x.png" alt="">
+                <img src="../../image/d_ic_shopping_2@2x.png" alt="">
             </div>
         </header-box>
         <div class="classify_box df jct-between">
@@ -12,7 +12,7 @@
             </div>
             <div class="classify_right flex">
                 <div class="classify_pic dfc">
-                    <img src="../../image/logo.png" alt="">
+                    <img src="../../image/d_photo_1@2x.png" alt="">
                     <span class="dfc">一级分类名称</span>
                 </div>
                 <div class="second_level" v-for="item in 2" :key="item">

@@ -5,19 +5,19 @@
     </keep-alive>
     <div class="tab dfa">
       <router-link to="/index" class="tab_item dfc fdc">
-        <img src="./image/logo.png" />
+        <img src="./image/c_ic_home_d@2x.png" />
         <span>首页</span>
       </router-link>
       <router-link to="/classify" class="tab_item dfc fdc">
-        <img src="./image/logo.png" />
+        <img src="./image/c_ic_classify_d@2x.png" />
         <span>分类</span>
       </router-link>
       <router-link to="/cart" class="tab_item dfc fdc">
-        <img src="./image/logo.png" />
+        <img src="./image/c_ic_shopping_d@2x.png" />
         <span>购物车</span>
       </router-link>
       <router-link to="/my" class="tab_item dfc fdc">
-        <img src="./image/logo.png" />
+        <img src="./image/c_ic_my_d@2x.png" />
         <span>我的</span>
       </router-link>
     </div>

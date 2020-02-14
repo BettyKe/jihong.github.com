@@ -1,9 +1,9 @@
 <template>
 <div>
     <div class="header-box dfa" :style="'background:'+bgc+';color:'+(fontColor==='black'?'#33292B':'#fff')">
-        <img v-if="fontColor==='black'" class="icon_left icon_black" src="../image/logo.png" alt="">
-        <img v-else class="icon_left icon_white" src="../image/logo.png" alt="">
-        <span class="flex dfc">分类</span>
+        <img v-if="fontColor==='black'" class="icon_left icon_black" src="../image/b_ic_back_1@2x.png" alt="">
+        <img v-else class="icon_left icon_white" src="../image/b_ic_back_1@2x.png" alt="">
+        <span class="flex dfc">{{title}}</span>
         <slot name="header-right"></slot>
     </div>
     <div class="header-replace"></div>
@@ -20,6 +20,10 @@ export default {
             type:String,
             default:'black'
         },
+        title:{
+            type:String,
+            default:'吉宏园艺'
+        }
     },
 }
 </script>

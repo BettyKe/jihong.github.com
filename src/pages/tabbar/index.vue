@@ -2,7 +2,7 @@
     <div class="container df jct">
         <div class="search_box dfc">
             <div class="search dfc">
-                <img src="../../image/logo.png" alt="">
+                <img src="../../image/c_ic_grabble@2x.png" alt="">
                 <input class="flex" type="text" placeholder="商品或供应商" />
             </div>
         </div>
@@ -13,7 +13,8 @@
 .container{
     width: 100vw;
     height: 100vh;
-    background: rgba(0,0,0,.4);
+    background: url('../../image/c_photo_1@2x.png');
+    background-size: 100% 100%;
     padding-bottom: 98px;
     box-sizing: border-box;
     .search_box{
