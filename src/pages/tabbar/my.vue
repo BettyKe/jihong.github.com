@@ -86,6 +86,7 @@
             </div>
         </div>
         <!-- 功能 E -->
+        <router-view/>
     </div>
 </template>
 <script></script>
