@@ -86,7 +86,6 @@
             </div>
         </div>
         <!-- 功能 E -->
-        <transition-box></transition-box>
     </div>
 </template>
 <script>

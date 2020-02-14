@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-        <transition-box></transition-box>
+        
     </div>
 </template>
 <script>
