@@ -3,7 +3,7 @@
         <div class="header-box dfa" :style="'background:'+bgc+';color:'+(fontColor==='black'?'#33292B':'#fff')">
             <div class="back_icon dfc fdc" v-if="showLeftIcon">
                 <img @click="back" v-if="fontColor==='black'" class="icon_left icon_black" src="../image/b_ic_back_1@2x.png" alt="">
-                <img v-else class="icon_left icon_white" src="../image/b_ic_back_1@2x.png" alt="">
+                <img v-else @click="back" class="icon_left icon_white" src="../image/f_ic_return_pure@2x.png" alt="">
             </div>
             <span class="flex dfc fs32">{{title}}</span>
             <slot name="header-right"></slot>
