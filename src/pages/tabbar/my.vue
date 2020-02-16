@@ -106,7 +106,12 @@
 </script>
 <style scoped lang="less">
 .my-box{
-    height: calc(100vh - 98px);
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 98px;
     box-sizing: border-box;
     overflow: scroll;
 }
