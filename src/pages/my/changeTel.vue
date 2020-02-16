@@ -1,15 +1,18 @@
 <template>
     <div class="container">
-        <header-box title="修改昵称"></header-box>
+        <header-box title="修改绑定手机号"></header-box>
         <div class="content bg_F7F5F6">
             <div class="box bg_FFF">
-                <div class="title df ais jct-start">昵称：</div>
-                <div class="df ais jct-start">
-                    <input type="text" placeholder="请输入昵称" />
+                <div class="title df ais jct-start">输入新的手机号码</div>
+                <div class="input_box df ais jct-start">
+                    <input class="flex" type="text" placeholder="请输入手机号码" />
+                    <span class="get_code">获取短信验证码</span>
                 </div>
-                <div class="tip df ais jct-end">*限中文，10个字以内</div>
+                <div class="input_box df ais jct-start">
+                    <input class="flex" type="text" placeholder="请输入短信验证码" />
+                </div>
             </div>
-            <div class="btn_red">确定</div>
+            <div class="btn_red">确认更改</div>
         </div>
     </div>
 </template>
@@ -29,7 +32,10 @@ export default {
         padding: 0 30px;
         border-radius: 20px;
         div{
-            height: 84px;
+            height: 80px;
+        }
+        .input_box{
+            border-bottom: 1px solid #F5F5F5;
         }
         .title{
             font-size: 28px;
@@ -37,10 +43,12 @@ export default {
             font-weight: bold;
         }
         input{
-            width: 100%;
-            border-bottom: 1px solid #F5F5F5;
             line-height: 84px;
             font-size: 28px;
+        }
+        .get_code{
+            font-size: 24px;
+            color: var(--theme);
         }
         .tip{
             text-align: right;
