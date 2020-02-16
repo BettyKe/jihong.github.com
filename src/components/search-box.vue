@@ -5,10 +5,10 @@
         </div>
         <div class="flex search_rigth dfb">
             <div class="search_input bg_F5F5F5 pdl20 pdr20">
-                <input v-model="keyword" placeholder="商品名称、供应商" />
-                <img @click="keyword = ''" v-if="keyword" class="img30" src="../image/c_ic_close_1@2x.png" />
+                <input v-model="keyword" @keyup.enter="search" placeholder="商品名称、供应商" />
+                <img @click="close" v-if="keyword" class="img30" src="../image/c_ic_close_1@2x.png" />
             </div>
-            <span class="flex fs28 c_33292B">搜索</span>
+            <span class="flex fs28 c_33292B" @click="search">搜索</span>
         </div>
     </div>
 </template>
@@ -17,6 +17,18 @@ export default {
     data() {
         return {
             keyword: ''
+        }
+    },
+    methods: {
+        search() {
+            this.$emit('search', this.keyword)
+        },
+        close() {
+            this.keyword = ''
+            this.$emit('close')
+        },
+        setKeyword(keyword) {
+            this.keyword = keyword
         }
     }
 }
@@ -54,6 +66,7 @@ export default {
         input{
             width: 100%;
             height: 100%;
+            line-height: 58px;
         }
         img{
             position: absolute;

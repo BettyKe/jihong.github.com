@@ -50,6 +50,7 @@ export default {
     padding-right: 30px;
     // padding: 0 30px 0;
     box-sizing: border-box;
+    z-index: 50;
     img{
         width: 32px;
         height: 32px;

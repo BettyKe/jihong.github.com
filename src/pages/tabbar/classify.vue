@@ -6,19 +6,19 @@
             </div>
         </header-box>
         <div class="classify_box df jct-between">
-            <div class="classify_left">
-                <div v-for="(item,index) in 8" :key="item" :index="index" :class="['left_item dfc',index==navLeft?'active':'ee']">{{item}}</div>
-            </div>
-            <div class="classify_right flex">
+            <van-list class="classify_left">
+                <div v-for="(item,index) in list" :key="index" @click="setCategory(index)" :class="['left_item dfc fs24',index==navLeft?'active fs28 b':'']">{{item.categoryName}}</div>
+            </van-list>
+            <div class="classify_right flex" v-if="list.length">
                 <div class="classify_pic dfc">
                     <img src="../../image/d_photo_1@2x.png" alt="">
-                    <span class="dfc">一级分类名称</span>
+                    <span class="dfc">{{list[navLeft].categoryName}}</span>
                 </div>
-                <div class="second_level" v-for="item in 2" :key="item">
-                    <div class="second_top df ais">这里是二级分类</div>
+                <div class="second_level" v-for="(item, index) in list[navLeft].secondCategoryDTO" :key="index">
+                    <div class="second_top df ais" @click="toGoodsList(item.categorySecondId)">{{item.categorySecondName}}</div>
                     <div class="second_con df fw">
-                        <div class="second_item dfc active" @click="toGoodsList">二级分类</div>
-                        <div class="second_item dfc" v-for="items in 5" :key="items">二级分类</div>
+                        <!-- <div class="second_item dfc active" @click="toGoodsList">二级分类</div> -->
+                        <div class="second_item dfc" v-for="(items,indexs) in item.thirdCategoryDTO" @click="toGoodsList(items.categoryThirdId)" :key="indexs">{{items.categoryThirdName}}</div>
                     </div>
                 </div>
             </div>
@@ -27,17 +27,37 @@
     </div>
 </template>
 <script>
+import {
+  findAllCategory,
+  findProductByCategoryId
+} from "@/js/api"
 export default {
     data() {
         return{
-            navLeft: 0
+            navLeft: 0,
+            list: []
         }
     },
+    created() {
+        this.getAllCategory()
+    },
     methods: {
-        toGoodsList() {
-            this.$router.push({
-                path: '/classify/goodsList'
-            })
+        setCategory(index) {
+            this.navLeft = index
+        },
+        toGoodsList: async function (id) {
+            console.log(id)
+            let res = await findProductByCategoryId({
+                id: id
+            },true)
+            console.log(res)
+        },
+        getAllCategory: async function () {
+            let res = await findAllCategory({},true)
+            console.log(res)
+            if(res.code == 200&&res.data.length) {
+                this.list = res.data
+            }
         }
     }
 }
@@ -45,24 +65,35 @@ export default {
 <style scoped lang="less">
 .container{
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     padding-bottom: 98px;
     box-sizing: border-box;
     background: #fff;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow: scroll;
     .classify_box{
-        padding: 22px 0;
+        padding: 22px 0 0;
+        position: relative;
+        height: calc(100% - 98px);
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
         .classify_left{
             width: 170px;
-            max-height: calc(100vh - 240px);
+            // max-height: calc(100% - 240px);
+            max-height: 100%;
             overflow-y: scroll;
-            .left_item:nth-of-type(1){
-                border-radius: 0 20px 0 0;
-            }
-            .left_item:nth-last-of-type(1){
-                border-radius: 0 0 20px 0;
-            }
+            border-radius: 0 20px 20px 0;
+            // .left_item:nth-of-type(1){
+            //     border-radius: 0 20px 0 0;
+            // }
+            // .left_item:nth-last-of-type(1){
+            //     border-radius: 0 0 20px 0;
+            // }
             .left_item{
-                height: 42px;
+                padding: 26px 0;
                 position: relative;
                 background: #F7F7F7;
                 &.active{

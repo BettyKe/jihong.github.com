@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <keep-alive>
-      <router-view></router-view>
+      <transition-box></transition-box>
+      <!-- <router-view></router-view> -->
     </keep-alive>
     <div class="tab dfa" v-if="showTaber(path)">
       <router-link to="/index" class="tab_item dfc fdc">
