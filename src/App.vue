@@ -53,6 +53,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--theme-default);
+  font-size: 24px;
 }
 .tab{
   width: 100vw;

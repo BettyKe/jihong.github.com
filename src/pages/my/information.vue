@@ -11,36 +11,32 @@
             </div>
             <div class="box dfb">
                 <span class="fs28 c_33292B">昵称</span>
-                <div class="df ais jct-end" @click="changeName">
+                <div class="df ais jct-end" @click="$router.push({path:'/my/changeName'})">
                     <span>吉祥花木园艺店</span>
                     <img class="img32 ml20" src="../../image/f_ic_more@2x.png" alt="">
                 </div>
             </div>
             <div class="box dfb">
                 <span class="fs28 c_33292B">绑定手机</span>
-                <div class="df ais jct-end">
+                <div class="df ais jct-end" @click="$router.push({path:'/my/changeTel'})">
                     <span>136****5234</span>
                     <img class="img32 ml20" src="../../image/f_ic_more@2x.png" alt="">
                 </div>
             </div>
             <div class="box dfb">
                 <span class="fs28 c_33292B">修改密码</span>
-                <div class="df ais jct-end">
+                <div class="df ais jct-end" @click="$router.push({path:'/my/changePwd'})">
                     <img class="img32 ml20" src="../../image/f_ic_more@2x.png" alt="">
                 </div>
             </div>
         </div>
-        <div class="btn_red">保存</div>
+        <div class="btn_red" @click="$router.back()">保存</div>
     </div>
 </template>
 <script>
 export default {
     methods:{
-        changeName(){
-            this.$router.push({
-                pth:'/my/changeName'
-            })
-        }
+        
     }
 }
 </script>

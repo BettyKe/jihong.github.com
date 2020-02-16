@@ -30,7 +30,27 @@ let routes = [
   {
     path:'/my/information',
     component: () => import('@/pages/my/information')
-  }
+  },
+  {
+    path:'/my/changeName',
+    component: () => import('@/pages/my/changeName')
+  },
+  {
+    path:'/my/changeTel',
+    component: () => import('@/pages/my/changeTel')
+  },
+  {
+    path:'/my/changePwd',
+    component: () => import('@/pages/my/changePwd')
+  },
+  {
+    path:'/my/setting',
+    component: () => import('@/pages/my/setting')
+  },
+  {
+    path:'/my/feedback',
+    component: () => import('@/pages/my/feedback')
+  },
 ]
 let router = new Router({routes});
 router.beforeEach((to, from, next) => {

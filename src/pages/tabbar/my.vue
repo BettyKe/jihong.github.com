@@ -77,7 +77,7 @@
                 </div>
                 <img class="img24" src="../../image/b_ic_back@2x.png" />
             </div>
-            <div class="features_item dfb">
+            <div class="features_item dfb" @click="$router.push({path:'/my/setting'})">
                 <div class="flex df ais">
                     <img class="img44" src="../../image/f_ic_soi_4@2x.png" />
                     <span class="c_33292B fs28">设置</span>
