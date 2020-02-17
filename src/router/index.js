@@ -112,6 +112,30 @@ let routes = [
     component: () => import('@/pages/my/information')
   },
   {
+    path:'/my/myBill',
+    meta: {
+      title: '我的账单',
+      needLogin: true
+    },
+    component: () => import('@/pages/my/myBill')
+  },
+  {
+    path:'/my/myAccount',
+    meta: {
+      title: '我的账户',
+      needLogin: true
+    },
+    component: () => import('@/pages/my/myAccount')
+  },
+  {
+    path:'/my/withdraw',
+    meta: {
+      title: '提现',
+      needLogin: true
+    },
+    component: () => import('@/pages/my/withdraw')
+  },
+  {
     path:'/my/changeName',
     meta: {
       title: '修改昵称',

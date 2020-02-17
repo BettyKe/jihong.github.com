@@ -196,5 +196,5 @@ export default {
             background: #FF9000;
         }
     }
-}
+  }
 </style>
