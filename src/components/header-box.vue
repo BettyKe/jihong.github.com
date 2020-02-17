@@ -51,16 +51,16 @@ export default {
     // padding: 0 30px 0;
     box-sizing: border-box;
     z-index: 50;
-    img{
-        width: 32px;
-        height: 32px;
-    }
     .back_icon{
         width: 98px;
         height: 98px;
         position: absolute;
         left: 0;
         top: 0;
+        img{
+            width: 32px;
+            height: 32px;
+        }
     }
 }
 .header-replace{

@@ -72,6 +72,14 @@ let routes = [
     component: () => import('@/pages/goods/goods-list')
   },
   {
+    path: '/goods/goodsDetail',
+    meta: {
+      title: '商品详情',
+      needLogin: true
+    },
+    component: () => import('@/pages/goods/goods-detail')
+  },
+  {
     path: '/classify',
     meta: {
       title: '分类',
@@ -105,22 +113,42 @@ let routes = [
   },
   {
     path:'/my/changeName',
+    meta: {
+      title: '修改昵称',
+      needLogin: true
+    },
     component: () => import('@/pages/my/changeName')
   },
   {
     path:'/my/changeTel',
+    meta: {
+      title: '修改绑定手机号',
+      needLogin: true
+    },
     component: () => import('@/pages/my/changeTel')
   },
   {
     path:'/my/changePwd',
+    meta: {
+      title: '修改密码',
+      needLogin: true
+    },
     component: () => import('@/pages/my/changePwd')
   },
   {
     path:'/my/setting',
+    meta: {
+      title: '设置',
+      needLogin: true
+    },
     component: () => import('@/pages/my/setting')
   },
   {
     path:'/my/feedback',
+    meta: {
+      title: '意见反馈',
+      needLogin: true
+    },
     component: () => import('@/pages/my/feedback')
   },
 ]

@@ -49,13 +49,13 @@
         <!-- 订单 E -->
         <!-- 功能 S -->
         <div class="features_box bg_FFF">
-            <div class="features_item dfb bg_FFF">
+            <!-- <div class="features_item dfb bg_FFF">
                 <div class="flex df ais">
                     <img class="img44" src="../../image/f_ic_soi_1@2x.png"  />
                     <span class="c_33292B fs28">我的账单</span>
                 </div>
                 <img class="img24" src="../../image/b_ic_back@2x.png" />
-            </div>
+            </div> -->
             <div class="features_item dfb bg_FFF">
                 <div class="flex df ais">
                     <img class="img44" src="../../image/f_ic_soi_2@2x.png" />
@@ -66,7 +66,7 @@
             <div class="features_item dfb bg_FFF">
                 <div class="flex df ais">
                     <img class="img44" src="../../image/f_ic_soi_3@2x.png" />
-                    <span class="c_33292B fs28">我的积分</span>
+                    <span class="c_33292B fs28">收货地址</span>
                 </div>
                 <img class="img24" src="../../image/b_ic_back@2x.png" />
             </div>
@@ -89,7 +89,7 @@
     </div>
 </template>
 <script>
-    export default{
+    export default {
         data() {
             return {
 
