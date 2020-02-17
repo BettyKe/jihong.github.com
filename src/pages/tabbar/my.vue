@@ -59,7 +59,7 @@
                 <img class="img24" src="../../image/b_ic_back@2x.png" />
             </div> -->
             <div class="features_item dfb bg_FFF">
-                <div class="flex df ais">
+                <div class="flex df ais" @click="$router.push({path:'/my/myAccount'})">
                     <img class="img44" src="../../image/f_ic_soi_2@2x.png" />
                     <span class="c_33292B fs28">我的账户</span>
                 </div>
