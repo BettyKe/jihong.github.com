@@ -1,5 +1,5 @@
 <template>
-    <div class="container_box bg_F7F5F6 fdc ais df pdt10">
+    <div class="container_box bg_FFF fdc ais df pdt10">
         <header-box bgc="#fff" title="设置密码"></header-box>
         <div class="input_item dfb">
             <p class="fs28 c_33292B">设置密码</p>
@@ -9,7 +9,7 @@
             <p class="fs28 c_33292B">确认密码</p>
             <input v-model="password2" type="password" class="flex fs28" placeholder="再次输入密码" />
         </div>
-        <div class="btn_red next_box opacity" @click="$router.push({path: '/setPassword'})">注册</div>
+        <div class="btn_red next_box opacity" @click="submit">注册</div>
         <div class="protocol dfc fs20">
             <span class="c_999">注册即代表同意</span>
             <span class="b theme">《用户使用协议》</span>
@@ -17,11 +17,32 @@
     </div>
 </template>
 <script>
+import {registered} from '@/js/api'
+import { Toast } from 'vant';
 export default {
     data() {
         return {
             password1: '',
             password2: ''
+        }
+    },
+    methods:{
+        async submit(){
+            if(this.password1 == ''){
+               Toast('请输入密码')
+               return;
+            }
+            if(this.password1 != this.password2){
+               Toast('两次密码不一致')
+               return;
+            }
+            let data = JSON.parse(sessionStorage.getItem('register'))
+            data.distributor.password = this.password1
+            let res = await registered(data)
+            if(res.code==200){
+                Toast('注册成功')
+                this.$router.go(-3)
+            }
         }
     }
 }

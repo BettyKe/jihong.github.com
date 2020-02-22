@@ -90,7 +90,14 @@ function setPostSessionKey (data) {
     data = {}
   }
 //   data.userId = store.getters.getUserId || ""
-  data.sessionKey = store.getters.getSessionKey || ""
+
+
+  // data.token = store.getters.getSessionKey || "" //被我注释的
+
+  data.token = localStorage.getItem('token') || ''
+
+
+
 //   let tempData = JSON.parse(data.data == null ? '{}' : data.data)
 //   tempData.timeStamp = store.getters.getMPostTimeStamp || ""
 //   tempData.userId = store.getters.getUserId || ""

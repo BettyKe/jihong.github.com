@@ -25,27 +25,27 @@
         <div class="order_box bg_FFF">
             <div class="order_top dfb">
                 <div class="c_33292B b">我的订单</div>
-                <div class="c_999 df ais">查看全部订单
+                <div class="c_999 df ais" @click="$router.push({path:'/order/orderList'})">查看全部订单
                     <img class="img24" src="../../image/b_ic_back@2x.png">
                 </div>
             </div>
             <div class="order_type dfa">
-                <div class="dfc fdc">
+                <div class="dfc fdc" @click="$router.push({path:'/order/orderList'})">
                     <img class="img50" src="../../image/f_ic_audit_1@2x.png">
                     <span class="c_33292B fs22">未审核</span>
                 </div>
-                <div class="dfc fdc">
+                <div class="dfc fdc" @click="$router.push({path:'/order/orderList'})">
                     <img class="img50" src="../../image/f_ic_audit_2@2x.png">
                     <span class="c_33292B fs22">已审核</span>
                 </div>
-                <div class="dfc fdc">
+                <div class="dfc fdc" @click="$router.push({path:'/order/goodsOrderList'})">
                     <img class="img50" src="../../image/f_ic_audit_3@2x.png">
                     <span class="c_33292B fs22">订单汇总</span>
                 </div>
-                <div class="dfc fdc">
+                <!-- <div class="dfc fdc">
                     <img class="img50" src="../../image/f_ic_audit_4@2x.png">
                     <span class="c_33292B fs22">发货单</span>
-                </div>
+                </div> -->
             </div>
         </div>
         <!-- 订单 E -->
@@ -58,21 +58,21 @@
                 </div>
                 <img class="img24" src="../../image/b_ic_back@2x.png" />
             </div> -->
-            <div class="features_item dfb bg_FFF">
-                <div class="flex df ais" @click="$router.push({path:'/my/myAccount'})">
+            <div class="features_item dfb bg_FFF" @click="$router.push({path:'/my/myAccount'})">
+                <div class="flex df ais">
                     <img class="img44" src="../../image/f_ic_soi_2@2x.png" />
                     <span class="c_33292B fs28">我的账户</span>
                 </div>
                 <img class="img24" src="../../image/b_ic_back@2x.png">
             </div>
-            <div class="features_item dfb bg_FFF">
+            <div class="features_item dfb bg_FFF" @click="$router.push({path:'/order/addressList'})">
                 <div class="flex df ais">
                     <img class="img44" src="../../image/f_ic_soi_3@2x.png" />
                     <span class="c_33292B fs28">收货地址</span>
                 </div>
                 <img class="img24" src="../../image/b_ic_back@2x.png">
             </div>
-            <div class="features_item dfb bg_FFF">
+            <div class="features_item dfb bg_FFF" @click="$router.push({path:'/my/collect'})">
                 <div class="flex df ais">
                     <img class="img44" src="../../image/f_ic_soi_5@2x.png">
                     <span class="c_33292B fs28">我的收藏</span>
@@ -91,17 +91,24 @@
     </div>
 </template>
 <script>
+import {personaInformation} from '@/js/api'
     export default {
         data() {
             return {
 
             }
         },
+        created(){
+            this.getInfo()
+        },
         methods: {
             toUserInfo () {
                 this.$router.push({
                     path: '/my/information'
                 })
+            },
+            async getInfo(){
+                let res = await personaInformation()
             }
         }
     }

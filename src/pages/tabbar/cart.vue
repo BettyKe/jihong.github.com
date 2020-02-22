@@ -6,7 +6,7 @@
         </div>
         <van-list class="item_list">
             <div class="item bg_FFF">
-                <div class="dfa item_title">
+                <div class="dfa item_title" @click="$router.push({path:'/goods/storeIndex'})">
                     <div class="select dfc">
                         <img class="img40" src="../../image/e_ic_circle_d@2x.png" />
                     </div>
@@ -16,7 +16,7 @@
                         <img class="img32" src="../../image/b_ic_back@2x.png" />
                     </div>
                 </div>
-                <div class="goods_item dfb">
+                <div class="goods_item dfb" @click="$router.push({path:'/goods/goodsDetail'})">
                     <div class="select dfc">
                         <img class="img40" src="../../image/e_ic_circle_d@2x.png" />
                     </div>

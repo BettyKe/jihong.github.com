@@ -1,6 +1,8 @@
 <template>
     <div class="container_box bg_F7F5F6">
-        <header-box bgc="#fff" title="提现"></header-box>
+        <header-box bgc="#fff" title="提现">
+            <div class="header_right dfc" slot="header-right" @click="$router.push({path:'/my/accountDetail'})">提现明细</div>
+        </header-box>
         <div class="wihtdraw_amount bg_FFF">
             <p class="fs34 c_33292B">提现金额</p>
             <div class="input_box dfb">
@@ -24,12 +26,26 @@
                 <input class="tr" placeholder="请输入银行卡卡号" />
             </div>
         </div>
-        <div class="btn_red wihtdraw_btn">申请提现</div>
+        <div class="btn_red wihtdraw_btn" @click="submit">申请提现</div>
     </div>
 </template>
 <script>
+import { Dialog } from 'vant';
 export default {
-    
+    components: {
+        [Dialog.Component.name]: Dialog.Component
+    },
+    methods:{
+        submit(){
+            let that = this
+            Dialog.confirm({
+                title: '标题',
+                message: '弹窗内容',
+            }).then(()=>{
+                this.$router.back()
+            })
+        },
+    }
 }
 </script>
 <style lang="less" scoped>
@@ -44,6 +60,14 @@ export default {
 }
 :-moz-placeholder { /* Firefox 18- */ 
  color: #CCCCCC;
+}
+.header_right{
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    font-size: 28px;
+    padding-right: 30px;
 }
 .wihtdraw_amount{
     height: 278px;

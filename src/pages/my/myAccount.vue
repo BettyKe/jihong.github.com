@@ -14,25 +14,25 @@
             <div class="money">12,132.50</div>
             <div class="header_right dfc bg_FFF theme" @click="$router.push({path: '/my/withdraw'})">提现</div>
         </div>
-        <div class="timer_box dfc bg_FFF">
+        <div class="timer_box dfc bg_FFF" @click="showDate=true">
             <div class="flex dfb fdc timer_item">
                 <span class="fs30">开始时间</span>
-                <span class="fs28">2018-20-50</span>
+                <span class="fs28">{{startDay}}</span>
             </div>
             <div class="flex dfb fdc timer_item">
                 <span class="fs30">结束时间</span>
-                <span class="fs28">2018-20-50</span>
+                <span class="fs28">{{endDay}}</span>
             </div>
         </div>
         <div class="document_type dfb bg_FFF">
             <span class="fs32">单据类型</span>
-            <div class="dfb">
-                <span class="fs28">全部</span>
+            <div class="dfb" @click="showType=true">
+                <span class="fs28">{{orderTypeList[orderType]}}</span>
                 <img class="img32" src="../../image/f_ic_more@2x.png" />
             </div>
         </div>
         <van-list class="item_list ">
-            <div class="item_info bg_FFF dfb" v-for="item in 9" :key="item">
+            <div class="item_info bg_FFF dfb" v-for="item in 9" :key="item" @click="$router.push({path:'/my/returnOrderDetail'})">
                 <div class="dfb fdc item_l">
                     <span class="fs32 b c_33292B    ">退货单</span>
                     <span class="fs22 c_666">2015-50-45</span>
@@ -47,10 +47,53 @@
             </div>
             <span class="flex tc fs32 b record">账户流水</span>
         </div>-->
+        <van-calendar v-model="showDate" type="range" :show-confirm="false" @confirm="confirmDate" color="#DF0134" 
+        :min-date="minDate" :max-date="maxDate" :default-date="[startDate,endDate]" />
+        <van-popup v-model="showType" position="bottom">
+            <van-picker :columns="orderTypeList" :default-index="0" show-toolbar @confirm="confirmType" />
+        </van-popup>
     </div>
 </template>
 <script>
-export default {};
+export default {
+    data(){
+        return{
+            showDate:false,
+            showType:false,
+            startDay:`${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`,
+            endDay:`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
+            startDate:new Date(new Date().getFullYear(), new Date().getMonth()-1, new Date().getDate()),
+            endDate:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            minDate: new Date(2010, 0, 1),
+            maxDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            orderTypeList: ['全部', '退货单', '订单', '补充发货单', '取消订单', '申请提现', '提现失败'],
+            orderType:0,
+        }
+    },
+    methods:{
+        formatDate(date,type) {
+            if(type==1){
+                return new Date(date.getFullYear(), date.getMonth() ,date.getDate());
+            }else{
+                return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+            }
+            
+        },
+        confirmDate(date){
+            const [start, end] = date;
+            this.showDate = false;
+            this.startDay = this.formatDate(start);
+            this.endDay = this.formatDate(end)
+            this.startDate = this.formatDate(start,1);
+            this.endDate = this.formatDate(end,1);
+            console.log(this.date)
+        },
+        confirmType(value, index){
+            this.showType = false
+            this.orderType = index
+        }
+    }
+};
 </script>
 <style scoped lang="less">
 .top {

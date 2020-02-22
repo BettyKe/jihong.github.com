@@ -8,7 +8,7 @@
             <scroll :data="list" :probeType ="3" :listenScroll="true" class="middle">
                 <div class="fw jct-start df">
                     <div v-for="(item,index) in list" :key="index" class="item">
-                        <goods-item :goodsInfo.sync="item"></goods-item>
+                        <goods-item :goodsInfo.sync="item" @click="toGoodsDetail"></goods-item>
                     </div>
                 </div>
             </scroll>
@@ -17,7 +17,7 @@
 </template>
 <script>
 import {
-  findByByProductNameOrProviderName
+  findByByProductNameOrProviderName,findProductByCategoryId
 } from "@/js/api"
 import searchBox from '@/components/search-box'
 import condition from '@/components/condition'
@@ -29,7 +29,8 @@ export default {
         condition,
         scroll,
         goodsItem,
-        keyword: ''
+        keyword: '',
+        classifyId:'',
     },
     data() {
         return {
@@ -39,20 +40,42 @@ export default {
     },
     created() {
         this.keyword = this.$route.query.keyword
+        this.classifyId = this.$route.query.classifyId
+        console.log(this.keyword)
+        if(this.keyword && this.keyword!=''){
+            this.getList(1)
+        }
+        if(this.classifyId && this.classifyId!=''){
+            this.getList(2)
+        }
     },
     mounted() {
         this.$refs.searchbox.setKeyword(this.keyword)
-        this.getList()
+        
     },
     methods: {
-        getList: async function () {
-            let res = await findByByProductNameOrProviderName({
-                name: this.keyword
-            }, true)
+        getList: async function (type) {
+            let res = null;
+            if(type==1){
+                res = await findByByProductNameOrProviderName({
+                    name: this.keyword
+                }, true)
+            }else if(type==2){
+                res = await findProductByCategoryId({
+                    id: this.classifyId
+                }, true)
+            }
+            
             console.log(res)
             if(res.code == 200 && res.data.length) {
                 this.list = res.data
             }
+        },
+        toGoodsDetail(){
+            console.log('11')
+            this.$router.push({
+                path:'/goods/goodsDetail'
+            })
         }
     }
 }

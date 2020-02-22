@@ -82,16 +82,9 @@ export default {
         overflow: hidden;
         .classify_left{
             width: 170px;
-            // max-height: calc(100% - 240px);
             max-height: 100%;
             overflow-y: scroll;
             border-radius: 0 20px 20px 0;
-            // .left_item:nth-of-type(1){
-            //     border-radius: 0 20px 0 0;
-            // }
-            // .left_item:nth-last-of-type(1){
-            //     border-radius: 0 0 20px 0;
-            // }
             .left_item{
                 padding: 26px 0;
                 position: relative;

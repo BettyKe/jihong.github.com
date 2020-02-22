@@ -23,7 +23,7 @@
         </div>
         <!-- 手机号码-密码 E -->
         <div class="c_2C2521 fs30 tr forget_password" @click="$router.push({path: '/retrievePassword',query:{type: 1}})">忘记密码？</div>
-        <div class="btn_red login_box">登录</div>
+        <div class="btn_red login_box" @click="toLogin">登录</div>
         <div class="dfc">
             <span class="fs30 c_2C2521">还没有账号？</span>
             <span class="fs30 theme ml20" @click="$router.push({path: '/register'})">立即注册！</span>
@@ -37,6 +37,7 @@
     </div>
 </template>
 <script>
+import {login} from '@/js/api'
 export default {
     data() {
         return {
@@ -47,6 +48,20 @@ export default {
     },
     mounted() {
         console.log(this.$store.state.isLogin)
+    },
+    methods:{
+        async toLogin(){
+            let res = await login({
+                phone:this.phone,
+                password:this.password,
+            })
+            if(res.code==200){
+                localStorage.setItem('token',res.data.token)
+                this.$router.push({path:'/index'})
+            }else{
+                Toast(res.message);
+            }
+        }
     }
 }
 </script>

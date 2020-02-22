@@ -3,6 +3,9 @@ body{
   --theme-default: #33292b;
   --theme-red:#ED1A4B;
 }
+input,textarea{
+  caret-color:var(--theme);
+}
 /*变向*/
 .to-bottom {
   transform: rotate(90deg);
@@ -181,6 +184,11 @@ em {
   -webkit-border-radius: 4px;
   border-radius: 4px;
 }
+.br20 {
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
+}
 
 .fl {
   float: left;
@@ -291,6 +299,9 @@ em {
 .fs40{
   font-size: 40px;
 }
+.fs70{
+  font-size: 70px;
+}
 // 图片大小
 .img14{
   width: 14px;
@@ -344,6 +355,10 @@ em {
   width: 60px;
   height: 60px;
 }
+.img140{
+  width: 140px;
+  height: 140px;
+}
 .img160{
   width: 160px;
   height: 160px;
@@ -362,6 +377,9 @@ em {
   background: #FF9000;
 }
 // 外边距
+.mgl10{
+  margin-left: 10px;
+}
 .ml20{
   margin-left: 20px;
 }
@@ -371,8 +389,17 @@ em {
 .mgr20{
   margin-right: 20px;
 }
+.mgr30{
+  margin-right: 30px;
+}
 .mgb20{
   margin-bottom: 20px;
+}
+.mg30{
+  margin: 0 30px;
+}
+.mgb60{
+  margin-bottom: 60px;
 }
 .op5{
   opacity: .5;
@@ -396,17 +423,32 @@ em {
   background-color: #E6E6E6;
 }
 // 内边距
+.pd20{
+  padding: 20px;
+}
 .pd30{
+  padding: 30px;
+}
+.pdtb30{
+  padding: 30px 0;
+}
+.pdlr30{
   padding: 0 30px;
 }
 .pdt20{
   padding-top: 20px;
+}
+.pdt30{
+  padding-top: 30px;
 }
 .pdl20{
   padding-left: 20px;
 }
 .pdr20{
   padding-right: 20px;
+}
+.pdb30{
+  padding-bottom: 30px;
 }
 .pdt10{
   padding-top: 10px;
@@ -420,9 +462,18 @@ em {
 .lh2{
   line-height: 2;
 }
+.bor_bottom{
+  border-bottom: 1px solid #F0F0F0;
+}
 .van-picker-column__item{
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;;
+}
+.van-tabs__nav{
+  background-color: #F7F4F8;
+}
+.van-tab--active{
+  color: var(--theme);
 }

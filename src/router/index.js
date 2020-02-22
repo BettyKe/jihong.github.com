@@ -64,7 +64,7 @@ let routes = [
     component: () => import('@/pages/goods/search')
   },
   {
-    path: '/classify/goodsList',
+    path: '/goods/goodsList',
     meta: {
       title: '搜索列表',
       needLogin: true
@@ -78,6 +78,14 @@ let routes = [
       needLogin: true
     },
     component: () => import('@/pages/goods/goods-detail')
+  },
+  {
+    path: '/goods/storeIndex',
+    meta: {
+      title: '店铺首页',
+      needLogin: true
+    },
+    component: () => import('@/pages/goods/storeIndex')
   },
   {
     path: '/classify',
@@ -96,6 +104,86 @@ let routes = [
     component: () => import('@/pages/tabbar/cart')
   },
   {
+    path: '/order/checkout',
+    meta: {
+      title: '订单结算',
+      needLogin: true
+    },
+    component: () => import('@/pages/order/checkout')
+  },
+  {
+    path: '/order/pay',
+    meta: {
+      title: '支付',
+      needLogin: true
+    },
+    component: () => import('@/pages/order/pay')
+  },
+  {
+    path: '/order/payResult',
+    meta: {
+      title: '支付成功',
+      needLogin: true
+    },
+    component: () => import('@/pages/order/payResult')
+  },
+  {
+    path: '/order/logistics',
+    meta: {
+      title: '选择物流',
+      needLogin: true
+    },
+    component: () => import('@/pages/order/logistics')
+  },
+  {
+    path: '/order/addLogistics',
+    meta: {
+      title: '新建物流',
+      needLogin: true
+    },
+    component: () => import('@/pages/order/addLogistics')
+  },
+  {
+    path: '/order/addressList',
+    meta: {
+      title: '选择收货地址',
+      needLogin: true
+    },
+    component: () => import('@/pages/order/addressList')
+  },
+  {
+    path: '/order/editAddress',
+    meta: {
+      title: '编辑收货地址',
+      needLogin: true
+    },
+    component: () => import('@/pages/order/editAddress')
+  },
+  {
+    path: '/order/orderList',
+    meta: {
+      title: '订单列表',
+      needLogin: true
+    },
+    component: () => import('@/pages/order/orderList')
+  },
+  {
+    path: '/order/goodsOrderList',
+    meta: {
+      title: '订单汇总',
+      needLogin: true
+    },
+    component: () => import('@/pages/order/goodsOrderList')
+  },
+  {
+    path: '/order/orderDetail',
+    meta: {
+      title: '订单详情',
+      needLogin: true
+    },
+    component: () => import('@/pages/order/orderDetail')
+  },
+  {
     path: '/my',
     meta: {
       title: '我的',
@@ -110,6 +198,14 @@ let routes = [
       needLogin: true
     },
     component: () => import('@/pages/my/information')
+  },
+  {
+    path:'/my/collect',
+    meta: {
+      title: '我的收藏',
+      needLogin: true
+    },
+    component: () => import('@/pages/my/collect')
   },
   {
     path:'/my/myBill',
@@ -134,6 +230,30 @@ let routes = [
       needLogin: true
     },
     component: () => import('@/pages/my/withdraw')
+  },
+  {
+    path:'/my/accountDetail',
+    meta: {
+      title: '提现明细',
+      needLogin: true
+    },
+    component: () => import('@/pages/my/accountDetail')
+  },
+  {
+    path:'/my/returnOrderDetail',
+    meta: {
+      title: '退货单详情',
+      needLogin: true
+    },
+    component: () => import('@/pages/my/returnOrderDetail')
+  },
+  {
+    path:'/my/addOrderDetail',
+    meta: {
+      title: '补充发货单详情',
+      needLogin: true
+    },
+    component: () => import('@/pages/my/addOrderDetail')
   },
   {
     path:'/my/changeName',

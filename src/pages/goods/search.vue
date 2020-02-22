@@ -35,7 +35,7 @@ export default {
             this.oldList.push(keyword)
             this.setKeyWords(this.oldList)
             this.$router.push({
-                path: '/classify/goodsList',
+                path: '/goods/goodsList',
                 query: {
                     keyword: keyword
                 }

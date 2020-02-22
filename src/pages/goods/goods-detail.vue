@@ -4,7 +4,7 @@
             <div slot="header-right" class="header_right df ais jct-end">
                 <a href="tel:020-888888"><img class="img46" src="../../image/d_ic_service_d@2x.png" alt=""></a>
                 <img @click="$router.push({path:'/cart'})" class="img46" src="../../image/c_ic_shopping_1@2x.png" alt="">
-                <img class="img46" src="../../image/d_ic_share@2x.png" alt="">
+                <img @click="showShare=true" class="img46" src="../../image/d_ic_share@2x.png" alt="">
             </div>
         </header-box>
         <div class="bg_FFF mgb20">
@@ -18,7 +18,7 @@
                     </div>
                 </van-swipe>
             </div>
-            <div class="fs32 b pd30 lh15">爱优尚（AIYOUSH）绿萝盆栽办公室绿箩除甲醛绿植花卉客厅室内大型植物盆景</div>
+            <div class="fs32 b pdlr30 lh15">爱优尚（AIYOUSH）绿萝盆栽办公室绿箩除甲醛绿植花卉客厅室内大型植物盆景</div>
             <div class="price_row dfb">
                 <div class="df ais">
                     <div class="price theme">¥<span class="fs36">420.00</span>/盆</div>
@@ -28,7 +28,7 @@
             </div>
             
         </div>
-        <div class="activity_box bg_FFF mgb20 pd30">
+        <div class="activity_box bg_FFF mgb20 pdlr30">
             <div class="row">
                 <div class="dfb">
                     <span class="b">参考截单时间</span>
@@ -38,18 +38,18 @@
             </div>
             <div class="row param df ais fw c_666">
                 <span>规格等级：A级</span>
-                <span>规格等级：A级</span>
-                <span>规格等级：A级</span>
-                <span>规格等级：A级</span>
-                <span>规格等级：A级</span>
-                <span>规格等级：A级</span>
+                <span>型号：十三装</span>
+                <span>装箱标准：一箱10盆</span>
+                <span>包装体积：50*50*20 cm</span>
+                <span>高度：20~30cm</span>
+                <span>冠幅：30~50cm</span>
             </div>
         </div>
         <div class="bg_FFF store_info dfs">
             <img src="../../image/default.png" alt="" />
             <div class="df jct-around fdc h100">
                 <div class="fs28 to-line b">吉祥花草园艺经营店</div>
-                <div class="store_btn theme fs20"><span>进店逛逛></span></div>
+                <div class="store_btn theme fs20"><span @click="$router.push({path:'/goods/storeIndex'})">进店逛逛></span></div>
             </div>
         </div>
         <div class="goods_detail">
@@ -73,10 +73,34 @@
             <!-- <div class="add_btn flex dfc">立即抢购</div> -->
         </div>
         <select-sku :showSpec="showSpec" @toggleShow="toggleSpec"></select-sku>
+        <van-popup v-model="showShare" position="bottom" round>
+            <div class="share_box">
+                <div class="dfa">
+                    <div class="item dfa fdc">
+                        <img src="../../image/ic_1@2x.png" alt="">
+                        <span>微信好友</span>
+                    </div>
+                    <div class="item dfa fdc">
+                        <img src="../../image/ic_2@2x.png" alt="">
+                        <span>微信好友</span>
+                    </div>
+                    <div class="item dfa fdc">
+                        <img src="../../image/ic_3@2x.png" alt="">
+                        <span>微信好友</span>
+                    </div>
+                    <div class="item dfa fdc">
+                        <img src="../../image/ic_4@2x.png" alt="">
+                        <span>微信好友</span>
+                    </div>
+                </div>
+                <div @click="showShare=false" class="cancel dfc">取消</div>
+            </div>
+        </van-popup>
     </div>
 </template>
 <script>
 import selectSku from '@/components/select-sku'
+import {findDetailByIdApp} from '@/js/api'
 export default {
     components:{
         selectSku,
@@ -84,12 +108,20 @@ export default {
     data(){
         return{
             showSpec:false,
+            showShare:false,
             images:[
                 'http://img0.imgtn.bdimg.com/it/u=1169913908,403740886&fm=26&gp=0.jpg',
                 'http://img0.imgtn.bdimg.com/it/u=1169913908,403740886&fm=26&gp=0.jpg',
             ],
             currentImg:0,
+            goodsId:'',
         }
+    },
+    created(){
+        this.goodsId = this.$route.query.id
+        console.log(this.goodsId)
+        this.getInfo()
+        
     },
     methods:{
         changeSwipe(index) {
@@ -97,6 +129,10 @@ export default {
         },
         toggleSpec(flag){
             this.showSpec = flag
+        },
+        async getInfo(){
+            let res = await findDetailByIdApp({id:16745},true)
+            console.log(res)
         }
     }
 }
@@ -168,7 +204,7 @@ export default {
         margin-top: 17px;
         span{
             border-radius: 16px;
-            border: 1px solid var(--theme);
+            border: 2px solid var(--theme);
             padding: 6px 15px;
         }
     }
@@ -207,6 +243,24 @@ export default {
         color: #fff;
         font-size: 28px;
         height: 100%;
+    }
+}
+.share_box{
+    background: #fff;
+    .item{
+        padding: 42px 24px;
+        img{
+            width: 100px;
+            height: 100px;
+        }
+        span{
+            margin-top: 20px;
+        }
+    }
+    .cancel{
+        font-size: 28px;
+        height: 84px;
+        border-top: 1px solid #E6E6E6;
     }
 }
 .custom-indicator{

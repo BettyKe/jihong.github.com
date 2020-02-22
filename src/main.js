@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import '@/style/normalize.less'
 import '@/style/style.less'
-import { Area, Popup, Toast, List, Lazyload, Swipe, SwipeItem, } from 'vant';
+import { Area, Popup, Toast, List, Lazyload, Swipe, SwipeItem, Calendar, Picker, Dialog,Tab, Tabs, } from 'vant';
 import router from './router'
 import store from "./store/index"
 import 'lib-flexible'
@@ -21,7 +21,12 @@ Vue.use(Toast);
 Vue.use(List)
 .use(Lazyload)
 .use(Swipe)
-.use(SwipeItem);
+.use(SwipeItem)
+.use(Calendar)
+.use(Picker)
+.use(Dialog)
+.use(Tab)
+.use(Tabs)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
