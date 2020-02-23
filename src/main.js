@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import '@/style/normalize.less'
 import '@/style/style.less'
+import imageTool from './js/imageTool.js'
 import { Area, Popup, Toast, List, Lazyload, Swipe, SwipeItem, Calendar, Picker, Dialog,Tab, Tabs, } from 'vant';
 import router from './router'
 import store from "./store/index"
@@ -15,6 +16,7 @@ Vue.config.productionTip = false
 
 Vue.component('transitionBox',transitionBox)
 Vue.component('headerBox',headerBox)
+Vue.use(imageTool)
 Vue.use(Area);
 Vue.use(Popup);
 Vue.use(Toast);

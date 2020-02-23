@@ -8,7 +8,7 @@
             <scroll :data="list" :probeType ="3" :listenScroll="true" class="middle">
                 <div class="fw jct-start df">
                     <div v-for="(item,index) in list" :key="index" class="item">
-                        <goods-item :goodsInfo.sync="item" @click="toGoodsDetail"></goods-item>
+                        <goods-item :goodsInfo.sync="item" @toDetail="toGoodsDetail"></goods-item>
                     </div>
                 </div>
             </scroll>
@@ -35,7 +35,7 @@ export default {
     data() {
         return {
             loading: true,
-            list: [1,2,3,5,4,56,8,45,15,285,546,687]
+            list: []
         }
     },
     created() {
@@ -51,7 +51,6 @@ export default {
     },
     mounted() {
         this.$refs.searchbox.setKeyword(this.keyword)
-        
     },
     methods: {
         getList: async function (type) {
@@ -71,10 +70,13 @@ export default {
                 this.list = res.data
             }
         },
-        toGoodsDetail(){
-            console.log('11')
+        toGoodsDetail(info){
+            console.log(info)
             this.$router.push({
-                path:'/goods/goodsDetail'
+                path:'/goods/goodsDetail',
+                query: {
+                    id: info.product.id
+                }
             })
         }
     }

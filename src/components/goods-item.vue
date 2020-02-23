@@ -1,6 +1,6 @@
 <template>
-    <div class="goods_item bg_FFF dfc fdc">
-        <img class="goods_img" src="http://img0.imgtn.bdimg.com/it/u=1169913908,403740886&fm=26&gp=0.jpg" />
+    <div class="goods_item bg_FFF dfc fdc" @click="toDetail">
+        <img class="goods_img" :src="ImageTool.getIndexImg(goodsInfo.product.covers,0)" />
         <div class="goods_info">
             <div class="dfb">
                 <div class="theme b df jct-start ais-end">
@@ -29,6 +29,11 @@ export default {
             default: function () {
                 return {}
             }
+        }
+    },
+    methods: {
+        toDetail() {
+            this.$emit('toDetail', this.goodsInfo)
         }
     }
 }

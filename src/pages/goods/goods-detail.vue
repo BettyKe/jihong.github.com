@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" v-if="detailInfo.product">
         <header-box title="商品详情">
             <div slot="header-right" class="header_right df ais jct-end">
                 <a href="tel:020-888888"><img class="img46" src="../../image/d_ic_service_d@2x.png" alt=""></a>
@@ -10,15 +10,15 @@
         <div class="bg_FFF mgb20">
             <div class="swipe_box">
                 <van-swipe :autoplay="3000" @change="changeSwipe">
-                    <van-swipe-item v-for="(image, index) in images" :key="index">
+                    <van-swipe-item v-for="(image, index) in ImageTool.initImage(detailInfo.jpgUrl)" :key="index">
                         <img class="swipe_img" v-lazy="image" />
                     </van-swipe-item>
                     <div class="custom-indicator" slot="indicator">
-                        {{ currentImg + 1 }}/{{images.length}}
+                        {{ currentImg + 1 }}/{{ImageTool.initImage(detailInfo.jpgUrl).length}}
                     </div>
                 </van-swipe>
             </div>
-            <div class="fs32 b pdlr30 lh15">爱优尚（AIYOUSH）绿萝盆栽办公室绿箩除甲醛绿植花卉客厅室内大型植物盆景</div>
+            <div class="fs32 b pdlr30 lh15">{{detailInfo.product.productTitle}}</div>
             <div class="price_row dfb">
                 <div class="df ais">
                     <div class="price theme">¥<span class="fs36">420.00</span>/盆</div>
@@ -37,18 +37,18 @@
                 <div class="c_999 pdt20">(10:00后下单，当天可能无法发货)</div>
             </div>
             <div class="row param df ais fw c_666">
-                <span>规格等级：A级</span>
-                <span>型号：十三装</span>
-                <span>装箱标准：一箱10盆</span>
-                <span>包装体积：50*50*20 cm</span>
-                <span>高度：20~30cm</span>
-                <span>冠幅：30~50cm</span>
+                <span>规格等级：{{detailInfo.gradeName}}</span>
+                <span>型号：{{detailInfo.model}}</span>
+                <span>装箱标准：一箱{{detailInfo.product.unitQuantity}}盆</span>
+                <span>包装体积：{{detailInfo.product.packingLength}}*{{detailInfo.product.lengthWidth}}*{{detailInfo.product.lengthHeight}} cm</span>
+                <span>高度：{{detailInfo.product.heightMin}}~{{detailInfo.product.heightMax}}cm</span>
+                <span>冠幅：{{detailInfo.product.crownMin}}~{{detailInfo.product.crownMax}}cm</span>
             </div>
         </div>
         <div class="bg_FFF store_info dfs">
-            <img src="../../image/default.png" alt="" />
+            <img :src="ImageTool.getImg(detailInfo.providerAvatar)" alt="" />
             <div class="df jct-around fdc h100">
-                <div class="fs28 to-line b">吉祥花草园艺经营店</div>
+                <div class="fs28 to-line b">{{detailInfo.providerName}}</div>
                 <div class="store_btn theme fs20"><span @click="$router.push({path:'/goods/storeIndex'})">进店逛逛></span></div>
             </div>
         </div>
@@ -114,12 +114,11 @@ export default {
                 'http://img0.imgtn.bdimg.com/it/u=1169913908,403740886&fm=26&gp=0.jpg',
             ],
             currentImg:0,
-            goodsId:'',
+            goodsId: this.$route.query.id,
+            detailInfo: {}
         }
     },
     created(){
-        this.goodsId = this.$route.query.id
-        console.log(this.goodsId)
         this.getInfo()
         
     },
@@ -131,8 +130,12 @@ export default {
             this.showSpec = flag
         },
         async getInfo(){
-            let res = await findDetailByIdApp({id:16745},true)
+            let res = await findDetailByIdApp({id:this.goodsId},true)
             console.log(res)
+            if (res.code == 200) {
+                this.detailInfo = res.data
+                // console.log(this.ImageTool.initImage(this.detailInfo.jpgUrl))
+            }
         }
     }
 }
