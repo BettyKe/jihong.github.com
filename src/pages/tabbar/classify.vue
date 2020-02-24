@@ -2,7 +2,7 @@
     <div class="container">
         <header-box bgc="#ED1A4B" :showLeftIcon="false" fontColor="white" title="分类">
             <div class="header_right dfc" slot="header-right">
-                <img class="img44" src="../../image/d_ic_shopping_2@2x.png" alt="">
+                <img class="img44" src="../../image/d_ic_shopping_2@2x.png" alt="" @click="$router.push({path:'/cart'})">
             </div>
         </header-box>
         <div class="classify_box df jct-between">
@@ -10,8 +10,8 @@
                 <div v-for="(item,index) in list" :key="index" @click="setCategory(index)" :class="['left_item dfc fs24',index==navLeft?'active fs28 b':'']">{{item.categoryName}}</div>
             </van-list>
             <div class="classify_right flex" v-if="list.length">
-                <div class="classify_pic dfc">
-                    <img src="../../image/d_photo_1@2x.png" alt="">
+                <div class="classify_pic dfc"  @click="toGoodsList(list[navLeft].categoryId)">
+                    <img src="../../image/d_photo_1@2x.png" alt="" />
                     <span class="dfc">{{list[navLeft].categoryName}}</span>
                 </div>
                 <div class="second_level" v-for="(item, index) in list[navLeft].secondCategoryDTO" :key="index">
@@ -46,16 +46,17 @@ export default {
             this.navLeft = index
         },
         toGoodsList: async function (id) {
-            console.log(id)
-            let res = await findProductByCategoryId({
-                id: id
-            },true)
-            console.log(res)
+            this.$router.push(`/goods/goodsList?classifyId=${id}`)
+            // console.log(id)
+            // let res = await findProductByCategoryId({
+            //     id: id
+            // },true)
+            // console.log(res)
         },
         getAllCategory: async function () {
             let res = await findAllCategory({},true)
             console.log(res)
-            if(res.code == 200&&res.data.length) {
+            if(res.code == 200 && res.data.length) {
                 this.list = res.data
             }
         }

@@ -1,12 +1,12 @@
 <template>
     <div class="container">
         <search-box @search="search" @close="keyword=''"></search-box>
-        <div class="dfb fs28 title" v-if="oldList.length">
+        <div class="dfb fs28 title" v-if="hotList.length">
             <span class="c_33292B">历史搜索</span>
             <span class="c_999">清空</span>
         </div>
-        <div class="hot_list fw jct-start df" v-if="oldList.length">
-            <span class="hot_item fs24 c_33292B bg_E6E6E6" v-for="item in oldList" :key="item">{{item}}</span>
+        <div class="hot_list fw jct-start df" v-if="hotList.length">
+            <span class="hot_item fs24 c_33292B bg_E6E6E6" v-for="item in hotList" :key="item">{{item}}</span>
         </div>
     </div>
 </template>
@@ -23,25 +23,23 @@ export default {
     data() {
         return {
             keyword: '',
-            oldList: []
+            hotList: []
         }
     },
     created() {
-        this.oldList = this.$store.state.keywords
+        let str = localStorage.getItem('keywords') || ''
+        this.hotList = str?str.split(','):[]
     },
     methods: {
         search(keyword) {
             this.keyword = keyword
-            this.oldList.push(keyword)
-            this.setKeyWords(this.oldList)
-            this.$router.push({
-                path: '/goods/goodsList',
-                query: {
-                    keyword: keyword
-                }
-            })
+            if(this.hotList.indexOf(keyword)==-1){
+                let str = localStorage.getItem('keywords') || ''
+                str.concat(`${keyword},`)
+                localStorage.setItem('keywords',str)
+            }
+            this.$router.push({path: `/goods/goodsList?keyword=${keyword}`})
         },
-        ...mapMutations({setKeyWords:'setKeyWords'})
     }
 }
 </script>

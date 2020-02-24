@@ -57,7 +57,6 @@ export const findAllCategoryByProviderId = (data, loadingOptions) => http.post('
 
 //个人中心
 
-
 //我的订单
 export const findMyOrderForDistributor = (data, loadingOptions) => http.post('/order/findMyOrderForDistributor', data, loadingOptions)
 //更换名称
@@ -66,6 +65,8 @@ export const ModifyName = (data, loadingOptions) => http.post('/distributor/Modi
 export const ModifyPhone = (data, loadingOptions) => http.post('/distributor/ModifyPhone', data, loadingOptions)
 //收货地址-列表
 export const findByDistributorId = (data, loadingOptions) => http.post('/address/findByDistributorId', data, loadingOptions)
+//收货地址-获取信息
+export const addressGet = (data, loadingOptions) => http.post('/address/get', data, loadingOptions)
 //收货地址-新建
 export const addressSave = (data, loadingOptions) => http.post('/address/save', data, loadingOptions)
 //收货地址-编辑
@@ -74,6 +75,20 @@ export const addressUpdate = (data, loadingOptions) => http.post('/address/updat
 export const addressDelete = (data, loadingOptions) => http.post('/address/delete', data, loadingOptions)
 //收货地址-设为默认
 export const updateDefault = (data, loadingOptions) => http.post('/address/updateDefault', data, loadingOptions)
+
+//收藏夹-收藏商品
+export const addToCollect = (data, loadingOptions) => http.post('/distributorCollection/addToCollect', data, loadingOptions)
+//收藏夹-收藏店铺
+export const addProviderToCollect = (data, loadingOptions) => http.post('/distributorCollection/addProviderToCollect', data, loadingOptions)
+//收藏夹-收藏商品列表
+export const showConnectionProduct = (data, loadingOptions) => http.post('/distributorCollection/showConnectionProduct', data, loadingOptions)
+//收藏夹-批量取消收藏店铺
+export const deleteBatch = (data, loadingOptions) => http.post('/distributorCollection/deleteBatch', data, loadingOptions)
+//收藏夹-收藏店铺列表
+export const showConnectionProvider = (data, loadingOptions) => http.post('/distributorCollection/showConnectionProvider', data, loadingOptions)
+//收藏夹-批量取消收藏商品
+export const deleteBatchProduct = (data, loadingOptions) => http.post('/distributorCollection/deleteBatchProduct', data, loadingOptions)
+
 //修改密码
 export const updatePassword = (data, loadingOptions) => http.post('/distributor/updatePassword', data, loadingOptions)
 //个人资料

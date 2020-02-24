@@ -9,8 +9,10 @@ import store from "./store/index"
 import 'lib-flexible'
 import transitionBox from '@/components/transition-box'
 import headerBox from '@/components/header-box'
+import utils from '@/js/utils.js'
 import App from './App'
 
+Vue.prototype.utils = utils
 Vue.config.productionTip = false  
 
 Vue.component('transitionBox',transitionBox)
@@ -28,6 +30,7 @@ Vue.use(List)
 .use(Tab)
 .use(Tabs)
 /* eslint-disable no-new */
+
 new Vue({
   el: '#app',
   router,

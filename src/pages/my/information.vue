@@ -34,6 +34,7 @@
     </div>
 </template>
 <script>
+import {personaInformation} from '@/js/api'
 export default {
     methods:{
         

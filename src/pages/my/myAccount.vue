@@ -70,6 +70,9 @@ export default {
             orderType:0,
         }
     },
+    created(){
+        this.getInfo()
+    },
     methods:{
         formatDate(date,type) {
             if(type==1){
@@ -91,6 +94,10 @@ export default {
         confirmType(value, index){
             this.showType = false
             this.orderType = index
+        },
+        async getInfo(){
+            let res = await MyAccount()
+            console.log(res)
         }
     }
 };

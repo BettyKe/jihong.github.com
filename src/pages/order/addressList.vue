@@ -9,16 +9,16 @@
             </div>
             <div class="bor_bottom lh15 fs28 pdb30">广东省广州市天河区  科韵路118号 乐天大厦首层  乐天大厦首层</div>
             <div class="set_box dfb">
-                <div class="dfc">
+                <div class="dfc" @click="setDefault(item.id)">
                     <img class="img40 mgr20" src="../../image/c_ic_circle_d@2x.png" alt="">
                     <span>设为默认</span>
                 </div>
                 <div class="df ais jct-end">
-                    <div class="dfc">
+                    <div class="dfc" @click="edit(item.id)">
                         <img class="img32 mgr6" src="../../image/f_ic_edit@2x.png" alt="">
                         <span>编辑</span>
                     </div>
-                    <div class="ml20 dfc">
+                    <div class="ml20 dfc" @click="del(item.id)">
                         <img class="img32 mgr6" src="../../image/f_ic_omit@2x.png" alt="">
                         <span>删除</span>
                     </div>
@@ -28,8 +28,39 @@
     </div>
 </template>
 <script>
+import {findByDistributorId} from '@/js/api'
 export default {
-
+    data(){
+        return{
+            list:[],
+        }
+    },
+    created(){
+        this.getList()
+    },
+    methods:{
+        async getList(){
+            let res = await findByDistributorId()
+            if(res.code==200 && res.data.length){
+                this.list = res.data.length
+            }
+        },
+        async setDefault(id){
+            let res = await updateDefault({id:this.id})
+            if(res.code==200){
+                this.getList()
+            }
+        },
+        async edit(id){
+            this.$router.push(`/order/editAddress?id=${id}`)
+        },
+        async del(id){
+            let res = await addressDelete({id})
+            if(res.code==200){
+                this.getList()
+            }
+        }
+    }
 }
 </script>
 <style lang="less" scoped>

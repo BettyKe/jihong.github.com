@@ -35,18 +35,33 @@
     </div>
 </template>
 <script>
+import {showConnectionProduct,showConnectionProvider,deleteBatchProduct,deleteBatch,} from '@/js/api'
 export default {
     data(){
         return{
             type:0,//0商品 1店铺
             edit:false,
+            goodsList:[],
+            storeList:[],
         }
     },
     methods:{
         toggleNav(type){
             this.type = type
             this.edit = false
-        }
+        },
+        async getGoodsList(){
+            let res = await showConnectionProduct()
+            if(res.code==200 && res.data.length){
+                this.goodsList = res.data
+            }
+        },
+        async getStoreList(){
+            let res = await showConnectionProvider()
+            if(res.code==200 && res.data.length){
+                this.goodsList = res.data
+            }
+        },
     }
 }
 </script>
