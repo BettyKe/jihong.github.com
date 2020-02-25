@@ -55,6 +55,11 @@ export const findProductByProviderId = (data, loadingOptions) => http.post('/pro
 //分类-其它分类-店铺首页-分类
 export const findAllCategoryByProviderId = (data, loadingOptions) => http.post('/product/findAllCategoryByProviderId', data, loadingOptions)
 
+//选择规格等级
+export const selectGrade  = (data, loadingOptions) => http.post('/product/selectGrade', data, loadingOptions)
+//选择供应商
+export const selectProvider = (data, loadingOptions) => http.post('/product/selectProvider', data, loadingOptions)
+
 //个人中心
 
 //我的订单

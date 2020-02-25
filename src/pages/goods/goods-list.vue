@@ -17,7 +17,7 @@
 </template>
 <script>
 import {
-  findByByProductNameOrProviderName,findProductByCategoryId
+  findByByProductNameOrProviderName,findProductByCategoryId,selectGrade,selectProvider
 } from "@/js/api"
 import searchBox from '@/components/search-box'
 import condition from '@/components/condition'
@@ -48,6 +48,7 @@ export default {
         if(this.classifyId && this.classifyId!=''){
             this.getList(2)
         }
+        this.getFilter()
     },
     mounted() {
         this.$refs.searchbox.setKeyword(this.keyword)
@@ -78,6 +79,12 @@ export default {
                     id: info.product.id
                 }
             })
+        },
+        async getFilter(){
+            let res = await selectGrade()
+            console.log(res)
+            let ret = await selectProvider()
+            console.log(ret)
         }
     }
 }

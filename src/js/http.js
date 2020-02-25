@@ -60,8 +60,9 @@ axios.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json; charset=utf-8'
   }
   // 请求头添加判断是否有token
-  config.headers['X-AUTH-TOKEN'] = store.getters.getSessionKey || ''
-  config.headers['custom-params'] = config.params
+  config.headers['token'] = localStorage.getItem('token') || ''
+  // config.headers['X-AUTH-TOKEN'] = store.getters.getSessionKey || ''
+  // config.headers['custom-params'] = config.params
   // 清空自定义的数据
   config.params = ''
   return config
