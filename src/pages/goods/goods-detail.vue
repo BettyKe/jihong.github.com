@@ -21,15 +21,15 @@
             <div class="fs32 b pdlr30 lh15">{{detailInfo.product.productTitle}}</div>
             <div class="price_row dfb">
                 <div class="df ais">
-                    <div class="price theme">¥<span class="fs36">420.00</span>/盆</div>
-                    <div class="past_price">(￥20.00/盆)</div>
+                    <div class="price theme">¥<span class="fs36">{{detailInfo.product.unitPrice}}</span>/盆</div>
+                    <!-- <div class="past_price">(￥20.00/盆)</div> -->
                 </div>
-                <div class="num">可售：50箱</div>
+                <!-- <div class="num">可售：50箱</div> -->
             </div>
             
         </div>
         <div class="activity_box bg_FFF mgb20 pdlr30">
-            <div class="row">
+            <div class="row" v-if="detailInfo.providerTime">
                 <div class="dfb">
                     <span class="b">参考截单时间</span>
                     <span class="theme">10:00</span>
@@ -49,30 +49,32 @@
             <img :src="ImageTool.getImg(detailInfo.providerAvatar)" alt="" />
             <div class="df jct-around fdc h100">
                 <div class="fs28 to-line b">{{detailInfo.providerName}}</div>
-                <div class="store_btn theme fs20"><span @click="$router.push({path:'/goods/storeIndex'})">进店逛逛></span></div>
+                <div class="store_btn theme fs20"><span @click="$router.push({path:`/goods/storeIndex?id=${detailInfo.providerId}`})">进店逛逛></span></div>
             </div>
         </div>
         <div class="goods_detail">
             <div class="title dfc"><span>商品详情</span></div>
-            <div class="detail">满天星没有玫瑰的千娇百媚,没有玉兰的冷若冰霜,但她清新淡雅,如空灵清澈的涟漪;满天星没有牡丹的雍华富贵,冬季如期而至,花儿们的</div>
+            <div class="detail" v-html="detailInfo.product.description">满天星没有玫瑰的千娇百媚,没有玉兰的冷若冰霜,但她清新淡雅,如空灵清澈的涟漪;满天星没有牡丹的雍华富贵,冬季如期而至,花儿们的</div>
         </div>
         <div class="fix_bottom dfa">
             <div class="icon_box dfc fdc" @click="$router.push({path:'/index'})">
                 <img class="img52" src="../../image/c_ic_home_d@2x.png" alt="">
                 <span>首页</span>
             </div>
-            <div class="icon_box dfc fdc">
+            <div class="icon_box dfc fdc" @click="$router.push({path:`/goods/storeIndex?id=${detailInfo.providerId}`})">
                 <img class="img52" src="../../image/d_ic_store@2x.png" alt="">
                 <span>店铺</span>
             </div>
-            <div class="icon_box dfc fdc">
+            <div class="icon_box dfc fdc" @click="collect">
                 <img class="img52" src="../../image/d_ic_collect_d@2x.png" alt="">
                 <span>收藏</span>
             </div>
             <div class="add_btn flex dfc" @click="showSpec=true">加入购物车</div>
             <!-- <div class="add_btn flex dfc">立即抢购</div> -->
         </div>
-        <select-sku :showSpec="showSpec" @toggleShow="toggleSpec"></select-sku>
+        <!-- 加入购物车弹框 -->
+        <select-sku :goodsId="goodsId" :showSpec.sync="showSpec" :product="detailInfo.product" @toggleShow="toggleSpec"></select-sku>
+        <!-- 分享 -->
         <van-popup v-model="showShare" position="bottom" round>
             <div class="share_box">
                 <div class="dfa">
@@ -82,15 +84,15 @@
                     </div>
                     <div class="item dfa fdc">
                         <img src="../../image/ic_2@2x.png" alt="">
-                        <span>微信好友</span>
+                        <span>朋友圈</span>
                     </div>
                     <div class="item dfa fdc">
                         <img src="../../image/ic_3@2x.png" alt="">
-                        <span>微信好友</span>
+                        <span>QQ好友</span>
                     </div>
                     <div class="item dfa fdc">
                         <img src="../../image/ic_4@2x.png" alt="">
-                        <span>微信好友</span>
+                        <span>QQ空间</span>
                     </div>
                 </div>
                 <div @click="showShare=false" class="cancel dfc">取消</div>
@@ -100,7 +102,7 @@
 </template>
 <script>
 import selectSku from '@/components/select-sku'
-import {findDetailByIdApp} from '@/js/api'
+import {findDetailByIdApp,addProduct,addToCollect,findAllValueAddProductForAPP} from '@/js/api'
 export default {
     components:{
         selectSku,
@@ -115,7 +117,7 @@ export default {
             ],
             currentImg:0,
             goodsId: this.$route.query.id,
-            detailInfo: {}
+            detailInfo: {},
         }
     },
     created(){
@@ -134,9 +136,18 @@ export default {
             console.log(res)
             if (res.code == 200) {
                 this.detailInfo = res.data
-                // console.log(this.ImageTool.initImage(this.detailInfo.jpgUrl))
+                this.detailInfo.product.num = 1
+                this.detailInfo.product.image = this.ImageTool.initImage(this.detailInfo.jpgUrl)[0]
             }
-        }
+        },
+        //收藏
+        async collect(){
+            let id = this.detailInfo.product.id
+            let res = await addToCollect({connectionId:id})
+            if(res.code==200){
+
+            }
+        },
     }
 }
 </script>

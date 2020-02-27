@@ -8,11 +8,13 @@
             <scroll :data="list" :probeType ="3" :listenScroll="true" class="middle">
                 <div class="fw jct-start df">
                     <div v-for="(item,index) in list" :key="index" class="item">
-                        <goods-item :goodsInfo.sync="item" @toDetail="toGoodsDetail"></goods-item>
+                        <goods-item :goodsInfo.sync="item" @toDetail="toGoodsDetail" @showBox="showBox(item)"></goods-item>
                     </div>
                 </div>
             </scroll>
         </div>
+        <!-- 加入购物车弹框 -->
+        <select-sku :goodsId="goodsId" :showSpec.sync="showSpec" :product.sync="product" @toggleShow="toggleSpec"></select-sku>
     </div>
 </template>
 <script>
@@ -23,19 +25,25 @@ import searchBox from '@/components/search-box'
 import condition from '@/components/condition'
 import goodsItem from '@/components/goods-item'
 import scroll from '@/components/scroll'
+import selectSku from '@/components/select-sku'
 export default {
     components: {
         searchBox,
         condition,
         scroll,
         goodsItem,
-        keyword: '',
-        classifyId:'',
+        selectSku,
     },
     data() {
         return {
             loading: true,
-            list: []
+            list: [],
+            keyword: '',
+            classifyId:'',
+
+            showSpec:false,
+            goodsId:'',
+            product:{},
         }
     },
     created() {
@@ -85,7 +93,17 @@ export default {
             console.log(res)
             let ret = await selectProvider()
             console.log(ret)
-        }
+        },
+        toggleSpec(flag){
+            this.showSpec = flag
+        },
+        showBox(item){
+            console.log(item)
+            this.goodsId = item.providerId
+            this.product = item.product
+            this.product.num = 1
+            this.showSpec=true
+        },
     }
 }
 </script>

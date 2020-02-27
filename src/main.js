@@ -4,7 +4,7 @@ import Vue from 'vue'
 import '@/style/normalize.less'
 import '@/style/style.less'
 import imageTool from './js/imageTool.js'
-import { Area, Popup, Toast, List, Lazyload, Swipe, SwipeItem, Calendar, Picker, Dialog,Tab, Tabs, } from 'vant';
+import { Area, Popup, Toast, List, Lazyload, Swipe, SwipeItem, Calendar, Picker, Dialog,Tab, Tabs, Uploader} from 'vant';
 import router from './router'
 import store from "./store/index"
 import 'lib-flexible'
@@ -31,6 +31,7 @@ Vue.use(List)
 .use(Dialog)
 .use(Tab)
 .use(Tabs)
+.use(Uploader)
 /* eslint-disable no-new */
 
 new Vue({

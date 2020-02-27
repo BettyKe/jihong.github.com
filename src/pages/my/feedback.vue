@@ -1,16 +1,26 @@
 <template>
     <div class="container">
         <header-box title="意见反馈">
-            <div class="header_right dfc" slot="header-right" @click="$router.back()">提交</div>
+            <div class="header_right dfc" slot="header-right" @click="submit">提交</div>
         </header-box>
         <div class="box">
-            <textarea placeholder="请输入你的宝贵意见"></textarea>
+            <textarea v-model="content" placeholder="请输入你的宝贵意见"></textarea>
         </div>
     </div>
 </template>
 <script>
+import {} from '@/js/api'
 export default {
+    data(){
+        return{
+            content:''
+        }
+    },
+    methods:{
+        async submit(){
 
+        }
+    }
 }
 </script>
 <style lang="less" scoped>

@@ -45,6 +45,10 @@ export default {
             storeList:[],
         }
     },
+    created(){
+        this.getGoodsList()
+        this.getStoreList()
+    },
     methods:{
         toggleNav(type){
             this.type = type

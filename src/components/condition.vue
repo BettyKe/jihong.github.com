@@ -24,7 +24,7 @@
                             <img class="img26" src="../image/c_ic_more_next@2x.png" />
                         </div>
                         <div class="sku_arr df ct-start fw">
-                            <span :class="['sku_item bg_F5F5F5 fs24 dfc fdc', item == 1 ? 'active cf' : 'c_33292B']" v-for="item in 6" :key="item">规格</span>
+                            <span :class="['sku_item bg_F5F5F5 fs24 dfc fdc', item == 1 ? 'active cf' : 'c_33292B']" v-for="(item,index) in 6" :key="index">规格</span>
                         </div>
                     </div>
                     <!-- 规格 E -->

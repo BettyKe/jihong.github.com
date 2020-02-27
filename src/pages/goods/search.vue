@@ -6,7 +6,7 @@
             <span class="c_999" @click="clear">清空</span>
         </div>
         <div class="hot_list fw jct-start df" v-if="hotList.length">
-            <span class="hot_item fs24 c_33292B bg_E6E6E6" v-for="(item,index) in hotList" :key="item" :index="index" v-show="index!=hotList.length-1 && index<10">{{item}}</span>
+            <span class="hot_item fs24 c_33292B bg_E6E6E6" v-for="(item,index) in hotList" :key="index" :index="index" v-show="index!=hotList.length-1 && index<10">{{item}}</span>
         </div>
     </div>
 </template>

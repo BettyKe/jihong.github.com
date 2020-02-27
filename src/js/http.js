@@ -60,7 +60,7 @@ axios.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json; charset=utf-8'
   }
   // 请求头添加判断是否有token
-  config.headers['token'] = localStorage.getItem('token') || ''
+  config.headers['Access-Token'] = localStorage.getItem('token') || ''
   // config.headers['X-AUTH-TOKEN'] = store.getters.getSessionKey || ''
   // config.headers['custom-params'] = config.params
   // 清空自定义的数据
@@ -94,8 +94,11 @@ function setPostSessionKey (data) {
 
 
   // data.token = store.getters.getSessionKey || "" //被我注释的
-
-  data.token = localStorage.getItem('token') || ''
+  // let token = localStorage.getItem('token') || ''
+  // if(token!=''){
+  //   data.token = localStorage.getItem('token')
+  // }
+  
 
 
 
