@@ -3,14 +3,15 @@
         <header-box title="选择收货地址">
             <div class="header_right dfc" slot="header-right" @click="$router.push({path:'/order/editAddress'})">新建地址</div>
         </header-box>
-        <div class="box pdlr30">
+        <div class="box pdlr30" v-for="(item,index) in list" :key="index">
             <div class="name">
-                <span class="fs32 b mgr30">王大锤</span><span>13610215244</span>
+                <span class="fs32 b mgr30">{{item.consignee}}</span><span>{{item.phone}}</span>
             </div>
-            <div class="bor_bottom lh15 fs28 pdb30">广东省广州市天河区  科韵路118号 乐天大厦首层  乐天大厦首层</div>
+            <div class="bor_bottom lh15 fs28 pdb30">{{item.province+item.city+item.district+item.detail}}</div>
             <div class="set_box dfb">
                 <div class="dfc" @click="setDefault(item.id)">
-                    <img class="img40 mgr20" src="../../image/c_ic_circle_d@2x.png" alt="">
+                    <img class="img40 mgr20" v-if="item.status=='默认'" src="../../image/c_ic_circle_s@2x.png" alt="">
+                    <img class="img40 mgr20" v-else src="../../image/c_ic_circle_d@2x.png" alt="">
                     <span>设为默认</span>
                 </div>
                 <div class="df ais jct-end">
@@ -28,11 +29,11 @@
     </div>
 </template>
 <script>
-import {findByDistributorId} from '@/js/api'
+import {findByDistributorId,addressDelete,updateDefault} from '@/js/api'
 export default {
     data(){
         return{
-            list:[],
+            list:'',
         }
     },
     created(){
@@ -42,11 +43,11 @@ export default {
         async getList(){
             let res = await findByDistributorId()
             if(res.code==200 && res.data.length){
-                this.list = res.data.length
+                this.list = res.data
             }
         },
         async setDefault(id){
-            let res = await updateDefault({id:this.id})
+            let res = await updateDefault({id})
             if(res.code==200){
                 this.getList()
             }

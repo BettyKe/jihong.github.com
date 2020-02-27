@@ -11,7 +11,7 @@
                 <span class="dot bg_FFF"></span>
                 <span class="dot bg_FFF"></span>
             </div>
-            <div class="money">12,132.50</div>
+            <div class="money">{{amount}}</div>
             <div class="header_right dfc bg_FFF theme" @click="$router.push({path: '/my/withdraw'})">提现</div>
         </div>
         <div class="timer_box dfc bg_FFF" @click="showDate=true">
@@ -55,6 +55,7 @@
     </div>
 </template>
 <script>
+import {MyAccount} from '@/js/api'
 export default {
     data(){
         return{
@@ -68,6 +69,8 @@ export default {
             maxDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             orderTypeList: ['全部', '退货单', '订单', '补充发货单', '取消订单', '申请提现', '提现失败'],
             orderType:0,
+
+            amount:0,
         }
     },
     created(){
@@ -97,7 +100,9 @@ export default {
         },
         async getInfo(){
             let res = await MyAccount()
-            console.log(res)
+            if(res.code==200){
+                this.amount = res.data.amount
+            }
         }
     }
 };

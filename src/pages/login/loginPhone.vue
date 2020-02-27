@@ -26,7 +26,11 @@ export default {
     },
     methods:{
         async getCode(){
-            if(this.phone=='' || this.times!=60){
+            if(this.phone=='' || !this.verifyTel(this.phone)){
+                this.$toast('请输入正确的手机号码')
+                return;
+            }
+            if(this.times!=60){
                 return;
             }
             let res = await sendRegisterationCaptcha({
@@ -44,6 +48,14 @@ export default {
             
         },
         async next(){
+            if(this.phone=='' || !this.verifyTel(this.phone)){
+                this.$toast('请输入正确的手机号码')
+                return;
+            }
+            if(this.code==''){
+                this.$toast('请输入验证码')
+                return;
+            }
             let res = await checkCaptcha({
                 phone:this.phone,
                 captcha:this.code,
@@ -54,7 +66,6 @@ export default {
                 sessionStorage.setItem('register',JSON.stringify(data))
                 this.$router.push({path: '/setPassword'})
             }
-            
         }
     }
 }

@@ -17,7 +17,7 @@
 </template>
 <script>
 import areaLists from '@/js/area'
-import {addressSave} from '@/js/api'
+import {addressSave,addressGet,addressUpdate} from '@/js/api'
 export default {
     data(){
         return{
@@ -46,7 +46,15 @@ export default {
         async getInfo(){
             let res = await addressGet({id:this.id})
             if(res.code==200){
-
+                this.name = res.data.consignee,
+                this.tel = res.data.phone,
+                this.addDetail = res.data.detail,
+                this.logLable = res.data.transporterLabel,
+                this.area = [
+                    {name:res.data.province},
+                    {name:res.data.city},
+                    {name:res.data.district},
+                ]
             }
         },
         async submit(){
@@ -70,7 +78,7 @@ export default {
                 this.$toast('请填写详细地址')
                 return
             }
-            let res = await addressSave({
+            let obj = {
                 "address": {
                     "consignee": this.name,
                     "phone": this.tel,
@@ -80,7 +88,13 @@ export default {
                     "detail": this.addDetail,
                     "transporterLabel": this.logLable
                 }
-            })
+            }
+            let res = ''
+            if(this.id && this.id!=''){
+                res = await addressUpdate(obj)
+            }else{
+                res = await addressSave(obj)
+            }
             if(res.code==200){
                 this.$router.back()
             }

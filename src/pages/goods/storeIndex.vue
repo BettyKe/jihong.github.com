@@ -3,11 +3,11 @@
         <div class="top">
             <div class="store_info df ais-start jct-between">
                 <div class="df">
-                    <img class="store_pic" src="../../image/default.png" alt="">
+                    <img class="store_pic" :src="ImageTool.initImage(storeInfo.avatar)" alt="">
                     <div class="df ais-start jct-around fdc">
-                        <div class="fs34 to-line">吉祥花草园艺经营店</div>
+                        <div class="fs34 to-line">{{storeInfo.fullName}}</div>
                         <div>
-                            <span class="collect_btn dfc">
+                            <span class="collect_btn dfc" @click="collect">
                                 <img class="img36" src="../../image/d_ic_attention@2x.png" alt="">
                                 关注
                             </span>
@@ -15,9 +15,9 @@
                     </div>
                 </div>
                 <div class="store_right_btn dfc">
-                    <img class="img36" src="../../image/c_ic_home_white@2x.png" alt="">
+                    <img class="img36" src="../../image/c_ic_home_white@2x.png" alt="" @click="$router.push('/index')" >
                     <span class="line"></span>
-                    <img class="img36" src="../../image/d_ic_close@2x.png" alt="">
+                    <img class="img36" src="../../image/d_ic_close@2x.png" alt="" @click="$router.back()" >
                 </div>
             </div>
             <div class="dfb">
@@ -29,6 +29,7 @@
             </div>
         </div>
         <div class="content">
+            <!-- 首页 -->
             <div v-show="tabIndex==0" class="tab_box home_box">
                 <div class="title dfc">
                     <img class="img32" src="../../image/d_ic_symbol@2x.png" alt="">
@@ -36,16 +37,19 @@
                     <img class="img32" src="../../image/d_ic_symbol@2x.png" alt="">
                 </div>
                 <van-list
-                    v-model="loading"
-                    :finished="finished"
+                    v-model="indexLoading"
+                    :finished="indexFinished"
                     finished-text="没有更多了"
-                    @load="onLoad"
+                    @load="updateIndexGoods"
                 >
-                    <div class="goods_list">
-                        <goods-item></goods-item>
+                  <scroll :data="goodsList" :probeType ="3" :listenScroll="true" class="middle">
+                    <div class="goods_list fw jct-start df">
+                        <goods-item class="goods_item" v-for="(item,index) in goodsList" :key="index"  :goodsInfo.sync="item" @toDetail="toGoodsDetail(item.product.id)"></goods-item>
                     </div>
+                  </scroll>
                 </van-list>
             </div>
+            <!-- 分类 -->
             <div v-show="tabIndex==1" class="tab_box classify_box df jct-between">
                 <van-list class="classify_left">
                     <div
@@ -81,7 +85,17 @@
                     </div>
                 </div>
             </div>
-            <div v-show="tabIndex==2" class="tab_box goods">goods</div>
+            <!-- 全部宝贝 -->
+            <div v-show="tabIndex==2" class="tab_box goods">
+              <condition></condition>
+              <div class="bottom">
+                  <scroll :data="allGoodsList" :probeType ="3" :listenScroll="true" class="middle">
+                      <div class="goods_list fw jct-start df">
+                          <goods-item :goodsInfo.sync="item" @toDetail="toGoodsDetail" v-for="(item,index) in allGoodsList" :key="index" class="goods_item"></goods-item>
+                      </div>
+                  </scroll>
+              </div>
+            </div>
         </div>
         <div class="tab dfa">
             <div class="dfc fdc">
@@ -127,14 +141,14 @@
 </template>
 <script>
 import goodsItem from "@/components/goods-item";
-import {
-  findProductByProviderId,
-  findAllCategoryByProviderId,
-  findProductByCategoryId
-} from "@/js/api";
+import condition from '@/components/condition'
+import scroll from '@/components/scroll'
+import {findProductByProviderId,findAllCategoryByProviderId,findProductByCategoryId,addProviderToCollect,providerGet,} from "@/js/api";
 export default {
   components: {
-    goodsItem
+    goodsItem,
+    condition,
+    scroll,
   },
   data() {
     return {
@@ -143,12 +157,19 @@ export default {
       loading: false,
       finished: false,
       navLeft: 0,
-      classifyList: []
+      classifyList: [],
+      storeInfo:{},
+      goodsList:[],//首页商品列表
+      allGoodsList:[],//全部宝贝商品列表
+      indexLoading:false,
+      indexFinished:false,
+      indexPage:1,
     };
   },
   created() {
+    this.storeId = this.$route.query.id
     this.getInfo();
-    this.getGoods()
+    this.getIndexGoods()
     this.getAllCategory();
   },
   methods: {
@@ -158,12 +179,38 @@ export default {
     //获取店铺信息
     async getInfo() {
       let res = await providerGet({ id:this.storeId}, true);
-      console.log(res);
+      if(res.code==200){
+        this.storeInfo = res.data
+      }
+      
     },
     //获取店铺商品列表
-    async getGoods() {
-      let res = await findProductByProviderId({ id: this.storeId }, true);
-      console.log(res);
+    async getIndexGoods(page=1) {
+      let res = await findProductByProviderId({
+        id: this.storeId,
+        pageable:{
+          page:page
+        }
+      }, true);
+      if(res.code==200){
+        this.indexLoading = false
+        this.indexPage = page
+        console.log(page+'load')
+        if(page==1){
+          console.log('第一页')
+          this.goodsList = res.data
+        }else{
+          console.log('其他页')
+          res.data.map(v=>{
+            this.goodsList.push(v)
+          })
+          // this.goodsList.push(...res.data)
+        }
+        console.log(this.goodsList)
+        if(!res.data.length){
+          this.indexFinished = true
+        }
+      }
     },
     setCategory(index) {
       this.navLeft = index;
@@ -171,15 +218,10 @@ export default {
 
     
     toGoodsList: async function(id) {
-        this.$router.push({
-            path:'/goods/goodsList',
-            query:{
-                classifyId:id
-            }
-        })
-    //   console.log(id);
-    //   let res = await findProductByCategoryId({ id : id }, true);
-    //   console.log(res);
+        this.$router.push({path:`/goods/goodsList?classifyId=${id}`})
+    },
+    toGoodsDetail(id){
+        this.$router.push({path:`/goods/goodsDetail?id=${id}`})
     },
     //获取分类
     getAllCategory: async function() {
@@ -188,11 +230,30 @@ export default {
       if (res.code == 200 && res.data.length) {
         this.classifyList = res.data;
       }
+    },
+
+    //收藏
+    async collect(){
+        let res = await addProviderToCollect({connectionId:this.storeId})
+        if(res.code==200){
+
+        }
+    },
+    //加载首页商品数据
+    updateIndexGoods(){
+      let page = this.indexPage + 1
+      console.log('update'+page)
+      this.getIndexGoods(page)
     }
   }
 };
 </script>
 <style lang="less" scoped>
+.container{
+  background: #F6F6F6;
+  width: 100vw;
+  overflow: hidden;
+}
 .top {
   width: 100vw;
   height: 280px;
@@ -260,6 +321,7 @@ export default {
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
+  background: #fff;
   .classify_left {
     width: 170px;
     max-height: 100%;
@@ -363,5 +425,18 @@ export default {
   span {
     margin-top: 4px;
   }
+}
+.goods_list{
+  margin-right: -10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.goods_item{
+  margin-bottom: 20px;
+  margin-right: 10px;
+}
+.tab_box{
+  height: calc(100vh - 378px);
+  overflow-y: scroll;
 }
 </style>

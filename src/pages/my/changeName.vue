@@ -37,7 +37,7 @@ export default {
                 this.$toast('修改成功');
                 setTimeout(()=>{
                     this.$router.back()
-                },10000)
+                },1000)
             }
         }
     }

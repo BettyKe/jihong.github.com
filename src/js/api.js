@@ -24,6 +24,8 @@ export const sendRegisterationCaptcha  = (data, loadingOptions) => http.post('/d
 export const sendConfirmCaptcha = (data, loadingOptions) => http.post('/distributor/sendConfirmCaptcha', data, loadingOptions)
 //发送修改密码验证码（修改密码）
 export const sendUpdatePasswordCaptcha = (data, loadingOptions) => http.post('/distributor/sendUpdatePasswordCaptcha', data, loadingOptions)
+//发送重要信息变更验证码
+export const sendUpdateCaptcha = (data, loadingOptions) => http.post('/distributor/sendUpdateCaptcha', data, loadingOptions)
 //验证验证码
 export const checkCaptcha = (data, loadingOptions) => http.post('/distributor/checkCaptcha', data, loadingOptions)
 //经销商联系客服
@@ -54,6 +56,8 @@ export const providerGet = (data, loadingOptions) => http.post('/provider/get', 
 export const findProductByProviderId = (data, loadingOptions) => http.post('/product/findProductByProviderId', data, loadingOptions)
 //分类-其它分类-店铺首页-分类
 export const findAllCategoryByProviderId = (data, loadingOptions) => http.post('/product/findAllCategoryByProviderId', data, loadingOptions)
+//查询商品的增值服务
+export const findAllValueAddProductForAPP = (data, loadingOptions) => http.post('/product/findAllValueAddProductForAPP', data, loadingOptions)
 
 //选择规格等级
 export const selectGrade  = (data, loadingOptions) => http.post('/product/selectGrade', data, loadingOptions)
@@ -139,3 +143,29 @@ export const getBalance = (data, loadingOptions) => http.post('/distributor/getB
 export const withdrawDetail4APP = (data, loadingOptions) => http.post('/withdrawalSlip/withdrawDetail4APP', data, loadingOptions)
 //提现详情
 export const withdrawDetailOfOne = (data, loadingOptions) => http.post('/withdrawalSlip/withdrawDetailOfOne', data, loadingOptions)
+
+
+//选择物流
+// export const findEnableDTransporter = (data, loadingOptions) => http.post('/transporter/findEnableDTransporter', data, loadingOptions)
+//新增物流
+export const transporterSave = (data, loadingOptions) => http.post('/transporter/save', data, loadingOptions)
+//选择地址
+// export const findByDistributorId = (data, loadingOptions) => http.post('/address/findByDistributorId', data, loadingOptions)
+//新增地址
+// export const withdrawDetailOfOne = (data, loadingOptions) => http.post('/address/save', data, loadingOptions)
+//编辑地址
+// export const withdrawDetailOfOne = (data, loadingOptions) => http.post('/address/update', data, loadingOptions)
+//提交订单
+export const saveOrderForDistributor = (data, loadingOptions) => http.post('/order/saveOrderForDistributor', data, loadingOptions)
+//加入购物车
+export const addProduct = (data, loadingOptions) => http.post('/virtualItem/addProduct', data, loadingOptions)
+//展示购物车
+export const showCart = (data, loadingOptions) => http.post('/virtualItem/showCart', data, loadingOptions)
+//将购物车中的商品删除
+export const virtualItemDeleteBatch = (data, loadingOptions) => http.post('/virtualItem/deleteBatch', data, loadingOptions)
+//获取地址
+export const getDefault = (data, loadingOptions) => http.post('/address/getDefault', data, loadingOptions)
+//支付 查询余额
+export const getDistributorBalance = (data, loadingOptions) => http.post('/order/getDistributorBalance', data, loadingOptions)
+//余额支付
+export const balancePayOrderForDistributor = (data, loadingOptions) => http.post('/order/balancePayOrderForDistributor', data, loadingOptions)

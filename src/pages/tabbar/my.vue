@@ -6,15 +6,15 @@
                 <img class="user_img" src="../../image/c_ic_my_d@2x.png">
                 <div class="flex info df jct-between ais-start fdc">
                     <div class="dfb">
-                        <div class="user_name">紫小鲸</div>
-                        <div class="user_integral dfc">
+                        <div class="user_name">{{info.name}}</div>
+                        <!-- <div class="user_integral dfc">
                             <img class="img32" src="../../image/f_ic_award@2x.png">
                             <span class="fs24 theme">157066945</span>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="df ais">
                         <img class="icon_phone" src="../../image/f_ic_phone@2x.png">
-                        <span class="phone">157066945</span>
+                        <span class="phone">{{info.phone}}</span>
                     </div>
                 </div>
             </div>
@@ -91,11 +91,12 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 import {personaInformation} from '@/js/api'
     export default {
         data() {
             return {
-
+                info:'',
             }
         },
         created(){
@@ -109,6 +110,9 @@ import {personaInformation} from '@/js/api'
             },
             async getInfo(){
                 let res = await personaInformation()
+                if(res.code==200){
+                    this.info = res.data
+                }
             }
         }
     }

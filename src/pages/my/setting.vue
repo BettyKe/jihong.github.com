@@ -2,22 +2,22 @@
     <div class="container pdt20 bg_F7F5F6">
         <header-box title="设置"></header-box>
         <div class="box bg_FFF">
-            <div class="item dfb">
-                <span>关于我们</span>
-                <img class="img32" src="../../image/b_ic_back@2x.png" alt="">
-            </div>
-            <div class="item dfb">
+            <div class="item dfb" @click="$router.push('/my/page?id=1')">
                 <span>用户协议</span>
                 <img class="img32" src="../../image/b_ic_back@2x.png" alt="">
             </div>
-            <div class="item dfb">
+            <div class="item dfb" @click="$router.push('/my/page?id=2')">
                 <span>隐私政策</span>
                 <img class="img32" src="../../image/b_ic_back@2x.png" alt="">
             </div>
-            <div class="item dfb">
-                <span>版本信息</span>
+            <div class="item dfb" @click="$router.push('/my/page?id=3')">
+                <span>关于我们</span>
                 <img class="img32" src="../../image/b_ic_back@2x.png" alt="">
             </div>
+            <!-- <div class="item dfb">
+                <span>版本信息</span>
+                <img class="img32" src="../../image/b_ic_back@2x.png" alt="">
+            </div> -->
         </div>
         <div class="box bg_FFF" @click="$router.push({path:'/my/feedback'})">
             <div class="item dfb">

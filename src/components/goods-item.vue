@@ -1,22 +1,22 @@
 <template>
-    <div class="goods_item bg_FFF dfc fdc" @click="toDetail">
-        <img class="goods_img" :src="ImageTool.getIndexImg(goodsInfo.product.covers,0)" />
+    <div class="goods_item bg_FFF dfc fdc">
+        <img class="goods_img" @click="toDetail" :src="ImageTool.getIndexImg(goodsInfo.product.covers,0)" />
         <div class="goods_info">
-            <div class="dfb">
+            <div class="dfb" @click="toDetail">
                 <div class="theme b df jct-start ais-end">
                     <span class="fs26">￥</span>
-                    <span class="fs30">199.</span>
-                    <span class="fs20">00/盆</span>
+                    <span class="fs30">{{goodsInfo.product.unitPrice}}</span>
+                    <span class="fs20">/{{goodsInfo.unitName}}</span>
                 </div>
-                <span class="fz20 c_999">一箱10盆</span>
+                <span class="fz20 c_999">一箱{{goodsInfo.product.unitQuantity}}{{goodsInfo.unitName}}</span>
             </div>
-            <div class="goods_title fs24 c_33292B to-line2">{{goodsInfo.product.productTitle}}</div>
+            <div @click="toDetail" class="goods_title fs24 c_33292B to-line2">{{goodsInfo.product.productTitle}}</div>
             <div class="df jct-between ais-end">
-                <div class="df jct-start ais">
+                <div class="df jct-start ais" @click="toDetail">
                     <img class="img28" src="../image/c_ic_article@2x.png" />
                     <span class="c_999 fs20">{{goodsInfo.providerName}}</span>
                 </div>
-                <img class="img60" src="../image/c_ic_shopping_2@2x.png" />
+                <img class="img60" src="../image/c_ic_shopping_2@2x.png" @click="showBox" />
             </div>
         </div>
     </div>
@@ -34,6 +34,9 @@ export default {
     methods: {
         toDetail() {
             this.$emit('toDetail', this.goodsInfo)
+        },
+        showBox(){
+            this.$emit('showBox')
         }
     }
 }

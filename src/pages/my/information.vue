@@ -5,21 +5,30 @@
             <div class="box user_avatar dfb">
                 <span class="fs28 c_33292B">头像</span>
                 <div class="df ais jct-end">
-                    <img class="avatar" src="../../image/f_ic_soi_2@2x.png" alt="">
+                    <!-- <form name="imgForm" id="imgForm" enctype="multipart/form-data" action="https://apptest.ji-hong.com.cn/api/attachment/upload" method='post'>
+                        <label for="imgLocal">
+                            <input hidden class="input-loc-img"  name="imgLocal" id="imgLocal" type='file' accept="image/*" @change="selectImg" />
+                            <img class="avatar" src="../../image/f_ic_soi_2@2x.png" alt="">
+                        </label>
+                    </form> -->
+                    <!-- <img class="avatar" src="../../image/f_ic_soi_2@2x.png" alt=""> -->
+                    <van-uploader :after-read="afterRead" max-count="1" >
+                        <img class="avatar" src="../../image/f_ic_soi_2@2x.png" alt="">
+                    </van-uploader>
                     <img class="img32" src="../../image/f_ic_more@2x.png" alt="">
                 </div>
             </div>
             <div class="box dfb">
                 <span class="fs28 c_33292B">昵称</span>
-                <div class="df ais jct-end" @click="$router.push({path:'/my/changeName'})">
-                    <span>吉祥花木园艺店</span>
+                <div class="df ais jct-end" @click="$router.push({path:`/my/changeName?name=${info.name}`})">
+                    <span>{{info.name}}</span>
                     <img class="img32 ml20" src="../../image/f_ic_more@2x.png" alt="">
                 </div>
             </div>
             <div class="box dfb">
                 <span class="fs28 c_33292B">绑定手机</span>
                 <div class="df ais jct-end" @click="$router.push({path:'/my/changeTel'})">
-                    <span>136****5234</span>
+                    <span>{{info.phone}}</span>
                     <img class="img32 ml20" src="../../image/f_ic_more@2x.png" alt="">
                 </div>
             </div>
@@ -34,10 +43,36 @@
     </div>
 </template>
 <script>
-import {personaInformation} from '@/js/api'
+import {personaInformation,upload} from '@/js/api'
 export default {
+    data(){
+        return{
+            info:'',
+        }
+    },
+    created(){
+        this.getInfo()
+    },
     methods:{
-        
+        async getInfo(){
+            let res = await personaInformation()
+            if(res.code==200){
+                res.data.phone = res.data.phone.substring(0,3)+'****'+res.data.phone.substring(7,11)
+                this.info = res.data
+            }
+        },
+        async afterRead(data){
+            console.log(data)
+            console.log(data.file)
+            let res = await upload({file:data})
+            if(res.code==200){
+                console.log('success')
+            }
+        },
+        selectImg(){
+            let form=document.getElementById('imgForm');
+            form.submit();
+        }
     }
 }
 </script>
@@ -66,6 +101,7 @@ export default {
         .avatar{
             width: 108px;
             height: 108px;
+            border-radius: 50%;
         }
     }
 }

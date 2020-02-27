@@ -1,32 +1,4 @@
 export default {
-  test(){
-    console.log('test')
-  },
-
-    uploadImg() {
-      wx.chooseImage({
-        success(res) {
-          const tempFilePaths = res.tempFilePaths
-          wx.uploadFile({
-            url: 'https://www.xiaoniutingche.com/libofront/api/common/upload.json',
-            filePath: tempFilePaths[0],
-            name: 'file',
-            formData: {
-              'user': 'test'
-            },
-            success(res) {
-              const data = res.data
-              console.log(res)
-              return res.data;
-            },
-            fail(res) {
-              console.log(res)
-              return res;
-            }
-          })
-        }
-      })
-    },
 
     verify(type, val) {
       let rule;

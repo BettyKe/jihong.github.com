@@ -288,6 +288,14 @@ let routes = [
     component: () => import('@/pages/my/setting')
   },
   {
+    path:'/my/page',
+    meta: {
+      title: '文章详情',
+      needLogin: true
+    },
+    component: () => import('@/pages/my/page')
+  },
+  {
     path:'/my/feedback',
     meta: {
       title: '意见反馈',

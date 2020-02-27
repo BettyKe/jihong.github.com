@@ -1,5 +1,5 @@
 <template>
-    <van-popup v-model="showSpec" position="bottom" round class="van-popup">
+    <van-popup v-model="showSpec" position="bottom" round class="van-popup" :close-on-click-overlay="true" :close-on-popstate="true" @click-overlay="toggleShow(false)">
         <div class="box">
             <img
                 @click="toggleShow(false)"
@@ -9,29 +9,29 @@
             >
             <div class="spec_box">
                 <div class="goods_info df">
-                    <img class="goods_pic" src="../image/default.png" alt="">
+                    <img class="goods_pic" :src="ImageTool.initImage(product.covers)[0]" alt="">
                     <div class="flex info_right">
                         <div class="theme">￥
-                            <span class="fs36 b">240.00</span>/箱
+                            <span class="fs36 b">{{product.totalAmount}}</span>/箱
                         </div>
                         <div class="df ais-start jct-between c_999">
                             <div class="df fdc">
-                                <span>￥12.0/盆</span>
-                                <span>一箱20盆</span>
+                                <span>￥{{product.unitPrice}}/盆</span>
+                                <span>一箱{{product.unitQuantity}}盆</span>
                             </div>
-                            <span>已选：1箱</span>
+                            <span>已选：{{product.num}}箱</span>
                         </div>
                     </div>
                 </div>
                 <div class="num_row dfb">
                     <span>购买数量（箱）</span>
                     <div class="num_box dfc">
-                        <img class="img32" src="../image/ic_add_1@2x.png" alt="">
-                        <input type="number" value="1">
-                        <img class="img32" src="../image/ic_add@2x.png" alt="">
+                        <img class="img32" src="../image/ic_add_1@2x.png" alt="" @click="minusNum">
+                        <input type="number" v-model="product.num">
+                        <img class="img32" src="../image/ic_add@2x.png" alt="" @click="addNum">
                     </div>
                 </div>
-                <div class="service_box">
+                <div class="service_box" v-if="serviceList.length">
                     <div class="title dfs">
                         <img class="img36" src="../image/c_ic_appreciation@2x.png" alt="">
                         <span class="theme fs28">增值服务</span>
@@ -39,36 +39,108 @@
                         <span class="fs28">可多选</span>
                     </div>
                     <div class="service_list">
-                        <div class="item dfb" v-for="item in 5" :key="item">
-                            <div class="dfa">
-                                <img class="img32" src="../image/c_ic_circle_d@2x.png" alt="">
-                                <span class="fs28 name">立杆</span>
-                                <span class="fs28">¥10.00/根</span>
+                        <div class="item dfb" v-for="(item,index) in serviceList" :key="index" :index="index">
+                            <div class="dfa" @click="item.select=!item.select">
+                                <img class="img32" v-if="!item.select" src="../image/c_ic_circle_d@2x.png" alt="">
+                                <img class="img32" v-else src="../image/c_ic_circle_s@2x.png" alt="">
+                                <span class="fs28 name">{{item.plantName}}</span>
+                                <span class="fs28">¥{{item.totalAmount}}/{{item.unitName}}</span>
                             </div>
                             <div class="dfc">
-                                <img class="img32" src="../image/ic_add_1@2x.png" alt="">
-                                <input type="number" value="0">
-                                <img class="img32" src="../image/ic_add@2x.png" alt="">
+                                <img class="img32" src="../image/ic_add_1@2x.png" alt="" @click="minusService(index)">
+                                <input type="number" v-model="item.num" max-length="6" />
+                                <img class="img32" src="../image/ic_add@2x.png" alt="" @click="addService(index)">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="add dfc" @click="toggleShow(false)">加入购物车</div>
+                <div class="add dfc" @click="addCart">加入购物车</div>
             </div>
         </div>
     </van-popup>
 </template>
 <script>
+import {addProduct,findAllValueAddProductForAPP} from '@/js/api'
 export default {
   props: {
+    goodsId:{
+      type:String/Number,
+      default:''
+    },
     showSpec: {
       type: Boolean,
       default: false
+    },
+    product:{
+      type:Object,
+      default:{}
+    },
+  },
+  data(){
+    return{
+      serviceList:[]
     }
   },
+  watch:{
+    serviceList(){
+        
+    }
+  },
+  created(){
+    this.getService()
+  },
   methods: {
+    async getService(){
+      let ret = await findAllValueAddProductForAPP()
+      if(ret.code==200 && ret.data.length){
+          ret.data.map(v=>{
+              v.select = false
+              v.num = 1
+          })
+          this.serviceList = ret.data
+      }
+    },
     toggleShow(flag) {
       this.$emit("toggleShow", flag);
+    },
+    minusNum(){
+      if(this.$parent.product.num<=1){
+        return
+      }
+      this.$parent.product.num--
+    },
+    addNum(){
+      this.$parent.product.num++
+    },
+    minusService(index){
+      if(this.serviceList[index].num<=1){
+        return
+      }
+      this.serviceList[index].num--
+    },
+    addService(index){
+      this.serviceList[index].num++
+    },
+    async addCart(){
+      let obj = {productDTOList:[{
+        productId:this.goodsId,
+        productNum:this.product.num,
+      }]}
+      this.serviceList.map(v=>{
+        if(v.select){
+          obj.productDTOList.push({
+            productId:v.productId,
+            productNum:v.num,
+            parentId:this.id
+          })
+        }
+      })
+      console.log(obj)
+      let res = await addProduct(obj)
+      if(res.code==200){
+        this.$toast('加入购物车成功')
+        this.toggleShow(false)
+      }
     }
   }
 };
