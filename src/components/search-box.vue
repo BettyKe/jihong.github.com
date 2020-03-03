@@ -14,22 +14,26 @@
 </template>
 <script>
 export default {
-    data() {
-        return {
-            keyword: ''
+    props:{
+        keyword:{
+            type:String,
+            default:'',
+        }
+    },
+    watch:{
+        keyword(){
+            this.$emit('changeKeyword',this.keyword)
         }
     },
     methods: {
         search() {
+            console.log('1122')
             this.$emit('search', this.keyword)
         },
         close() {
             this.keyword = ''
             this.$emit('close')
         },
-        setKeyword(keyword) {
-            this.keyword = keyword
-        }
     }
 }
 </script>

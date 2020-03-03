@@ -2,46 +2,59 @@
     <div>
         <!-- 有筛选 S -->
         <div class="condition_box bg_FFF dfa">
-            <div :class="['flex condition_item df ais fs28 c_33292B', active==0 ? 'active b':'']">综合</div>
-            <div :class="['flex condition_item dfc fs28 c_33292B', active==1 ? 'active b':'']">
+            <div :class="['flex condition_item df ais fs28 c_33292B', active==0 ? 'active b':'']" @click="toggleType(0)">综合</div>
+            <div :class="['flex condition_item dfc fs28 c_33292B', active==1 || active==2 ? 'active b':'']" @click="togglePrice">
                 <span>价格</span>
                 <div class="dfc fdc">
-                    <img class="img14 trigon_on" src="../image/c_ic_trigon_s@2x.png" />
-                    <img class="img14 trigon_under" src="../image/c_ic_trigon_d@2x.png" />
+                    <img v-if="active==1" class="img14 trigon_on" src="../image/c_ic_trigon_s@2x.png" />
+                    <img v-if="active!=1" class="img14 trigon_on" src="../image/c_ic_trigon_d@2x.png" />
+                    <img v-if="active!=2" class="img14 trigon_under" src="../image/c_ic_trigon_d@2x.png" />
+                    <img v-if="active==2" class="img14 trigon_under" src="../image/c_ic_trigon_s@2x.png" />
                 </div>
             </div>
-            <div :class="['flex condition_item df jct-end ais fs28 c_33292B', active==2 ? 'active b':'']">
+            <div :class="['flex condition_item df jct-end ais fs28 c_33292B', active==3 ? 'active b':'']">
                 <span @click="showRilter = true">筛选</span>
                 <img @click="showRilter = true" class="img32" src="../image/c_ic_screen@2x.png" />
             </div>
             <div :class="['filter_dialog', showRilter ? 'js_dialog' : '']">
                 <div class="dialog_mask" @click="showRilter = false" v-if="showRilter"></div>
                 <div class="dialog_content bg_FFF">
-                    <!-- 规格 S -->
+                    <!-- 供应商 S -->
                     <div class="sku_box">
                         <div class="dialog_title dfb">
-                            <span class="fs28 c_33292B b">规格</span>
-                            <img class="img26" src="../image/c_ic_more_next@2x.png" />
+                            <span class="fs28 c_33292B b">供应商</span>
+                            <img @click="showProvider=!showProvider" class="img26" src="../image/c_ic_more_next@2x.png" />
                         </div>
-                        <div class="sku_arr df ct-start fw">
-                            <span :class="['sku_item bg_F5F5F5 fs24 dfc fdc', item == 1 ? 'active cf' : 'c_33292B']" v-for="(item,index) in 6" :key="index">规格</span>
+                        <div :class="['sku_arr df ct-start fw',showProvider?'h180':'']">
+                            <span :class="['sku_item bg_F5F5F5 fs24 dfc fdc', providerId==item.id ? 'active cf' : 'c_33292B']" v-for="(item,index) in providerList" :key="index" @click="providerId=item.id">{{item.shortName}}</span>
                         </div>
                     </div>
-                    <!-- 规格 E -->
+                    <!-- 供应商 E -->
                     <!-- 价格区间 S -->
                     <div class="price_box">
                         <div class="price_title fs28 c_33292B b">价格区间（元）</div>
                         <div class="dfc price_input">
-                            <input class="bg_F5F5F5" placeholder="最低价" />
+                            <input v-model="minPrice" type="number" class="bg_F5F5F5" placeholder="最低价" />
                             <div></div>
-                            <input class="bg_F5F5F5" placeholder="最高价" />
+                            <input v-model="maxPrice" type="number" class="bg_F5F5F5" placeholder="最高价" />
                         </div>
                     </div>
                     <!-- 价格区间 E -->
+                    <!-- 规格 S -->
+                    <div class="sku_box">
+                        <div class="dialog_title dfb">
+                            <span class="fs28 c_33292B b">规格</span>
+                            <img @click="showGrade=!showGrade" class="img26" src="../image/c_ic_more_next@2x.png" />
+                        </div>
+                        <div :class="['sku_arr df ct-start fw',showGrade?'h180':'']">
+                            <span :class="['sku_item bg_F5F5F5 fs24 dfc fdc', gradeId == item.id ? 'active cf' : 'c_33292B']" v-for="(item,index) in gradeList" :key="index" @click="gradeId = item.id">{{item.name}}</span>
+                        </div>
+                    </div>
+                    <!-- 规格 E -->
                     <!-- 底部按钮 S -->
                     <div class="footer_box dfb">
-                        <div class="fs28 c_33292B flex dfc fdc">重置</div>
-                        <div class="fs28 cf flex dfc fdc">完成</div>
+                        <div class="fs28 c_33292B flex dfc fdc" @click="reset">重置</div>
+                        <div class="fs28 cf flex dfc fdc" @click="submit">完成</div>
                     </div>
                     <!-- 底部按钮 E -->
                 </div>
@@ -54,9 +67,50 @@
 export default {
     data() {
         return {
-            active: 1,
-            showRilter: false
+            showRilter: false,
+            showProvider:false,
+            showGrade:false,
+            providerId:'',
+            gradeId:'',
+            minPrice:'',
+            maxPrice:'',
         }
+    },
+    props:{
+        gradeList:{
+            type:Array,
+            default:[]
+        },
+        providerList:{
+            type:Array,
+            default:[]
+        },
+        active:{
+            type:Number,
+            default:0,
+        }
+    },
+    methods:{
+        togglePrice(){
+            if(this.active==1){
+                this.toggleType(2)
+            }else{
+                this.toggleType(1)
+            }
+        },
+        toggleType(type){
+            this.$emit('toggleType',type)
+        },
+        reset(){
+            this.minPrice = ''
+            this.maxPrice = ''
+            this.providerId = ''
+            this.gradeId = ''
+        },
+        submit(){
+            this.$emit('filter',this.minPrice,this.maxPrice,this.providerId,this.gradeId)
+            this.showRilter = false
+        },
     }
 }
 </script>
@@ -124,6 +178,9 @@ export default {
     }
     .sku_arr{
         padding: 0 25px 0 31px;
+    }
+    .h180{
+        height: 180px;
     }
     .sku_item{
         display: inline-flex;

@@ -1,5 +1,4 @@
 export default {
-
     verify(type, val) {
       let rule;
       if (type == 'tel') {

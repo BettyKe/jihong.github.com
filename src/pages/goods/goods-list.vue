@@ -1,83 +1,110 @@
 <template>
     <div class="container_box container" ref="container">
         <div class="top">
-            <search-box ref="searchbox"></search-box>
-            <condition></condition>
+            <search-box ref="searchbox" :keyword.sync="keyword" @changeKeyword="changeKeyword" @search="search"></search-box>
+            <condition ref="conditions" :gradeList="gradeList" :providerList="providerList" :active="active" :minPrice="minPrice" :maxPrice="maxPrice" @filter="filter" @toggleType="toggleType"></condition>
         </div>
-        <div class="bottom">
-            <scroll :data="list" :probeType ="3" :listenScroll="true" class="middle">
-                <div class="fw jct-start df">
-                    <div v-for="(item,index) in list" :key="index" class="item">
-                        <goods-item :goodsInfo.sync="item" @toDetail="toGoodsDetail" @showBox="showBox(item)"></goods-item>
-                    </div>
+        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="toLoad">
+            <div class="bottom dfb fw">
+                <goods-item v-for="(item,index) in list" :key="index" class="item" :goodsInfo.sync="item" @toDetail="toGoodsDetail" @showBox="showBox(item)"></goods-item>
+            </div>
+            
+            <!-- <div class="fw jct-start df">
+                <div v-for="(item,index) in list" :key="index" class="item">
+                    <goods-item :goodsInfo.sync="item" @toDetail="toGoodsDetail" @showBox="showBox(item)"></goods-item>
                 </div>
-            </scroll>
-        </div>
+            </div> -->
+        </van-list>
         <!-- 加入购物车弹框 -->
-        <select-sku :goodsId="goodsId" :showSpec.sync="showSpec" :product.sync="product" @toggleShow="toggleSpec"></select-sku>
+        <!-- <select-sku :goodsId="goodsId" :showSpec.sync="showSpec" :product.sync="product" @toggleShow="toggleSpec"></select-sku> -->
     </div>
 </template>
 <script>
 import {
-  findByByProductNameOrProviderName,findProductByCategoryId,selectGrade,selectProvider
+  findByByProductNameOrProviderName,findProductByCategoryId,selectGrade,selectProvider,productFilter
 } from "@/js/api"
 import searchBox from '@/components/search-box'
 import condition from '@/components/condition'
 import goodsItem from '@/components/goods-item'
-import scroll from '@/components/scroll'
 import selectSku from '@/components/select-sku'
 export default {
     components: {
         searchBox,
         condition,
-        scroll,
         goodsItem,
         selectSku,
     },
     data() {
         return {
-            loading: true,
+            loading: false,
+            finished:false,
             list: [],
             keyword: '',
             classifyId:'',
+            minPrice:'',
+            maxPrice:'',
+            pageNumber:1,
 
             showSpec:false,
             goodsId:'',
             product:{},
+            gradeList:[],
+            providerList:[],
+            active:0,//0综合 1价格降 2价格升
+            providerId:'',
+            gradeId:'',
         }
     },
     created() {
-        this.keyword = this.$route.query.keyword
-        this.classifyId = this.$route.query.classifyId
-        console.log(this.keyword)
-        if(this.keyword && this.keyword!=''){
-            this.getList(1)
-        }
-        if(this.classifyId && this.classifyId!=''){
-            this.getList(2)
-        }
+        this.keyword = this.$route.query.keyword || ''
+        this.classifyId = this.$route.query.classifyId || ''
         this.getFilter()
+        this.getList()
     },
     mounted() {
-        this.$refs.searchbox.setKeyword(this.keyword)
+        
     },
     methods: {
-        getList: async function (type) {
-            let res = null;
-            if(type==1){
-                res = await findByByProductNameOrProviderName({
-                    name: this.keyword
-                }, true)
-            }else if(type==2){
-                res = await findProductByCategoryId({
-                    id: this.classifyId
-                }, true)
+        getList: async function (page=1) {
+            let sort = {desc:['id']}
+            if(this.active==1){
+                sort = {asc:['unit_price']}
+            }else if(this.active==2){
+                sort = {desc:['unit_price']}
             }
-            
-            console.log(res)
-            if(res.code == 200 && res.data.length) {
-                this.list = res.data
+            let res = await productFilter({
+                "categoryId": this.classifyId,
+                "providerId": this.providerId,
+                "minPrize": this.minPrice,
+                "maxPrize": this.maxPrice,
+                "gradeId":this.gradeId,
+                "name": this.keyword,
+                "pageable": {
+                    "page": page,
+                    "size": 10,
+                    "sort": sort
+                }
+            })
+            if(res.code == 200) {
+                this.loading = false
+                this.pageNumber = page
+                if(page==1){
+                    this.finished = false
+                    this.list = res.data
+                }else{
+                    this.list.push(...res.data)
+                }
+                if(!res.data.length){
+                    this.finished = true
+                }
             }
+        },
+        changeKeyword(keyword){
+            this.keyword = keyword
+        },
+        search(keyword){
+            this.keyword = keyword
+            this.getList()
         },
         toGoodsDetail(info){
             console.log(info)
@@ -90,20 +117,36 @@ export default {
         },
         async getFilter(){
             let res = await selectGrade()
-            console.log(res)
+            if(res.code==200){
+                this.gradeList = res.data
+            }
             let ret = await selectProvider()
-            console.log(ret)
+            if(ret.code==200){
+                this.providerList = ret.data
+            }
         },
         toggleSpec(flag){
             this.showSpec = flag
         },
         showBox(item){
-            console.log(item)
-            this.goodsId = item.providerId
             this.product = item.product
-            this.product.num = 1
             this.showSpec=true
         },
+        toLoad() {
+            let page = this.pageNumber +1;
+            this.getList(page);
+        },
+        filter(minPrice,maxPrice,providerId,gradeId){
+            this.minPrice = minPrice
+            this.maxPrice = maxPrice
+            this.providerId = providerId
+            this.gradeId = gradeId
+            this.getList()
+        },
+        toggleType(type){
+            this.active = type
+            this.getList()
+        }
     }
 }
 </script>
@@ -135,6 +178,16 @@ export default {
     }
     .item:nth-of-type(2n){
         margin-left: 10px;
+    }
+}
+.bottom{
+    margin-right: -10px;
+    padding: 154px 20px 0;
+    .item{
+        border-radius: 20px;
+        overflow: hidden;
+        margin-top:20px;
+        margin-right: 10px;
     }
 }
 </style>

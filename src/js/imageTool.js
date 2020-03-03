@@ -1,5 +1,6 @@
 import Vue from 'vue'
-const baseURL = 'https://app.ji-hong.com.cn/attachment/'
+// const baseURL = 'https://app.ji-hong.com.cn/attachment/'
+const baseURL = 'https://apptest.ji-hong.com.cn/attachment/'
 function ImageTool () {
     this.initImage = function (imageStr) {
         if (!imageStr) {

@@ -143,7 +143,7 @@
 import goodsItem from "@/components/goods-item";
 import condition from '@/components/condition'
 import scroll from '@/components/scroll'
-import {findProductByProviderId,findAllCategoryByProviderId,findProductByCategoryId,addProviderToCollect,providerGet,} from "@/js/api";
+import {findProductByProviderId,findAllCategoryByProviderId,findProductByCategoryId,addProviderToCollect,providerGet,deleteBatch} from "@/js/api";
 export default {
   components: {
     goodsItem,
@@ -234,9 +234,16 @@ export default {
 
     //收藏
     async collect(){
-        let res = await addProviderToCollect({connectionId:this.storeId})
+        let res = await addProviderToCollect({connectionId:[this.storeId]})
         if(res.code==200){
-
+          this.$toast('关注成功')
+        }
+    },
+    //取消收藏
+    async cancelCollect(){
+        let res = await deleteBatch({id:[this.storeId]})
+        if(res.code==200){
+          this.$toast('取消关注成功')
         }
     },
     //加载首页商品数据

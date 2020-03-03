@@ -30,13 +30,15 @@
                 </div>
             </div>
             <div class="order_type dfa">
-                <div class="dfc fdc" @click="$router.push({path:'/order/orderList'})">
+                <div class="dfc fdc item_box" @click="$router.push({path:'/order/orderList?type=2'})">
                     <img class="img50" src="../../image/f_ic_audit_1@2x.png">
                     <span class="c_33292B fs22">未审核</span>
+                    <i class="icon_num dfc" v-if="uncheck!=0">{{uncheck}}</i>
                 </div>
-                <div class="dfc fdc" @click="$router.push({path:'/order/orderList'})">
+                <div class="dfc fdc item_box" @click="$router.push({path:'/order/orderList?type=3'})">
                     <img class="img50" src="../../image/f_ic_audit_2@2x.png">
                     <span class="c_33292B fs22">已审核</span>
+                    <i class="icon_num dfc" v-if="checked!=0">{{checked}}</i>
                 </div>
                 <div class="dfc fdc" @click="$router.push({path:'/order/goodsOrderList'})">
                     <img class="img50" src="../../image/f_ic_audit_3@2x.png">
@@ -92,11 +94,13 @@
 </template>
 <script>
 import axios from 'axios'
-import {personaInformation} from '@/js/api'
+import {personaInformation,uncheckOrderNum,checkedOrderNum} from '@/js/api'
     export default {
         data() {
             return {
                 info:'',
+                uncheck:0,
+                checked:0,
             }
         },
         created(){
@@ -112,6 +116,14 @@ import {personaInformation} from '@/js/api'
                 let res = await personaInformation()
                 if(res.code==200){
                     this.info = res.data
+                }
+                let ret = await uncheckOrderNum()
+                if(ret.code==200){
+                    this.uncheck = ret.data
+                }
+                let rem = await checkedOrderNum()
+                if(rem.code==200){
+                    this.checked = rem.data
                 }
             }
         }
@@ -190,6 +202,19 @@ import {personaInformation} from '@/js/api'
       margin-top: 14px;
     }
   }
+}
+.item_box{
+    position: relative;
+    .icon_num{
+        position: absolute;
+        right: -10px;
+        top: -10px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        color: #fff;
+        background: var(--theme);
+    }
 }
 .features_box {
   margin: 0 30px;

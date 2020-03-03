@@ -4,10 +4,12 @@
             <div class="header_right dfc" slot="header-right" @click="$router.push({path:'/order/editAddress'})">新建地址</div>
         </header-box>
         <div class="box pdlr30" v-for="(item,index) in list" :key="index">
-            <div class="name">
-                <span class="fs32 b mgr30">{{item.consignee}}</span><span>{{item.phone}}</span>
+            <div @click="chooseAddr(item)">
+                <div class="name">
+                    <span class="fs32 b mgr30">{{item.consignee}}</span><span>{{item.phone}}</span>
+                </div>
+                <div class="bor_bottom lh15 fs28 pdb30">{{item.province+item.city+item.district+item.detail}}</div>
             </div>
-            <div class="bor_bottom lh15 fs28 pdb30">{{item.province+item.city+item.district+item.detail}}</div>
             <div class="set_box dfb">
                 <div class="dfc" @click="setDefault(item.id)">
                     <img class="img40 mgr20" v-if="item.status=='默认'" src="../../image/c_ic_circle_s@2x.png" alt="">
@@ -34,16 +36,26 @@ export default {
     data(){
         return{
             list:'',
+            type:'',
         }
     },
     created(){
         this.getList()
+        if(this.$route.query.type){
+            this.type = this.$route.query.type
+        }
     },
     methods:{
         async getList(){
             let res = await findByDistributorId()
             if(res.code==200 && res.data.length){
                 this.list = res.data
+            }
+        },
+        chooseAddr(item){
+            if(this.type==1){
+                sessionStorage.setItem('addr',JSON.stringify(item))
+                this.$router.back()
             }
         },
         async setDefault(id){

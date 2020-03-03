@@ -32,25 +32,18 @@
             </div>
         </div>
         <van-list class="item_list ">
-            <div class="item_info bg_FFF dfb" v-for="item in 9" :key="item" @click="$router.push({path:'/my/returnOrderDetail'})">
-                <div class="dfb fdc item_l">
-                    <span class="fs32 b c_33292B    ">退货单</span>
-                    <span class="fs22 c_666">2015-50-45</span>
+            <div class="item_info bg_FFF dfb" v-for="item in list" :key="item" @click="$router.push({path:'/my/returnOrderDetail'})">
+                <div class="df ais-start jct-around fdc item_l">
+                    <span class="fs32 b c_33292B    ">{{item.type}}</span>
+                    <span class="fs22 c_666">{{item.createAt}}</span>
                 </div>
-                <div class="fs32 b c_33292B">+100</div>
+                <div class="fs32 b c_33292B">+{{item.addAmount}}</div>
             </div>
         </van-list>
-        <!-- <div class="billing_record bg_FFF c_33292B dfc">
-            <div class="dfb fdc flex billing">
-                <span class="tc fs32 b">我的账单</span>
-                <span class="fs28">每月10号还款</span>
-            </div>
-            <span class="flex tc fs32 b record">账户流水</span>
-        </div>-->
         <van-calendar v-model="showDate" type="range" :show-confirm="false" @confirm="confirmDate" color="#DF0134" 
         :min-date="minDate" :max-date="maxDate" :default-date="[startDate,endDate]" />
         <van-popup v-model="showType" position="bottom">
-            <van-picker :columns="orderTypeList" :default-index="0" show-toolbar @confirm="confirmType" />
+            <van-picker :columns="orderTypeList" :default-index="0" show-toolbar @confirm="confirmType" @cancel="showType=false" />
         </van-popup>
     </div>
 </template>
@@ -61,16 +54,16 @@ export default {
         return{
             showDate:false,
             showType:false,
-            startDay:`${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`,
-            endDay:`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
-            startDate:new Date(new Date().getFullYear(), new Date().getMonth()-1, new Date().getDate()),
-            endDate:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            minDate: new Date(2010, 0, 1),
+            startDay:'',
+            endDay:'',
+            startDate:'',
+            endDate:'',
+            minDate: new Date(2019, 0, 1),
             maxDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             orderTypeList: ['全部', '退货单', '订单', '补充发货单', '取消订单', '申请提现', '提现失败'],
             orderType:0,
-
             amount:0,
+            list:[],
         }
     },
     created(){
@@ -99,9 +92,14 @@ export default {
             this.orderType = index
         },
         async getInfo(){
-            let res = await MyAccount()
+            let res = await MyAccount({
+                dateFrom:this.startDay,
+                dateTo:this.endDay,
+                type:this.orderTypeList[this.orderType],
+            })
             if(res.code==200){
                 this.amount = res.data.amount
+                this.list = res.data.list
             }
         }
     }

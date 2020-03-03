@@ -61,10 +61,10 @@ export default {
                 this.info = res.data
             }
         },
-        async afterRead(data){
-            console.log(data)
-            console.log(data.file)
-            let res = await upload({file:data})
+        async afterRead(tt){
+            console.log(tt)
+            console.log(tt.file)
+            let res = await upload({file:tt})
             if(res.code==200){
                 console.log('success')
             }

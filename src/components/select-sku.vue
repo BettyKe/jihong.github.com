@@ -19,7 +19,7 @@
                                 <span>￥{{product.unitPrice}}/盆</span>
                                 <span>一箱{{product.unitQuantity}}盆</span>
                             </div>
-                            <span>已选：{{product.num}}箱</span>
+                            <span>已选：{{productNum}}箱</span>
                         </div>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                     <span>购买数量（箱）</span>
                     <div class="num_box dfc">
                         <img class="img32" src="../image/ic_add_1@2x.png" alt="" @click="minusNum">
-                        <input type="number" v-model="product.num">
+                        <input type="number" v-model="productNum">
                         <img class="img32" src="../image/ic_add@2x.png" alt="" @click="addNum">
                     </div>
                 </div>
@@ -63,10 +63,6 @@
 import {addProduct,findAllValueAddProductForAPP} from '@/js/api'
 export default {
   props: {
-    goodsId:{
-      type:String/Number,
-      default:''
-    },
     showSpec: {
       type: Boolean,
       default: false
@@ -78,7 +74,8 @@ export default {
   },
   data(){
     return{
-      serviceList:[]
+      serviceList:[],
+      productNum:1,
     }
   },
   watch:{
@@ -104,13 +101,13 @@ export default {
       this.$emit("toggleShow", flag);
     },
     minusNum(){
-      if(this.$parent.product.num<=1){
+      if(this.productNum<=1){
         return
       }
-      this.$parent.product.num--
+      this.productNum--
     },
     addNum(){
-      this.$parent.product.num++
+      this.productNum++
     },
     minusService(index){
       if(this.serviceList[index].num<=1){
@@ -123,15 +120,15 @@ export default {
     },
     async addCart(){
       let obj = {productDTOList:[{
-        productId:this.goodsId,
-        productNum:this.product.num,
+        productId:this.product.id,
+        productNum:this.productNum,
       }]}
       this.serviceList.map(v=>{
         if(v.select){
           obj.productDTOList.push({
             productId:v.productId,
             productNum:v.num,
-            parentId:this.id
+            parentId:this.product.id
           })
         }
       })

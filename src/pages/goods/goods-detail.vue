@@ -73,7 +73,7 @@
             <!-- <div class="add_btn flex dfc">立即抢购</div> -->
         </div>
         <!-- 加入购物车弹框 -->
-        <select-sku :goodsId="goodsId" :showSpec.sync="showSpec" :product="detailInfo.product" @toggleShow="toggleSpec"></select-sku>
+        <select-sku :showSpec.sync="showSpec" :product="detailInfo.product" @toggleShow="toggleSpec"></select-sku>
         <!-- 分享 -->
         <van-popup v-model="showShare" position="bottom" round>
             <div class="share_box">
@@ -102,7 +102,7 @@
 </template>
 <script>
 import selectSku from '@/components/select-sku'
-import {findDetailByIdApp,addProduct,addToCollect,findAllValueAddProductForAPP} from '@/js/api'
+import {findDetailByIdApp,addProduct,addToCollect,findAllValueAddProductForAPP,deleteBatchProduct} from '@/js/api'
 export default {
     components:{
         selectSku,
@@ -136,16 +136,23 @@ export default {
             console.log(res)
             if (res.code == 200) {
                 this.detailInfo = res.data
-                this.detailInfo.product.num = 1
-                this.detailInfo.product.image = this.ImageTool.initImage(this.detailInfo.jpgUrl)[0]
+                // this.detailInfo.product.num = 1
             }
         },
         //收藏
         async collect(){
             let id = this.detailInfo.product.id
-            let res = await addToCollect({connectionId:id})
+            let res = await addToCollect({connectionId:[id]})
             if(res.code==200){
-
+                this.$toast('收藏成功')
+            }
+        },
+        //取消收藏
+        async cancelCollect(){
+            let id = this.detailInfo.product.id
+            let res = await deleteBatchProduct({id:[id]})
+            if(res.code==200){
+                this.$toast('取消收藏成功')
             }
         },
     }

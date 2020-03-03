@@ -11,21 +11,21 @@
         </div>
         <div class="header-replace"></div>
         <div v-if="type==0" class="goods_list br20 bg_FFF">
-            <div class="goods_item dfb pd30" v-for="item in 4" :key="item" @click="$router.push('/goods/goodsDetail')">
+            <div class="goods_item dfb pd30" v-for="(item,index) in goodsList" :key="index" @click="$router.push('/goods/goodsDetail')">
                 <img v-if="edit" class="img40 mgr30" src="../../image/e_ic_circle_d@2x.png" alt="">
                 <img class="img140 br20 mgr20" src="../../image/default.png" alt="">
                 <div class="flex df ais-start jct-between fdc">
-                    <div class="to-line2 lh15 fs28 mgb20">特大号落地紫砂陶瓷花盆红砂紫砂花瓷花盆瓷花</div>
-                    <div class="theme">￥<span class="fs30">120.00</span>/盆</div>
-                    <div class="c_999 fs20 dfs pdt10"><img class="img28" src="../../image/c_ic_article@2x.png" alt="">供应商名称供应商</div>
+                    <div class="to-line2 lh15 fs28 mgb20">{{item.plantName}}</div>
+                    <div class="theme">￥<span class="fs30">{{item.unitPrice}}</span>/{{item.unitName}}</div>
+                    <div class="c_999 fs20 dfs pdt10"><img class="img28" src="../../image/c_ic_article@2x.png" alt="">{{item.providerName}}</div>
                 </div>
             </div>
         </div>
         <div v-else class="store_list br20 bg_FFF">
-            <div class="store_item dfs pd30" v-for="item in 4" :key="item" @click="$router.push('/goods/storeIndex')">
+            <div class="store_item dfs pd30" v-for="(item,index) in storeList" :key="index" @click="$router.push('/goods/storeIndex')">
                 <img v-if="edit" class="img40" src="../../image/e_ic_circle_d@2x.png" alt="">
-                <img class="store_img" src="../../image/default.png" alt="">
-                <span class="fs28 flex to-line">吉祥花草园艺经营店</span>
+                <img class="store_img" :src="ImageTool.getImg(item.imgUrl)" alt="">
+                <span class="fs28 flex to-line">{{item.providerName}}</span>
             </div>
         </div>
         <div v-if="edit" class="fix_bottom dfb">
@@ -63,7 +63,7 @@ export default {
         async getStoreList(){
             let res = await showConnectionProvider()
             if(res.code==200 && res.data.length){
-                this.goodsList = res.data
+                this.storeList = res.data
             }
         },
     }

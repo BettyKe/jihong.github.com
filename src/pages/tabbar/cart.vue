@@ -126,23 +126,30 @@ export default {
             console.log(this.cartList)
             this.cartList.map(v=>{
                 let flag = true
+                let storeNum = 0
+                let storeSum = 0.00
                 v.vitDTOList.map(t=>{
                     if(t.select){
                         selectId.push(t.productDTO.productId)
-                        sumNum++;
-                        sum += parseFloat(t.productDTO.totalAmount)*t.productDTO.unitQuantity
-                        console.log(sum,t.productDTO.totalAmount,t.productDTO.unitQuantity)
+                        
+                        let price = parseFloat(t.productDTO.totalAmount)*t.productDTO.unitQuantity
                         if(t.childrenProductDTOList.length){
                             t.childrenProductDTOList.map(m=>{
-                                sum += parseFloat(m.totalAmount)*m.unitQuantity
+                                price += parseFloat(m.totalAmount)*m.unitQuantity
                             })
                         }
+                        sumNum++;
+                        sum += price
+                        storeNum++;
+                        storeSum += price
                     }else{
                         allflag = false
                         flag = false
                     }
                     v.select = flag
                 })
+                v.storeNum = storeNum
+                v.storeSum = storeSum.toFixed(2)
             })
             this.allSelect = allflag
             this.sum = sum.toFixed(2)
@@ -194,7 +201,46 @@ export default {
         },
         // 结算
         checkout(){
-
+            if(!this.selectId.length){
+                this.$toast('请选择商品')
+                return
+            }
+            let list = Object.assign([],this.cartList)
+            let nowList = []
+            list.map((v,index)=>{
+                let store = false
+                if(v.select){
+                    nowList.push(v)
+                }else{
+                    let flag = false
+                    v.vitDTOList.map((t,i)=>{
+                        if(t.select){
+                            flag = true
+                        }
+                    })
+                    if(flag){
+                        let item = Object.assign({},v)
+                        item.vitDTOList = []
+                        v.vitDTOList.map((t,i)=>{
+                            if(t.select){
+                                item.vitDTOList.push(t)
+                            }
+                        })
+                        nowList.push(item)        
+                    }  
+                }
+            })
+            console.log(nowList)
+            let obj = {
+                cartList:nowList,
+                sum:this.sum,
+                sumNum:this.sumNum,
+            }
+            sessionStorage.setItem('checkout',JSON.stringify(obj))
+            sessionStorage.getItem('checkout')
+            sessionStorage.getItem('addr')
+            sessionStorage.getItem('logistics')
+            this.$router.push('/order/checkout')
         },
         // 移入收藏
         async addCollect(){
@@ -353,8 +399,8 @@ export default {
       margin: 30px 0;
     }
     .service_list {
-      max-height: 350px;
-      overflow-y: scroll;
+    //   max-height: 350px;
+    //   overflow-y: scroll;
       .item {
         margin: 0 0 30px 30px;
         padding: 0;

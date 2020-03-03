@@ -25,12 +25,21 @@
                 <img class="img32" src="../../image/b_ic_back@2x.png" alt="">
             </div>
         </div>
-        <div class="btn_red">退出登录</div>
+        <div class="btn_red" @click="logout">退出登录</div>
     </div>
 </template>
 <script>
 export default {
-
+    methods:{
+        logout(){
+            this.$dialog.confirm({
+                message:'确认退出登录吗？',
+            }).then(()=>{
+                localStorage.removeItem('token')
+                this.$router.replace('/login')
+            })
+        },
+    },
 }
 </script>
 <style lang="less" scoped>

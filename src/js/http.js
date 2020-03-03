@@ -226,6 +226,7 @@ export default {
     )
   },
   download (url, data, loading) {
+    console.log(data)
     return axios({
       method: 'post',
       url,

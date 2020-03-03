@@ -63,6 +63,9 @@ export const findAllValueAddProductForAPP = (data, loadingOptions) => http.post(
 export const selectGrade  = (data, loadingOptions) => http.post('/product/selectGrade', data, loadingOptions)
 //选择供应商
 export const selectProvider = (data, loadingOptions) => http.post('/product/selectProvider', data, loadingOptions)
+//筛选
+export const productFilter = (data, loadingOptions) => http.post('/product/filter', data, loadingOptions)
+
 
 //个人中心
 

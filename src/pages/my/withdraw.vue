@@ -30,20 +30,21 @@
     </div>
 </template>
 <script>
-import { Dialog } from 'vant';
+import { getBalance } from '@/js/api';
 export default {
-    components: {
-        [Dialog.Component.name]: Dialog.Component
+    created(){
+
     },
     methods:{
+        async getInfo(){
+            let res = await getBalance()
+            if(res.code==200){
+
+            }
+        },
         submit(){
-            let that = this
-            Dialog.confirm({
-                title: '标题',
-                message: '弹窗内容',
-            }).then(()=>{
-                this.$router.back()
-            })
+
+            this.$toast('提现成功')
         },
     }
 }
