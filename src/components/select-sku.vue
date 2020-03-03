@@ -69,7 +69,9 @@ export default {
     },
     product:{
       type:Object,
-      default:{}
+      default: function () {
+        return {}
+      }
     },
   },
   data(){
@@ -78,13 +80,14 @@ export default {
       productNum:1,
     }
   },
-  watch:{
-    serviceList(){
-        
+  watch: {
+    product() {
+      this.allNum = 1
     }
   },
   created(){
     this.getService()
+    console.log(this.product)
   },
   methods: {
     async getService(){
@@ -92,7 +95,7 @@ export default {
       if(ret.code==200 && ret.data.length){
           ret.data.map(v=>{
               v.select = false
-              v.num = 1
+              v.num = 0
           })
           this.serviceList = ret.data
       }

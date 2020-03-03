@@ -306,7 +306,7 @@ let routes = [
 ]
 let router = new Router({routes});
 router.beforeEach((to, from, next) => {
-  console.log(from.path,'to', to.path)
+  console.log(from,'to', to)
   next();
 })
 export default router;

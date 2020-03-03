@@ -3,6 +3,7 @@ import Vue from 'vue'
 import router from '../router'
 import axios from 'axios'
 import store from '../store/index'
+import qs from 'qs'
 /** 请求Loading方法 */
 let requestLoading
 // 声明一个对象用于存储请求个数
@@ -54,7 +55,7 @@ axios.interceptors.request.use(config => {
   
   // 判断是否是form表单提交
   if (config.params && config.params.isForm) {
-    config.data = config.data
+    config.data = qs.stringify(config.data)
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
   } else {
     config.headers['Content-Type'] = 'application/json; charset=utf-8'

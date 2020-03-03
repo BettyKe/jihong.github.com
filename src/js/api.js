@@ -104,7 +104,7 @@ export const deleteBatchProduct = (data, loadingOptions) => http.post('/distribu
 //修改密码
 export const updatePassword = (data, loadingOptions) => http.post('/distributor/updatePassword', data, loadingOptions)
 //个人资料
-export const personaInformation = (data, loadingOptions) => http.post('/distributor/personaInformation', data, loadingOptions)
+export const personaInformation = (data, loadingOptions) => http.form('/distributor/personaInformation', data, loadingOptions)
 //订单汇总
 export const findItemForDistributor = (data, loadingOptions) => http.post('/item/findItemForDistributor', data, loadingOptions)
 //订单汇总-筛选
