@@ -73,7 +73,7 @@
             <!-- <div class="add_btn flex dfc">立即抢购</div> -->
         </div>
         <!-- 加入购物车弹框 -->
-        <select-sku :goodsId="goodsId" :showSpec.sync="showSpec" :product="detailInfo.product" @toggleShow="toggleSpec"></select-sku>
+        <select-sku :goodsId="goodsId" :showSpec.sync="showSpec" :product.sync="detailInfo.product" @toggleShow="toggleSpec"></select-sku>
         <!-- 分享 -->
         <van-popup v-model="showShare" position="bottom" round>
             <div class="share_box">

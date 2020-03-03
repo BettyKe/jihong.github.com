@@ -12,6 +12,7 @@ export default {
     },
     watch: {//使用watch 监听$router的变化
     $route(to, from) {
+      console.log(to, from)
         if(to.path == '/index' || to.path == '/classify' || to.path == '/cart' || to.path == '/my') {
           this.transitionName = ''
         } else {

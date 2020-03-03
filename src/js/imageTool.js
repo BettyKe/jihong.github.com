@@ -11,7 +11,11 @@ function ImageTool () {
         })
     }
     this.getIndexImg = function (imageStr, index) {
+        if (!imageStr) {
+            return
+        }
         let images = this.initImage(imageStr)
+        console.log(images)
         return images[index]
     }
     this.getImg = function (image) {

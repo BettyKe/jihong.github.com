@@ -27,7 +27,7 @@
                     <span>购买数量（箱）</span>
                     <div class="num_box dfc">
                         <img class="img32" src="../image/ic_add_1@2x.png" alt="" @click="minusNum">
-                        <input type="number" v-model="product.num">
+                        <input type="number" v-model="allNum">
                         <img class="img32" src="../image/ic_add@2x.png" alt="" @click="addNum">
                     </div>
                 </div>
@@ -73,21 +73,25 @@ export default {
     },
     product:{
       type:Object,
-      default:{}
+      default: function () {
+        return {}
+      }
     },
   },
   data(){
     return{
-      serviceList:[]
+      serviceList:[],
+      allNum: 1
     }
   },
-  watch:{
-    serviceList(){
-        
+  watch: {
+    product() {
+      this.allNum = 1
     }
   },
   created(){
     this.getService()
+    console.log(this.product)
   },
   methods: {
     async getService(){
@@ -95,7 +99,7 @@ export default {
       if(ret.code==200 && ret.data.length){
           ret.data.map(v=>{
               v.select = false
-              v.num = 1
+              v.num = 0
           })
           this.serviceList = ret.data
       }
@@ -104,13 +108,13 @@ export default {
       this.$emit("toggleShow", flag);
     },
     minusNum(){
-      if(this.$parent.product.num<=1){
+      if(this.allNum<=1){
         return
       }
-      this.$parent.product.num--
+      this.allNum --
     },
     addNum(){
-      this.$parent.product.num++
+      this.allNum ++
     },
     minusService(index){
       if(this.serviceList[index].num<=1){

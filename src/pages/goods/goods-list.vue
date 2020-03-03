@@ -98,7 +98,6 @@ export default {
             this.showSpec = flag
         },
         showBox(item){
-            console.log(item)
             this.goodsId = item.providerId
             this.product = item.product
             this.product.num = 1
