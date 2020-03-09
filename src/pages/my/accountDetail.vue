@@ -1,20 +1,39 @@
 <template>
     <div class="container">
-        <header-box title="提现明细"></header-box>
-        <div class="list">
-            <div class="item dfb" v-for="item in 4" :key="item">
-                <div>
-                    <div class="fs32 b mgb20">充值</div>
-                    <div class="c_666 fs22">2019-01-01  15:00</div>
-                </div>
-                <div class="fs32 b">+1000.00</div>
-            </div>
+        <header-box title="提现详情"></header-box>
+        <div class="box bg_FFF">
+            <div class="dfs">提现金额：¥{{info.amount}}</div>
+            <div class="dfs">提现时间：{{info.createAt}}</div>
+            <div class="dfs">提现状态：{{info.condition}}</div>
+        </div>
+        <div class="box bg_FFF mgt20">
+            <div class="dfs bor_bottom b fs32">提现银行卡信息</div>
+            <div class="dfs bor_bottom">开户人<span>{{info.bankName}}</span></div>
+            <div class="dfs bor_bottom">开户银行<span>{{info.bankAccountName}}</span></div>
+            <div class="dfs ">银行卡号<span>{{info.bankAccountNumber}}</span></div>
         </div>
     </div>
 </template>
 <script>
+import {withdrawDetailOfOne} from '@/js/api';
 export default {
-
+    data(){
+        return{
+            info:''
+        }
+    },
+    created(){
+        let id = this.$route.query.id
+        this.getInfo(id)
+    },
+    methods:{
+        async getInfo(id){
+            let res = await withdrawDetailOfOne({withdrawId:id})
+            if(res.code==200){
+                this.info = res.data
+            }
+        }
+    }
 }
 </script>
 <style lang="less" scoped>
@@ -22,13 +41,16 @@ export default {
     min-height: 100vh;
     background: #F7F4F8;
     box-sizing: border-box;
+    font-size: 28px;
 }
-.item{
-    background: #fff;
-    border-bottom: 1px solid #F0F0F0;
-    padding: 30px;
+.box{
+    padding: 10px 30px;
 }
-.item:last-of-type{
-    border-bottom: none;
+.box div{
+    height: 80px;
+    span{
+        color: #666;
+        margin-left: 30px;
+    }
 }
 </style>

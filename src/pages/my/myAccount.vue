@@ -31,13 +31,14 @@
                 <img class="img32" src="../../image/f_ic_more@2x.png" />
             </div>
         </div>
-        <van-list class="item_list ">
-            <div class="item_info bg_FFF dfb" v-for="item in list" :key="item" @click="$router.push({path:'/my/returnOrderDetail'})">
+        <van-list class="item_list" v-model="loading" :finished="finished" finished-text="没有更多了" @load="toLoad">
+            <div class="item_info bg_FFF dfb" v-for="(item,index) in list" :key="index" @click="$router.push({path:'/my/returnOrderDetail'})">
                 <div class="df ais-start jct-around fdc item_l">
                     <span class="fs32 b c_33292B    ">{{item.type}}</span>
                     <span class="fs22 c_666">{{item.createAt}}</span>
                 </div>
-                <div class="fs32 b c_33292B">+{{item.addAmount}}</div>
+                <div class="fs32 b c_33292B" v-if="item.addAmount">+{{item.addAmount}}</div>
+                <div class="fs32 b c_33292B" v-if="item.reduceAmount">{{item.reduceAmount}}</div>
             </div>
         </van-list>
         <van-calendar v-model="showDate" type="range" :show-confirm="false" @confirm="confirmDate" color="#DF0134" 
@@ -48,6 +49,7 @@
     </div>
 </template>
 <script>
+import dateFormat from 'dateformat';
 import {MyAccount} from '@/js/api'
 export default {
     data(){
@@ -58,12 +60,15 @@ export default {
             endDay:'',
             startDate:'',
             endDate:'',
-            minDate: new Date(2019, 0, 1),
+            minDate: new Date(2020, 0, 1),
             maxDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             orderTypeList: ['全部', '退货单', '订单', '补充发货单', '取消订单', '申请提现', '提现失败'],
             orderType:0,
             amount:0,
             list:[],
+            loading:false,
+            finished:false,
+            pageNumber:1,
         }
     },
     created(){
@@ -74,9 +79,15 @@ export default {
             if(type==1){
                 return new Date(date.getFullYear(), date.getMonth() ,date.getDate());
             }else{
-                return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+                return `${date.getFullYear()}-${this.getzf(date.getMonth() + 1)}-${this.getzf(date.getDate())}`;
             }
-            
+        },
+        //补0操作
+        getzf(num){
+            if(parseInt(num) < 10){
+            num = '0'+num;
+            }
+            return num;
         },
         confirmDate(date){
             const [start, end] = date;
@@ -86,21 +97,44 @@ export default {
             this.startDate = this.formatDate(start,1);
             this.endDate = this.formatDate(end,1);
             console.log(this.date)
+            this.getInfo()
         },
         confirmType(value, index){
             this.showType = false
             this.orderType = index
+            this.getInfo()
         },
-        async getInfo(){
+        async getInfo(page=1){
+            let time = dateFormat(new Date(), " HH:MM:ss")
             let res = await MyAccount({
-                dateFrom:this.startDay,
-                dateTo:this.endDay,
-                type:this.orderTypeList[this.orderType],
+                dateFrom:this.startDay?(this.startDay+time) : '',
+                dateTo:this.endDay?(this.endDay+time) : '',
+                type:this.orderType==0?'':this.orderTypeList[this.orderType],
+                pageable: {
+                    page: page
+                }
             })
             if(res.code==200){
                 this.amount = res.data.amount
-                this.list = res.data.list
+
+                this.loading = false
+                this.pageNumber = page
+                if(page==1){
+                    this.finished = false
+                    this.list = res.data.list
+                }else{
+                    this.list.push(...res.data.list)
+                }
+                console.log(res.data.list.length)
+                if(!res.data.list.length){
+                    console.log('ff',this.finished)
+                    this.finished = true
+                }
             }
+        },
+        toLoad(){
+            let page = this.pageNumber +1
+            this.getInfo(page)
         }
     }
 };

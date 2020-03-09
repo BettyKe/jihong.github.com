@@ -36,7 +36,7 @@
                     <div class="flex">
                         <div class="to-line2 lh2 fs28 mgb20">{{items.productDTO.productTitle}}</div>
                         <div class="dfb">
-                            <div class="theme">¥<span class="fs30">{{items.productDTO.totalAmount}}</span>/盆</div>
+                            <div class="theme">¥<span class="fs30">{{items.productDTO.unitPrice}}</span>/盆</div>
                             <div class="c_999">x{{items.productDTO.unitQuantity}}</div>
                         </div>
                     </div>
@@ -62,11 +62,11 @@
             <div class="dfb"><span>发货单编号</span><span>{{info.id}}</span></div>
             <div class="dfb" v-if="info.createAt"><span>创建时间</span><span>{{info.createAt}}</span></div>
             <div class="dfb" v-if="info.payAt"><span>支付时间</span><span>{{info.payAt}}</span></div>
-            <div class="dfb"><span>授信时间</span><span>2019-06-04 15:00:23</span></div>
+            <!-- <div class="dfb"><span>授信时间</span><span>2019-06-04 15:00:23</span></div> -->
         </div>
         <div class="btn_box df ais jct-end">
             <span class="cf dfc bg_theme"  @click="$router.push({path:`/order/pay?orderId=${info.id}`})">支付</span>
-            <span class="theme dfc bg_FFF">联系客服</span>
+            <span class="theme dfc bg_FFF"><a :href="`tel:${phone}`">联系客服</a></span>
         </div>
     </div>
 </template>
@@ -76,6 +76,7 @@ export default {
     data(){
         return{
             info:'',
+            phone:'',
         }
     },
     created(){
@@ -83,6 +84,7 @@ export default {
         if(id){
             this.getInfo(id)
         }
+        this.phone = sessionStorage.getItem('phone') || ''
     },
     methods:{
         async getInfo(id){

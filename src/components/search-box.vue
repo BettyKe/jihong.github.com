@@ -8,7 +8,7 @@
                 <input v-model="keyword" @keyup.enter="search" placeholder="商品名称、供应商" />
                 <img @click="close" v-if="keyword" class="img30" src="../image/c_ic_close_1@2x.png" />
             </div>
-            <span class="flex fs28 c_33292B" @click="search">搜索</span>
+            <span class="flex fs28 c_33292B" @click="search">{{storeId?'搜本店':'搜索'}}</span>
         </div>
     </div>
 </template>
@@ -17,6 +17,10 @@ export default {
     props:{
         keyword:{
             type:String,
+            default:'',
+        },
+        storeId:{
+            type:String/Number,
             default:'',
         }
     },

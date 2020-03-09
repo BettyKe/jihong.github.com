@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <search-box @search="search" @close="keyword=''"></search-box>
+        <search-box @search="search" @close="keyword=''" :storeId="storeId"></search-box>
         <div class="dfb fs28 title" v-if="hotList.length">
             <span class="c_33292B">历史搜索</span>
             <span class="c_999" @click="clear">清空</span>
@@ -23,12 +23,14 @@ export default {
     data() {
         return {
             keyword: '',
-            hotList: []
+            hotList: [],
+            storeId:'',
         }
     },
     created() {
         let str = localStorage.getItem('keywords') || ''
         this.hotList = str?str.split(','):[]
+        this.storeId = this.$route.query.storeId || ''
     },
     methods: {
         search(keyword) {
@@ -39,7 +41,7 @@ export default {
                 console.log(str)
                 localStorage.setItem('keywords',str)
             }
-            this.$router.push({path: `/goods/goodsList?keyword=${keyword}`})
+            this.$router.push({path: `/goods/goodsList?keyword=${keyword}&storeId=${storeId}`})
         },
         clear(){
             this.hotList = []

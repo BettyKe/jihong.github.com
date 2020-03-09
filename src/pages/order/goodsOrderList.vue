@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <header-box title="订单汇总">
-            <div class="header_right dfc" slot="header-right">
+            <div class="header_right dfc" slot="header-right" @click="showFilter=true">
                 筛选
                 <img class="img32" src="../../image/c_ic_screen@2x.png" alt="">
             </div>
@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="c_999">x{{item.productDTO.quantity}}</div>
                             </div>
-                            <div class="tr mgt20" v-if="tab!=1">实际发货数量：<span class="theme">{{item.productDTO.quantity}}</span></div>
+                            <div class="tr mgt20" v-if="tab!=1">实际发货数量：<span class="theme">{{item.productDTO.actualDeliveryQuantity}}</span></div>
                         </div>
                     </div>
                     <div class="btn_box df ais jct-end" v-show="tab==2">
@@ -65,10 +65,51 @@
                 <span @click="confirm">确认收货</span>
             </div>
         </div>
+        <!-- 筛选 -->
+        <van-popup v-model="showFilter" position="right">
+                <div class="dialog_content bg_FFF">
+                    <div class="sku_box">
+                        <div class="dialog_title dfb">
+                            <span class="fs28 c_33292B b">支付类型</span>
+                        </div>
+                        <div class="sku_arr df ct-start fw">
+                            <span :class="['sku_item bg_F5F5F5 fs24 dfc fdc', type==0 ? 'active cf' : 'c_33292B']" @click="type=0">全部</span>
+                            <span :class="['sku_item bg_F5F5F5 fs24 dfc fdc', type==1 ? 'active cf' : 'c_33292B']" @click="type=1">已支付</span>
+                            <span :class="['sku_item bg_F5F5F5 fs24 dfc fdc', type==2 ? 'active cf' : 'c_33292B']" @click="type=2">已授信</span>
+                        </div>
+                    </div>
+                    <div class="price_box">
+                        <div class="price_title fs28 c_33292B b">下单时间</div>
+                        <div @click="showDate=true">
+                        <div class="time_box dfs">
+                            <span>开始时间</span>
+                            <div class="input_box dfc flex bg_F5F5F5">
+                              <input v-model="startDay" type="text" class=" flex" />
+                              <img class="img26 mgr10" src="../../image/c_ic_more_next@2x.png" alt="">
+                            </div>
+                        </div>
+                        <div class="time_box dfs mgt20">
+                            <span>结束时间</span>
+                            <div class="input_box dfc flex bg_F5F5F5">
+                              <input v-model="endDay" type="text" class=" flex" />
+                              <img class="img26 mgr10" src="../../image/c_ic_more_next@2x.png" alt="">
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="footer_box dfb">
+                        <div class="fs28 c_33292B flex dfc fdc" @click="reset">重置</div>
+                        <div class="fs28 cf flex dfc fdc" @click="submit">完成</div>
+                    </div>
+                </div>
+        </van-popup>
+        <van-calendar v-model="showDate" type="range" :show-confirm="false" @confirm="confirmDate" color="#DF0134" 
+        :min-date="minDate" :max-date="maxDate" :default-date="[startDate,endDate]" />
     </div>
 </template>
 <script>
-import { findItemForDistributor,confirmReceive } from "@/js/api";
+import dateFormat from 'dateformat';
+import { findItemForDistributorChoose,confirmReceive } from "@/js/api";
 export default {
   data() {
     return {
@@ -78,6 +119,16 @@ export default {
       loading: false,
       finished: false,
       allSelect: false,
+
+      showFilter:false,
+      startDay:'',
+      endDay:'',
+      type:0,
+      showDate:false,
+      minDate: new Date(2020, 0, 1),
+      maxDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+      startDate:'',
+      endDate:'',
     };
   },
   created() {
@@ -143,7 +194,7 @@ export default {
         }
     },
     async getList(page = 1) {
-      let status = "";
+      let status = "",payStatus = "";
       if (this.tab == 1) {
         status = "备货中";
       } else if (this.tab == 2) {
@@ -151,8 +202,19 @@ export default {
       } else if (this.tab == 3) {
         status = "已完成";
       }
-      let res = await findItemForDistributor({
+      if (this.type == 0) {
+        payStatus = "全部";
+      } else if (this.type == 1) {
+        payStatus = "已支付";
+      } else if (this.type == 2) {
+        payStatus = "已授信";
+      }
+      let time = dateFormat(new Date(), " HH:MM:ss")
+      let res = await findItemForDistributorChoose({
         status,
+        payStatus,
+        startAt:this.startDay?(this.startDay+time):'',
+        endAt:this.endDay?(this.endDay+time):'',
         pageable: {
           page: page
         }
@@ -166,6 +228,7 @@ export default {
             })
         }
         if (page == 1) {
+          this.finished = false;
           this.list = res.data;
         } else {
           this.list.push(...res.data);
@@ -178,7 +241,43 @@ export default {
     toLoad() {
       let page = this.pageNumber + 1;
       this.getList(page);
-    }
+    },
+
+    confirmDate(date){
+        const [start, end] = date;
+        this.showDate = false;
+        this.startDay = this.formatDate(start);
+        this.endDay = this.formatDate(end)
+        this.startDate = this.formatDate(start,1);
+        this.endDate = this.formatDate(end,1);
+        console.log(this.date)
+        this.getList()
+    },
+    formatDate(date,type) {
+        if(type==1){
+            return new Date(date.getFullYear(), date.getMonth() ,date.getDate());
+        }else{
+            return `${date.getFullYear()}-${this.getzf(date.getMonth() + 1)}-${this.getzf(date.getDate())}`;
+        }
+    },
+    //补0操作
+    getzf(num){
+        if(parseInt(num) < 10){
+        num = '0'+num;
+        }
+        return num;
+    },
+
+    reset(){
+      this.type = ''
+      this.startDay = ''
+      this.endDay = ''
+      this.startDate = ''
+      this.endDate = ''
+    },
+    submit(){
+      
+    },
   }
 };
 </script>
@@ -274,4 +373,75 @@ export default {
     }
   }
 }
+    .dialog_content{
+        width: 614px;
+        height: 100vh;
+        overflow: scroll;
+        box-sizing: border-box;
+        z-index: 90;
+    }
+    .dialog_title{
+        padding: 0 30px;
+        margin: 34px 0;
+    }
+    .sku_arr{
+        padding: 0 25px 0 31px;
+    }
+    .h180{
+        height: 180px;
+    }
+    .sku_item{
+        display: inline-flex;
+        width: 170px;
+        height: 60px;
+        border-radius: 30px;
+        margin-bottom: 30px;
+    }
+    .sku_item.active{
+        background-color: #DF0134;
+    }
+    .sku_item:nth-of-type(3n - 1){
+        margin: 0 24px 30px;
+    }
+    .price_box{
+        margin-top: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 26px 0 29px;
+    }
+    .price_title{
+        margin-bottom: 32px;
+    }
+    .time_box{
+      font-size: 28px;
+      span{
+        margin-right: 20px;
+      }
+      .input_box{
+        height: 60px;
+        border-radius: 30px;
+      }
+        input{
+            // width: 240px;
+            
+            text-align: center;
+            line-height: 60px;
+        }
+    }
+    .footer_box{
+        width: 100%;
+        height: 88px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        div{
+            height: 100%;
+        }
+        div:nth-of-type(1){
+            box-shadow:1px -3px 14px 0px rgba(0, 0, 0, 0.14);
+        }
+        div:nth-of-type(2){
+            background-color: #DF0134;
+        }
+    }
 </style>

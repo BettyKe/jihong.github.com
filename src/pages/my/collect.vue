@@ -11,6 +11,7 @@
         </div>
         <div class="header-replace"></div>
         <div v-if="type==0" class="goods_list br20 bg_FFF">
+            <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="toLoad">
             <div class="goods_item dfb pd30" v-for="(item,index) in goodsList" :key="index" @click="$router.push('/goods/goodsDetail')">
                 <img v-if="edit" class="img40 mgr30" src="../../image/e_ic_circle_d@2x.png" alt="">
                 <img class="img140 br20 mgr20" src="../../image/default.png" alt="">
@@ -20,13 +21,16 @@
                     <div class="c_999 fs20 dfs pdt10"><img class="img28" src="../../image/c_ic_article@2x.png" alt="">{{item.providerName}}</div>
                 </div>
             </div>
+            </van-list>
         </div>
         <div v-else class="store_list br20 bg_FFF">
+            <van-list v-model="loading1" :finished="finished1" finished-text="没有更多了" @load="toLoad1">
             <div class="store_item dfs pd30" v-for="(item,index) in storeList" :key="index" @click="$router.push('/goods/storeIndex')">
                 <img v-if="edit" class="img40" src="../../image/e_ic_circle_d@2x.png" alt="">
                 <img class="store_img" :src="ImageTool.getImg(item.imgUrl)" alt="">
                 <span class="fs28 flex to-line">{{item.providerName}}</span>
             </div>
+            </van-list>
         </div>
         <div v-if="edit" class="fix_bottom dfb">
             <div class="dfc"><img class="img40 mgr6" src="../../image/e_ic_circle_d@2x.png" alt="">全选</div>
@@ -43,6 +47,12 @@ export default {
             edit:false,
             goodsList:[],
             storeList:[],
+            loading:false,
+            finished:false,
+            pageNumber:1,
+            loading1:false,
+            finished1:false,
+            pageNumber1:1,
         }
     },
     created(){
@@ -54,17 +64,53 @@ export default {
             this.type = type
             this.edit = false
         },
-        async getGoodsList(){
-            let res = await showConnectionProduct()
-            if(res.code==200 && res.data.length){
-                this.goodsList = res.data
+        async getGoodsList(page=1){
+            let res = await showConnectionProduct({
+                pageable:{
+                    page:page
+                }
+            })
+            if(res.code==200){
+                this.loading = false
+                this.pageNumber = page
+                if(page==1){
+                    this.finished = false
+                    this.goodsList = res.data
+                }else{
+                    this.goodsList.push(...res.data)
+                }
+                if(!res.data.length){
+                    this.finished = true
+                }
             }
         },
-        async getStoreList(){
-            let res = await showConnectionProvider()
-            if(res.code==200 && res.data.length){
-                this.storeList = res.data
+        async getStoreList(page=1){
+            let res = await showConnectionProvider({
+                pageable:{
+                    page:page
+                }
+            })
+            if(res.code==200){
+               this.loading1 = false
+                this.pageNumber1 = page
+                if(page==1){
+                    this.finished = false
+                    this.storeList = res.data
+                }else{
+                    this.storeList.push(...res.data)
+                }
+                if(!res.data.length){
+                    this.finished1 = true
+                }
             }
+        },
+        toLoad(){
+            let page = this.pageNumber + 1
+            this.getGoodsList(page)
+        },
+        toLoad1(){
+            let page = this.pageNumber1 + 1
+            this.getStoreList(page)
         },
     }
 }

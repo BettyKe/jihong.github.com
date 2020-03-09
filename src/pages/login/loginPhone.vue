@@ -10,7 +10,7 @@
             <input v-model="code" class="flex fs28" placeholder="请输入验证码" />
             <span class="fs24 theme" @click="getCode">{{times==60?'获取验证码':times+'s'}}</span>
         </div>
-        <div class="btn_red next_box opacity" @click="next">下一步</div>
+        <div class="btn_red next_box" @click="next">下一步</div>
     </div>
 </template>
 <script>
@@ -26,7 +26,7 @@ export default {
     },
     methods:{
         async getCode(){
-            if(this.phone=='' || !this.verifyTel(this.phone)){
+            if(this.phone=='' || !this.utils.verifyTel(this.phone)){
                 this.$toast('请输入正确的手机号码')
                 return;
             }
@@ -48,7 +48,7 @@ export default {
             
         },
         async next(){
-            if(this.phone=='' || !this.verifyTel(this.phone)){
+            if(this.phone=='' || !this.utils.verifyTel(this.phone)){
                 this.$toast('请输入正确的手机号码')
                 return;
             }

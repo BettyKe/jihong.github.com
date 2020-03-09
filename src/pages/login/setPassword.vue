@@ -9,7 +9,7 @@
             <p class="fs28 c_33292B">确认密码</p>
             <input v-model="password2" type="password" class="flex fs28" placeholder="再次输入密码" />
         </div>
-        <div class="btn_red next_box opacity" @click="submit">注册</div>
+        <div class="btn_red next_box" @click="submit">注册</div>
         <div class="protocol dfc fs20">
             <span class="c_999">注册即代表同意</span>
             <span class="b theme">《用户使用协议》</span>

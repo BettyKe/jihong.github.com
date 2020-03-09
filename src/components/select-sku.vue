@@ -95,7 +95,7 @@ export default {
       if(ret.code==200 && ret.data.length){
           ret.data.map(v=>{
               v.select = false
-              v.num = 0
+              v.num = 1
           })
           this.serviceList = ret.data
       }

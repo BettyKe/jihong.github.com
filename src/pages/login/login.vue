@@ -37,19 +37,30 @@
     </div>
 </template>
 <script>
-import {login} from '@/js/api'
+import {login,contactCustomerService} from '@/js/api'
 export default {
     data() {
         return {
             userType: 1,
             phone: '',
-            password: ''
+            password: '',
+            servicePhone:'',
         }
+    },
+    created(){
+        this.getPhone()
     },
     mounted() {
         console.log(this.$store.state.isLogin)
     },
     methods:{
+        async getPhone(){
+            let rex = await contactCustomerService()
+            if(rex.code==200){
+                sessionStorage.setItem('phone',rex.data)
+                this.servicePhone = rex.data
+            }
+        },
         async toLogin(){
             let res = await login({
                 phone:this.phone,

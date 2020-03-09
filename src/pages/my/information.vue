@@ -5,12 +5,12 @@
             <div class="box user_avatar dfb">
                 <span class="fs28 c_33292B">头像</span>
                 <div class="df ais jct-end">
-                    <!-- <form name="imgForm" id="imgForm" enctype="multipart/form-data" action="https://apptest.ji-hong.com.cn/api/attachment/upload" method='post'>
+                    <form name="imgForm" id="imgForm" enctype="multipart/form-data" action="https://app.ji-hong.com.cn/api/attachment/upload" method='post'>
                         <label for="imgLocal">
-                            <input hidden class="input-loc-img"  name="imgLocal" id="imgLocal" type='file' accept="image/*" @change="selectImg" />
+                            <input hidden class="input-loc-img"  name="imgLocal" id="imgLocal" type='file' accept="image/*" @change="selectImg(this)" />
                             <img class="avatar" src="../../image/f_ic_soi_2@2x.png" alt="">
                         </label>
-                    </form> -->
+                    </form>
                     <!-- <img class="avatar" src="../../image/f_ic_soi_2@2x.png" alt=""> -->
                     <van-uploader :after-read="afterRead" max-count="1" >
                         <img class="avatar" src="../../image/f_ic_soi_2@2x.png" alt="">
@@ -64,14 +64,17 @@ export default {
         async afterRead(tt){
             console.log(tt)
             console.log(tt.file)
-            let res = await upload({file:tt})
+            let formData = new FormData();
+            formData.append("file", tt);
+            let res = await upload({file:formData})
             if(res.code==200){
                 console.log('success')
             }
         },
-        selectImg(){
-            let form=document.getElementById('imgForm');
-            form.submit();
+        selectImg(that){
+            console.log(that)
+            // console.log(file)
+            console.log(this.files)
         }
     }
 }

@@ -20,7 +20,7 @@
                     <img class="img36" src="../../image/d_ic_close@2x.png" alt="" @click="$router.back()" >
                 </div>
             </div>
-            <div class="dfb">
+            <div class="dfb" @click="$router.push({path:`/classify/search?storeId=${storeId}`})">
                 <div class="dfs search_box flex">
                     <img class="img40 mgr20" src="../../image/d_ic_grabble_white@2x.png" alt="">
                     <span>搜索商品</span>
@@ -87,12 +87,14 @@
             </div>
             <!-- 全部宝贝 -->
             <div v-show="tabIndex==2" class="tab_box goods">
-              <condition></condition>
+              <condition class="goods_filter" :hasProvider="false" :active="active" :minPrice="minPrice" :maxPrice="maxPrice" @filter="filter" @toggleType="toggleType"></condition>
               <div class="bottom">
                   <scroll :data="allGoodsList" :probeType ="3" :listenScroll="true" class="middle">
+                    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="toLoad">
                       <div class="goods_list fw jct-start df">
                           <goods-item :goodsInfo.sync="item" @toDetail="toGoodsDetail" v-for="(item,index) in allGoodsList" :key="index" class="goods_item"></goods-item>
                       </div>
+                    </van-list>
                   </scroll>
               </div>
             </div>
@@ -143,7 +145,7 @@
 import goodsItem from "@/components/goods-item";
 import condition from '@/components/condition'
 import scroll from '@/components/scroll'
-import {findProductByProviderId,findAllCategoryByProviderId,findProductByCategoryId,addProviderToCollect,providerGet,deleteBatch} from "@/js/api";
+import {findProductByProviderId,findAllCategoryByProviderId,findProductByCategoryId,addProviderToCollect,providerGet,deleteBatch,productFilter} from "@/js/api";
 export default {
   components: {
     goodsItem,
@@ -152,29 +154,49 @@ export default {
   },
   data() {
     return {
-      storeId:114,
+      storeId:'',
       tabIndex: 0,
-      loading: false,
-      finished: false,
       navLeft: 0,
       classifyList: [],
       storeInfo:{},
       goodsList:[],//首页商品列表
-      allGoodsList:[],//全部宝贝商品列表
       indexLoading:false,
       indexFinished:false,
       indexPage:1,
+
+      allGoodsList:[],//全部宝贝商品列表
+      loading: false,
+      finished: false,
+      pageNumber:1,
+
+      active:0,//0综合 1价格降 2价格升
+      providerId:'',
+      gradeId:'',
+      minPrice:'',
+      maxPrice:'',
     };
   },
   created() {
     this.storeId = this.$route.query.id
-    this.getInfo();
-    this.getIndexGoods()
-    this.getAllCategory();
+    this.getInfo()//店铺信息
+    this.getIndexGoods()//店铺首页商品
+    this.getAllCategory()//分类
+    this.getList()//全部宝贝
   },
   methods: {
     toggleTab(index) {
       this.tabIndex = index;
+    },
+    filter(minPrice,maxPrice,providerId,gradeId){
+        this.minPrice = minPrice
+        this.maxPrice = maxPrice
+        // this.providerId = providerId
+        this.gradeId = gradeId
+        this.getList()
+    },
+    toggleType(type){
+        this.active = type
+        this.getList()
     },
     //获取店铺信息
     async getInfo() {
@@ -184,7 +206,7 @@ export default {
       }
       
     },
-    //获取店铺商品列表
+    //首页商品列表
     async getIndexGoods(page=1) {
       let res = await findProductByProviderId({
         id: this.storeId,
@@ -195,30 +217,64 @@ export default {
       if(res.code==200){
         this.indexLoading = false
         this.indexPage = page
-        console.log(page+'load')
         if(page==1){
-          console.log('第一页')
           this.goodsList = res.data
         }else{
-          console.log('其他页')
-          res.data.map(v=>{
-            this.goodsList.push(v)
-          })
-          // this.goodsList.push(...res.data)
+          this.goodsList.push(...res.data)
         }
-        console.log(this.goodsList)
         if(!res.data.length){
           this.indexFinished = true
         }
       }
     },
+
+    //全部宝贝商品列表
+    getList: async function (page=1) {
+        let sort = {desc:['id']}
+        if(this.active==1){
+            sort = {asc:['unit_price']}
+        }else if(this.active==2){
+            sort = {desc:['unit_price']}
+        }
+        let res = await productFilter({
+            "categoryId": '',
+            "providerId": this.storeId,
+            "minPrize": this.minPrice,
+            "maxPrize": this.maxPrice,
+            "gradeId":this.gradeId,
+            "name": '',
+            "pageable": {
+                "page": page,
+                "size": 10,
+                "sort": sort
+            }
+        })
+        if(res.code == 200) {
+            this.loading = false
+            this.pageNumber = page
+            if(page==1){
+                this.finished = false
+                this.allGoodsList = res.data
+            }else{
+                this.allGoodsList.push(...res.data)
+            }
+            if(!res.data.length){
+                this.finished = true
+            }
+        }
+    },
+    toLoad() {
+        let page = this.pageNumber +1;
+        this.getList(page);
+    },
+
     setCategory(index) {
       this.navLeft = index;
     },
 
     
     toGoodsList: async function(id) {
-        this.$router.push({path:`/goods/goodsList?classifyId=${id}`})
+        this.$router.push({path:`/goods/goodsList?classifyId=${id}&storeId=${this.storeId}`})
     },
     toGoodsDetail(id){
         this.$router.push({path:`/goods/goodsDetail?id=${id}`})
@@ -249,7 +305,6 @@ export default {
     //加载首页商品数据
     updateIndexGoods(){
       let page = this.indexPage + 1
-      console.log('update'+page)
       this.getIndexGoods(page)
     }
   }
@@ -443,7 +498,23 @@ export default {
   margin-right: 10px;
 }
 .tab_box{
+  width: 100vw;
+  overflow-x: hidden;
   height: calc(100vh - 378px);
   overflow-y: scroll;
+}
+.tab_box.goods{
+  position: relative;
+  padding-top: 66px;
+  overflow: hidden;
+  .bottom{
+    height: 100%;
+    overflow-y: scroll;
+  }
+}
+.goods_filter{
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>

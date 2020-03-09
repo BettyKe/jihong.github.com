@@ -2,7 +2,7 @@
     <div class="container_box container" ref="container">
         <div class="top">
             <search-box ref="searchbox" :keyword.sync="keyword" @changeKeyword="changeKeyword" @search="search"></search-box>
-            <condition ref="conditions" :gradeList="gradeList" :providerList="providerList" :active="active" :minPrice="minPrice" :maxPrice="maxPrice" @filter="filter" @toggleType="toggleType"></condition>
+            <condition ref="conditions" :hasProvider="hasProvider" :hasGrade="hasGrade" :active="active" :minPrice="minPrice" :maxPrice="maxPrice" @filter="filter" @toggleType="toggleType"></condition>
         </div>
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="toLoad">
             <div class="bottom dfb fw">
@@ -16,7 +16,7 @@
             </div> -->
         </van-list>
         <!-- 加入购物车弹框 -->
-        <!-- <select-sku :goodsId="goodsId" :showSpec.sync="showSpec" :product.sync="product" @toggleShow="toggleSpec"></select-sku> -->
+        <select-sku :goodsId="goodsId" :showSpec.sync="showSpec" :product.sync="product" @toggleShow="toggleSpec"></select-sku>
     </div>
 </template>
 <script>
@@ -48,17 +48,26 @@ export default {
             showSpec:false,
             goodsId:'',
             product:{},
-            gradeList:[],
-            providerList:[],
+            // gradeList:[],
+            // providerList:[],
             active:0,//0综合 1价格降 2价格升
             providerId:'',
             gradeId:'',
+
+            hasProvider:true,
+            hasGrade:true,
         }
     },
     created() {
         this.keyword = this.$route.query.keyword || ''
         this.classifyId = this.$route.query.classifyId || ''
-        this.getFilter()
+        this.providerId = this.$route.query.storeId || ''
+        if(this.classifyId){
+            this.hasGrade = false
+        }
+        if(this.providerId){
+            this.hasProvider = false
+        }
         this.getList()
     },
     mounted() {
@@ -115,16 +124,6 @@ export default {
                 }
             })
         },
-        async getFilter(){
-            let res = await selectGrade()
-            if(res.code==200){
-                this.gradeList = res.data
-            }
-            let ret = await selectProvider()
-            if(ret.code==200){
-                this.providerList = ret.data
-            }
-        },
         toggleSpec(flag){
             this.showSpec = flag
         },
@@ -139,8 +138,12 @@ export default {
         filter(minPrice,maxPrice,providerId,gradeId){
             this.minPrice = minPrice
             this.maxPrice = maxPrice
-            this.providerId = providerId
-            this.gradeId = gradeId
+            if(this.hasGrade){
+                this.gradeId = gradeId
+            }
+            if(this.hasProvider){
+                this.providerId = providerId
+            }
             this.getList()
         },
         toggleType(type){

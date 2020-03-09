@@ -2,7 +2,7 @@
     <div class="container" v-if="detailInfo.product">
         <header-box title="商品详情">
             <div slot="header-right" class="header_right df ais jct-end">
-                <a href="tel:020-888888"><img class="img46" src="../../image/d_ic_service_d@2x.png" alt=""></a>
+                <a :href="`tel:${detailInfo.shopPhone}`"><img class="img46" src="../../image/d_ic_service_d@2x.png" alt=""></a>
                 <img @click="$router.push({path:'/cart'})" class="img46" src="../../image/c_ic_shopping_1@2x.png" alt="">
                 <img @click="showShare=true" class="img46" src="../../image/d_ic_share@2x.png" alt="">
             </div>
@@ -65,8 +65,9 @@
                 <img class="img52" src="../../image/d_ic_store@2x.png" alt="">
                 <span>店铺</span>
             </div>
-            <div class="icon_box dfc fdc" @click="collect">
-                <img class="img52" src="../../image/d_ic_collect_d@2x.png" alt="">
+            <div class="icon_box dfc fdc">
+                <img class="img52 yes" v-if="detailInfo.productIsCollected=='yes'" @click="cancelCollect" src="../../image/d_ic_collect_s@2x.png" alt="">
+                <img class="img52 no" v-else @click="collect" src="../../image/d_ic_collect_d@2x.png" alt="">
                 <span>收藏</span>
             </div>
             <div class="add_btn flex dfc" @click="showSpec=true">加入购物车</div>
@@ -118,6 +119,7 @@ export default {
             currentImg:0,
             goodsId: this.$route.query.id,
             detailInfo: {},
+            phone:'',
         }
     },
     created(){
@@ -144,6 +146,7 @@ export default {
             let id = this.detailInfo.product.id
             let res = await addToCollect({connectionId:[id]})
             if(res.code==200){
+                this.detailInfo.productIsCollected = 'yes'
                 this.$toast('收藏成功')
             }
         },
@@ -152,6 +155,7 @@ export default {
             let id = this.detailInfo.product.id
             let res = await deleteBatchProduct({id:[id]})
             if(res.code==200){
+                this.detailInfo.productIsCollected = 'no'
                 this.$toast('取消收藏成功')
             }
         },

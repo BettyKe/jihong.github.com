@@ -94,7 +94,7 @@
 </template>
 <script>
 import axios from 'axios'
-import {personaInformation,uncheckOrderNum,checkedOrderNum} from '@/js/api'
+import {personaInformation,uncheckOrderNum,checkedOrderNum,contactCustomerService} from '@/js/api'
     export default {
         data() {
             return {
@@ -124,6 +124,10 @@ import {personaInformation,uncheckOrderNum,checkedOrderNum} from '@/js/api'
                 let rem = await checkedOrderNum()
                 if(rem.code==200){
                     this.checked = rem.data
+                }
+                let rex = await contactCustomerService()
+                if(rex.code==200){
+                    sessionStorage.setItem('phone',rex.data)
                 }
             }
         }

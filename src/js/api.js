@@ -34,6 +34,9 @@ export const contactCustomerService = (data, loadingOptions) => http.post('/dist
 export const abcPay = (data, loadingOptions) => http.post('/order/abcPay', data, loadingOptions)
 //微信支付
 export const weChatPay = (data, loadingOptions) => http.post('/order/weChatPay', data, loadingOptions)
+//获取openid
+export const getXCXOpenId = (data, loadingOptions) => http.post('/order/getXCXOpenId', data, loadingOptions)
+
 
 //用户协议 隐私协议
 export const findByLabel = (data, loadingOptions) => http.post('/page/findByLabel', data, loadingOptions)
@@ -166,6 +169,8 @@ export const addProduct = (data, loadingOptions) => http.post('/virtualItem/addP
 export const showCart = (data, loadingOptions) => http.post('/virtualItem/showCart', data, loadingOptions)
 //将购物车中的商品删除
 export const virtualItemDeleteBatch = (data, loadingOptions) => http.post('/virtualItem/deleteBatch', data, loadingOptions)
+//修改购物车中的商品数量
+export const changeCartProductNum = (data, loadingOptions) => http.post('/virtualItem/changeCartProductNum', data, loadingOptions)
 //获取地址
 export const getDefault = (data, loadingOptions) => http.post('/address/getDefault', data, loadingOptions)
 //支付 查询余额

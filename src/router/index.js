@@ -120,6 +120,14 @@ let routes = [
     component: () => import('@/pages/order/pay')
   },
   {
+    path: '/order/wechatPay',
+    meta: {
+      title: '微信支付',
+      needLogin: true
+    },
+    component: () => import('@/pages/order/wechatPay')
+  },
+  {
     path: '/order/payResult',
     meta: {
       title: '支付成功',
@@ -232,6 +240,14 @@ let routes = [
     component: () => import('@/pages/my/withdraw')
   },
   {
+    path:'/my/accountList',
+    meta: {
+      title: '提现列表',
+      needLogin: true
+    },
+    component: () => import('@/pages/my/accountList')
+  },
+  {
     path:'/my/accountDetail',
     meta: {
       title: '提现明细',
@@ -306,7 +322,7 @@ let routes = [
 ]
 let router = new Router({routes});
 router.beforeEach((to, from, next) => {
-  console.log(from,'to', to)
+  // console.log(from,'to', to)
   next();
 })
 export default router;

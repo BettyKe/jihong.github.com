@@ -94,25 +94,35 @@ export default {
                     }
                     break;
                 case 2:
-                    let res2 = await weChatPay({
-                        "orderId":this.orderId,
-                        "openId":1,
-                        "payMethod":"JSAPI/APP/MICROPAY",
-                        "paymentLinkType":1,
-                        "returnType":"JSAPI/QR"
+                    let url = encodeURIComponent('https://consoletest.ji-hong.com.cn/h5/#/order/pay')
+                    window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx50430560fcced261&redirect_uri=${url}&response_type=code&scope=snsapi_base&state=${this.orderId}#wechat_redirect`
+                    let rem = await getXCXOpenId({
+                        code:''
                     })
-                    if(res2.code==200){
-                        this.$router.push({path:'/order/payResult'})
+                    if(rem.code==200){
+                        let openid = rem.data
+                        let res2 = await weChatPay({
+                            "orderId":this.orderId,
+                            "openId":openid,
+                            "payMethod":"JSAPI/APP/MICROPAY",
+                            "paymentLinkType":1,
+                            "returnType":"JSAPI/QR"
+                        })
+                        if(res2.code==200){
+                            this.$router.push({path:'/order/payResult'})
+                        }else{
+                            this.$toast(res2.message)
+                        }
                     }else{
-                        this.$toast(res2.message)
+                        this.$toast(rem.message)
                     }
                     break;
                 case 3:
                     let res3 = await abcPay({
                         "orderId":this.orderId,
                         "payType":"PreAuthPay",
-                        "paymentType":"A",
-                        "paymentLinkType":6,
+                        "paymentType":6,
+                        "paymentLinkType":2,
                         "unionPayLinkType":0,
                         "returnType":"URL"
                     })
@@ -127,7 +137,7 @@ export default {
                         "orderId":this.orderId,
                         "payType":"PreAuthPay",
                         "paymentType":"A",
-                        "paymentLinkType":1,
+                        "paymentLinkType":2,
                         "unionPayLinkType":0,
                         "returnType":"URL"
                     })

@@ -29,18 +29,14 @@ function tryHideFullScreenLoading () {
     requestLoading.close()
   }
 }
-
+let that = this
 /** 默认请求超时时间 */
 axios.defaults.timeout = 120000
 /** 默认基础请求地址 */
 if (process.env.NODE_ENV === 'development') {
-  // axios.defaults.baseURL = 'http://cnhct.iask.in/lzm' // 开发地址
-  axios.defaults.baseURL = '' // 开发地址
-  // axios.defaults.baseURL = 'http://localhost:8080' // 开发地址
+  // axios.defaults.baseURL = 'https://app.ji-hong.com.cn/api' // 开发地址
 } else if (process.env.NODE_ENV === 'production') {
-  // axios.defaults.baseURL = 'http://cnhct.iask.in/lzm' // 正式库地址
-  axios.defaults.baseURL = '' // 正式库地址
-  // axios.defaults.baseURL = 'http://localhost:8080' // 正式库地址
+  // axios.defaults.baseURL = 'https://app.ji-hong.com.cn/api' // 正式库地址
 }
 
 /** 请求配置拦截 */
@@ -61,7 +57,14 @@ axios.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json; charset=utf-8'
   }
   // 请求头添加判断是否有token
-  config.headers['Access-Token'] = localStorage.getItem('token') || ''
+  // console.log(router.history.current.path)
+  let path = router.history.current.path
+  let token = localStorage.getItem('token') || ''
+  if((!token || token=='') && !path.startsWith('/login') && !path.startsWith('/register') && !path.startsWith('/retrievePassword') && !path.startsWith('/setPassword') && !path.startsWith('/loginPhone')){
+    router.push({path:'/login'})
+    return;
+  }
+  config.headers['Access-Token'] = token
   // config.headers['X-AUTH-TOKEN'] = store.getters.getSessionKey || ''
   // config.headers['custom-params'] = config.params
   // 清空自定义的数据
@@ -179,6 +182,7 @@ function checkCode (res) {
 
 export default {
   post (url, data, loading) {
+    console.log(data)
     return axios({
       method: 'post',
       url,
@@ -211,6 +215,7 @@ export default {
     )
   }, 
   form (url, data, loading) {
+    console.log(data)
     return axios({
       method: 'post',
       url,

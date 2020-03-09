@@ -19,13 +19,14 @@
             <div :class="['filter_dialog', showRilter ? 'js_dialog' : '']">
                 <div class="dialog_mask" @click="showRilter = false" v-if="showRilter"></div>
                 <div class="dialog_content bg_FFF">
+                    <div class="dialog_con">
                     <!-- 供应商 S -->
-                    <div class="sku_box">
+                    <div class="sku_box" v-if="hasProvider">
                         <div class="dialog_title dfb">
                             <span class="fs28 c_33292B b">供应商</span>
                             <img @click="showProvider=!showProvider" class="img26" src="../image/c_ic_more_next@2x.png" />
                         </div>
-                        <div :class="['sku_arr df ct-start fw',showProvider?'h180':'']">
+                        <div :class="['sku_arr df ct-start fw',showProvider?'':'h180']">
                             <span :class="['sku_item bg_F5F5F5 fs24 dfc fdc', providerId==item.id ? 'active cf' : 'c_33292B']" v-for="(item,index) in providerList" :key="index" @click="providerId=item.id">{{item.shortName}}</span>
                         </div>
                     </div>
@@ -41,16 +42,17 @@
                     </div>
                     <!-- 价格区间 E -->
                     <!-- 规格 S -->
-                    <div class="sku_box">
+                    <div class="sku_box" v-if="hasGrade">
                         <div class="dialog_title dfb">
                             <span class="fs28 c_33292B b">规格</span>
                             <img @click="showGrade=!showGrade" class="img26" src="../image/c_ic_more_next@2x.png" />
                         </div>
-                        <div :class="['sku_arr df ct-start fw',showGrade?'h180':'']">
+                        <div :class="['sku_arr df ct-start fw',showGrade?'':'h180']">
                             <span :class="['sku_item bg_F5F5F5 fs24 dfc fdc', gradeId == item.id ? 'active cf' : 'c_33292B']" v-for="(item,index) in gradeList" :key="index" @click="gradeId = item.id">{{item.name}}</span>
                         </div>
                     </div>
                     <!-- 规格 E -->
+                    </div>
                     <!-- 底部按钮 S -->
                     <div class="footer_box dfb">
                         <div class="fs28 c_33292B flex dfc fdc" @click="reset">重置</div>
@@ -58,12 +60,14 @@
                     </div>
                     <!-- 底部按钮 E -->
                 </div>
+                
             </div>
         </div>
         <!-- 有筛选 E -->
     </div>
 </template>
 <script>
+import {selectGrade,selectProvider} from '@/js/api'
 export default {
     data() {
         return {
@@ -74,23 +78,38 @@ export default {
             gradeId:'',
             minPrice:'',
             maxPrice:'',
+            gradeList:[],
+            providerList:[],
         }
     },
     props:{
-        gradeList:{
-            type:Array,
-            default:[]
+        hasProvider:{
+            type:Boolean,
+            default:true,
         },
-        providerList:{
-            type:Array,
-            default:[]
+        hasGrade:{
+            type:Boolean,
+            default:true,
         },
         active:{
             type:Number,
             default:0,
         }
     },
+    created(){
+        this.getFilter()
+    },
     methods:{
+        async getFilter(){
+            let res = await selectGrade()
+            if(res.code==200){
+                this.gradeList = res.data
+            }
+            let ret = await selectProvider()
+            if(ret.code==200){
+                this.providerList = ret.data
+            }
+        },
         togglePrice(){
             if(this.active==1){
                 this.toggleType(2)
@@ -150,6 +169,7 @@ export default {
     transform: rotate(-180deg);
 }
 .filter_dialog{
+    position: relative;
     .dialog_mask{
         position: fixed;
         right: 0;
@@ -165,12 +185,16 @@ export default {
         right: 0;
         top: 0;
         width: 614px;
-        height: 100%;
-        overflow: scroll;
+        height: 100vh;
+        // overflow: scroll;
         transition: all .3s;
         transform: translateX(100%);
         box-sizing: border-box;
         z-index: 90;
+    }
+    .dialog_con{
+        height: 100vh;
+        overflow: scroll;
     }
     .dialog_title{
         padding: 0 30px;
@@ -178,6 +202,7 @@ export default {
     }
     .sku_arr{
         padding: 0 25px 0 31px;
+        overflow: hidden;
     }
     .h180{
         height: 180px;
@@ -222,7 +247,7 @@ export default {
     .footer_box{
         width: 100%;
         height: 88px;
-        position: absolute;
+        position: fixed;
         bottom: 0;
         left: 0;
         div{
@@ -230,6 +255,7 @@ export default {
         }
         div:nth-of-type(1){
             box-shadow:1px -3px 14px 0px rgba(0, 0, 0, 0.14);
+            background: #fff;
         }
         div:nth-of-type(2){
             background-color: #DF0134;

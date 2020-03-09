@@ -83,7 +83,7 @@
             class="cf dfc bg_theme"
             @click="$router.push({path:`/order/pay?orderId=${item.id}`})"
           >支付</span>
-          <span class="theme dfc bg_FFF">联系客服</span>
+          <span class="theme dfc bg_FFF"><a :href="`tel:${phone}`">联系客服</a></span>
         </div>
       </div>
     </van-list>
@@ -98,7 +98,8 @@ export default {
       list: [],
       pageNumber: 1,
       loading: false,
-      finished: false
+      finished: false,
+      phone:'',
     };
   },
   created() {
@@ -107,6 +108,7 @@ export default {
       this.tab = type;
     }
     this.getList();
+    this.phone = sessionStorage.getItem('phone') || ''
   },
   methods: {
     toggleTab(index) {

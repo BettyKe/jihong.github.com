@@ -4,7 +4,7 @@
             <span class="fs34 b">购物车</span>
             <span class="fs28" @click="showEdit=!showEdit">{{showEdit?'完成':'管理'}}</span>
         </div>
-        <van-list class="item_list">
+        <van-list class="item_list" v-if="cartList.length">
             <div class="item bg_FFF" v-for="(item,index) in cartList" :key="index" :index="index">
                 <div class="dfa item_title">
                     <div class="select dfc" @click="selectStore(index)">
@@ -31,9 +31,9 @@
                                 <div class="dfb">
                                     <div class="theme flex fs20">¥<span class="fs28">{{items.productDTO.totalAmount}}</span>/{{items.productDTO.unitName}}</div>
                                     <div class="num_box dfc">
-                                        <img class="img32" src="../../image/ic_add_1@2x.png" alt="">
+                                        <img class="img32" src="../../image/ic_add_1@2x.png" alt="" @click="changeGoodNum(index,indexs,1)">
                                         <input class="dfc" type="number" v-model="items.productDTO.unitQuantity" />
-                                        <img class="img32" src="../../image/ic_add@2x.png" alt="">
+                                        <img class="img32" src="../../image/ic_add@2x.png" alt="" @click="changeGoodNum(index,indexs,2)">
                                     </div>
                                 </div>
                             </div>
@@ -51,9 +51,9 @@
                                     <span class="fs28">¥{{itm.totalAmount}}</span>
                                 </div>
                                 <div class="dfc">
-                                    <img class="img32" src="../../image/ic_add_1@2x.png" alt="" @click="minusService(index)">
+                                    <img class="img32" src="../../image/ic_add_1@2x.png" alt="" @click="changeServiceNum(index,indexs,idx,1)">
                                     <input type="number" v-model="itm.unitQuantity" max-length="6" />
-                                    <img class="img32" src="../../image/ic_add@2x.png" alt="" @click="addService(index)">
+                                    <img class="img32" src="../../image/ic_add@2x.png" alt="" @click="changeServiceNum(index,indexs,idx,2)">
                                 </div>
                             </div>
                         </div>
@@ -83,7 +83,10 @@
                 </div>
             </div> -->
         </van-list>
-        <div class="sum_box dfb">
+        <div class="noData dfc" v-if="!cartList.length">
+            购物车是空的
+        </div>
+        <div class="sum_box dfb" v-if="cartList.length">
             <div class="select dfc" @click="selectAll">
                 <img class="img40" v-if="allSelect" src="../../image/e_ic_circle_2@2x.png" alt="">
                 <img class="img40" v-else src="../../image/e_ic_circle_d@2x.png" alt="">
@@ -102,7 +105,7 @@
     </div>
 </template>
 <script>
-import {showCart,virtualItemDeleteBatch,addToCollect} from '@/js/api'
+import {showCart,virtualItemDeleteBatch,addToCollect,changeCartProductNum} from '@/js/api'
 export default {
     data() {
         return{
@@ -199,6 +202,48 @@ export default {
                 this.cartList = res.data
             }
         },
+        async changeGoodNum(index,indexs,type){
+            let list = this.cartList
+            let num = list[index].vitDTOList[indexs].productDTO.unitQuantity
+            if(type==1){
+                if(num<=1){
+                    this.$toast('不能再少了');
+                    return
+                }
+                num--;
+            }else if(type==2){
+                num++
+            }
+            let res = await changeCartProductNum({
+                virtualItemId:list[index].vitDTOList[indexs].productDTO.virtualItemId,
+                num,
+            })
+            if(res.code==200){
+                list[index].vitDTOList[indexs].productDTO.unitQuantity = num
+            }
+            this.cartList = list
+        },
+        async changeServiceNum(index,indexs,idx,type){
+            let list = this.cartList
+            let num = list[index].vitDTOList[indexs].childrenProductDTOList[idx].unitQuantity
+            if(type==1){
+                if(num<=1){
+                    this.$toast('不能再少了');
+                    return
+                }
+                num--;
+            }else if(type==2){
+                num++
+            }
+            let res = await changeCartProductNum({
+                virtualItemId:list[index].vitDTOList[indexs].childrenProductDTOList[idx].virtualItemId,
+                num,
+            })
+            if(res.code==200){
+                list[index].vitDTOList[indexs].childrenProductDTOList[idx].unitQuantity = num
+            }
+            this.cartList = list
+        },
         // 结算
         checkout(){
             if(!this.selectId.length){
@@ -279,6 +324,10 @@ export default {
 }
 </script>
 <style scoped lang="less">
+.noData{
+    width: 100vw;
+    height: 100vh;
+}
 .cart_top {
   position: fixed;
   top: 0;
