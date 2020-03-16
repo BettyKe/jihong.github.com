@@ -3,7 +3,8 @@
         <!-- 头部背景 S -->
         <div class="header dfb">
             <div class="user_info flex dfb" @click="toUserInfo">
-                <img class="user_img" src="../../image/c_ic_my_d@2x.png">
+                <img class="user_img" v-if="info.imgUrl" :src="ImageTool.getImg(info.imgUrl)">
+                <img class="user_img" v-else src="../../image/c_ic_my_d@2x.png">
                 <div class="flex info df jct-between ais-start fdc">
                     <div class="dfb">
                         <div class="user_name">{{info.name}}</div>

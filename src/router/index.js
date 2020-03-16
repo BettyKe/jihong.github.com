@@ -320,7 +320,10 @@ let routes = [
     component: () => import('@/pages/my/feedback')
   },
 ]
-let router = new Router({routes});
+let router = new Router({
+  // mode:'history',
+  routes
+});
 router.beforeEach((to, from, next) => {
   // console.log(from,'to', to)
   next();

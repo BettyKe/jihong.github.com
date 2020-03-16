@@ -64,7 +64,7 @@
     </div>
 </template>
 <script>
-import {getDefault,saveOrderForDistributor} from '@/js/api'
+import {getDefault,saveOrderForDistributor,virtualItemDeleteBatch} from '@/js/api'
 export default {
     data(){
         return{
@@ -82,7 +82,9 @@ export default {
         async getAddr(){
             let res = await getDefault()
             if(res.code==200){
-                this.addr = JSON.parse(sessionStorage.getItem('addr')) || res.data
+                if(res.data && res.data.id!=0){
+                    this.addr = JSON.parse(sessionStorage.getItem('addr')) || res.data
+                }
             }
         },
         async submit(){
@@ -95,10 +97,12 @@ export default {
                 return
             }
             let list = []
+            let productIdList = []
             this.info.cartList.map(v=>{
                 if(v.select){
                     v.vitDTOList.map(t=>{
                         if(t.select){
+                            productIdList.push(t.productDTO.productId)
                             list.push({
                                 productId:t.productDTO.productId,
                                 productNum:t.productDTO.unitQuantity,
@@ -127,6 +131,12 @@ export default {
             })
             if(res.code==200){
                 this.$router.replace({path:`/order/pay?orderId=${res.data}`})
+                let rem = await virtualItemDeleteBatch({
+                    productId:productIdList
+                })
+                if(rem.code==200){
+
+                }
             }
         }
     }

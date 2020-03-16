@@ -5,6 +5,6 @@ const getters = {
     },
     keywords (state) {
         return state.keywords;
-    }
+    },
 };
 export default getters;

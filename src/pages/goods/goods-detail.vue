@@ -79,19 +79,19 @@
         <van-popup v-model="showShare" position="bottom" round>
             <div class="share_box">
                 <div class="dfa">
-                    <div class="item dfa fdc">
+                    <div class="item dfa fdc" @click="callShare(1)">
                         <img src="../../image/ic_1@2x.png" alt="">
                         <span>微信好友</span>
                     </div>
-                    <div class="item dfa fdc">
+                    <div class="item dfa fdc" @click="callShare(2)">
                         <img src="../../image/ic_2@2x.png" alt="">
                         <span>朋友圈</span>
                     </div>
-                    <div class="item dfa fdc">
+                    <div class="item dfa fdc" @click="callShare(3)">
                         <img src="../../image/ic_3@2x.png" alt="">
                         <span>QQ好友</span>
                     </div>
-                    <div class="item dfa fdc">
+                    <div class="item dfa fdc" @click="callShare(4)">
                         <img src="../../image/ic_4@2x.png" alt="">
                         <span>QQ空间</span>
                     </div>
@@ -101,7 +101,9 @@
         </van-popup>
     </div>
 </template>
+
 <script>
+import NativeShare from 'nativeshare'
 import selectSku from '@/components/select-sku'
 import {findDetailByIdApp,addProduct,addToCollect,findAllValueAddProductForAPP,deleteBatchProduct} from '@/js/api'
 export default {
@@ -120,11 +122,13 @@ export default {
             goodsId: this.$route.query.id,
             detailInfo: {},
             phone:'',
+            nativeShare:'',
         }
     },
     created(){
         this.getInfo()
-        
+        this.nativeShare = new NativeShare()
+       
     },
     methods:{
         changeSwipe(index) {
@@ -139,6 +143,7 @@ export default {
             if (res.code == 200) {
                 this.detailInfo = res.data
                 // this.detailInfo.product.num = 1
+                this.initShare()
             }
         },
         //收藏
@@ -159,6 +164,62 @@ export default {
                 this.$toast('取消收藏成功')
             }
         },
+        initShare(){
+            // 先创建一个实例
+            // var nativeShare = new NativeShare()
+            // 如果你需要在微信浏览器中分享，那么你需要设置额外的微信配置
+            // 特别提示一下微信分享有一个坑，不要分享安全域名以外的链接(具体见jssdk文档)，否则会导致你配置的文案无效
+            // 创建实例应该带参数
+
+            // 你可以在setConfig方法中设置配置参数
+            this.nativeShare.setConfig({
+                wechatConfig: {
+                    appId: '',
+                    timestamp: '',
+                    nonceStr: '',
+                    signature: '',
+                },
+                // 让你修改的分享的文案同步到标签里，比如title文案会同步到<title>标签中
+                // 这样可以让一些不支持分享的浏览器也能修改部分文案，默认都不会同步
+                syncDescToTag: true,
+                syncIconToTag: true,
+                syncTitleToTag: true,
+            })
+
+
+            // 设置分享文案
+            this.nativeShare.setShareData({
+                icon: this.ImageTool.initImage(this.detailInfo.jpgUrl)[0],
+                link: this.utils.getUrl(),
+                title: '吉宏园艺',
+                desc: this.detailInfo.product.productTitle,
+                from: '@吉宏园艺',
+            })
+        },
+        callShare(type){
+            try{
+                switch(type){
+                    case 1:
+                        this.nativeShare.call('wechatFriend')
+                        break;
+                    case 2:
+                        this.nativeShare.call('wechatTimeline')
+                        break;
+                    case 3:
+                        this.nativeShare.call('qqFriend')
+                        break;
+                    case 4:
+                        this.nativeShare.call('qZone')
+                        break;
+                }
+                
+            }
+            catch(err){
+                console.log(err)
+                this.$toast('请打开浏览器的菜单进行分享')
+            }
+            
+        }
     }
 }
 </script>

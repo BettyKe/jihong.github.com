@@ -48,7 +48,7 @@ export default {
     methods:{
         async getList(){
             let res = await findByDistributorId()
-            if(res.code==200 && res.data.length){
+            if(res.code==200){
                 this.list = res.data
             }
         },

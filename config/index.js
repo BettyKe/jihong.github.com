@@ -12,8 +12,9 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/': {
-        target: 'https://app.ji-hong.com.cn/api',
-        // target: 'https://apptest.ji-hong.com.cn/api',
+        // target: 'https://consoletest.ji-hong.com.cn/api',
+        // target: 'https://app.ji-hong.com.cn/api',
+        target: 'https://apptest.ji-hong.com.cn/api',
         pathRewrite: { '^/': '/'},
         changeOrigin: true
       }
@@ -50,7 +51,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: '/h5/',
 
     /**
      * Source Maps

@@ -9,7 +9,7 @@
     </div>
 </template>
 <script>
-import {} from '@/js/api'
+import {adviceSave} from '@/js/api'
 export default {
     data(){
         return{
@@ -18,7 +18,22 @@ export default {
     },
     methods:{
         async submit(){
-
+            if(!this.content.length){
+                thsi.$toast('请输入您的意见')
+                return;
+            }
+            let res = await adviceSave({
+                "advice":{
+                    "content":this.content
+                }
+            })
+            if(res.code==200){
+                this.$toast('提交成功')
+                setTimeout(()=>{
+                    this.$router.back()
+                },1000)
+                
+            }
         }
     }
 }

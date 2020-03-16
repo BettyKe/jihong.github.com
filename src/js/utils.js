@@ -1,4 +1,7 @@
 export default {
+    getUrl(){
+      return 'https://app.ji-hong.com.cn/api'
+    },
     verify(type, val) {
       let rule;
       if (type == 'tel') {

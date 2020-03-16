@@ -129,6 +129,11 @@ export default {
       maxDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
       startDate:'',
       endDate:'',
+      filterObj:{
+        payStatus:'全部',
+        startAt:'',
+        endAt:'',
+      },
     };
   },
   created() {
@@ -202,23 +207,14 @@ export default {
       } else if (this.tab == 3) {
         status = "已完成";
       }
-      if (this.type == 0) {
-        payStatus = "全部";
-      } else if (this.type == 1) {
-        payStatus = "已支付";
-      } else if (this.type == 2) {
-        payStatus = "已授信";
-      }
-      let time = dateFormat(new Date(), " HH:MM:ss")
-      let res = await findItemForDistributorChoose({
+      let obj = {
         status,
-        payStatus,
-        startAt:this.startDay?(this.startDay+time):'',
-        endAt:this.endDay?(this.endDay+time):'',
         pageable: {
           page: page
         }
-      });
+      }
+      obj = Object.assign(obj,this.filterObj)
+      let res = await findItemForDistributorChoose(obj);
       if (res.code == 200) {
         this.loading = false;
         this.pageNumber = page;
@@ -276,7 +272,22 @@ export default {
       this.endDate = ''
     },
     submit(){
-      
+      let payStatus = ''
+      if (this.type == 0) {
+        payStatus = "全部";
+      } else if (this.type == 1) {
+        payStatus = "已支付";
+      } else if (this.type == 2) {
+        payStatus = "已授信";
+      }
+      let time = dateFormat(new Date(), " HH:MM:ss")
+      this.filterObj = {
+        payStatus,
+        startAt:this.startDay?(this.startDay+' 00:00:00'):'',
+        endAt:this.endDay?(this.endDay+time):'',
+      }
+      this.getList();
+      this.showFilter = false
     },
   }
 };

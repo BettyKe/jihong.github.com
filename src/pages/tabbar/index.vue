@@ -1,6 +1,6 @@
 <template>
     <div class="container df jct">
-        <div class="search_box dfc">
+        <div class="search_box dfc" @click="tt">
             <div class="search dfs" @click="$router.push({path: '/classify/search'})">
                 <img src="../../image/c_ic_grabble@2x.png" alt="">
                 <span class="c_999">商品或供应商</span>
@@ -8,7 +8,16 @@
         </div>
     </div>
 </template>
-<script></script>
+<script>
+export default {
+    methods:{
+        tt(){
+            location.href='http://aabb.com?t=s&lt_time=a'
+            // window.location.href = ''
+        }
+    }
+}
+</script>
 <style scoped lang="less">
 .container{
     width: 100vw;

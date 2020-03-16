@@ -2,7 +2,8 @@ import http from './http'
 
 // export const  = (data, loadingOptions) => http.post('/', data, loadingOptions)
 //上传图片
-export const upload = (data, loadingOptions) => http.post('/attachment/upload', data, loadingOptions)
+export const upload = (data, loadingOptions) => http.form('/attachment/upload', data, loadingOptions)
+export const uploads = (data, loadingOptions) => http.post('/attachment/upload', data, loadingOptions)
 
 //登录注册
 
@@ -41,7 +42,7 @@ export const getXCXOpenId = (data, loadingOptions) => http.post('/order/getXCXOp
 //用户协议 隐私协议
 export const findByLabel = (data, loadingOptions) => http.post('/page/findByLabel', data, loadingOptions)
 export const getPage = (data, loadingOptions) => http.post('/page/get', data, loadingOptions)
-
+export const adviceSave = (data, loadingOptions) => http.post('/advice/save', data, loadingOptions)
 
 //商品店铺
 
@@ -55,6 +56,9 @@ export const findByByProductNameOrProviderName = (data, loadingOptions) => http.
 export const findDetailByIdApp = (data, loadingOptions) => http.post('/product/findDetailByIdApp', data, loadingOptions)
 //分类-其它分类-店铺首页-店铺信息
 export const providerGet = (data, loadingOptions) => http.post('/provider/get', data, loadingOptions)
+//店铺是否关注
+export const checkShopIsCollection = (data, loadingOptions) => http.post('/distributorCollection/checkShopIsCollection', data, loadingOptions)
+
 //分类-其它分类-店铺首页-商品列表
 export const findProductByProviderId = (data, loadingOptions) => http.post('/product/findProductByProviderId', data, loadingOptions)
 //分类-其它分类-店铺首页-分类
@@ -107,7 +111,7 @@ export const deleteBatchProduct = (data, loadingOptions) => http.post('/distribu
 //修改密码
 export const updatePassword = (data, loadingOptions) => http.post('/distributor/updatePassword', data, loadingOptions)
 //个人资料
-export const personaInformation = (data, loadingOptions) => http.form('/distributor/personaInformation', data, loadingOptions)
+export const personaInformation = (data, loadingOptions) => http.post('/distributor/personaInformation', data, loadingOptions)
 //订单汇总
 export const findItemForDistributor = (data, loadingOptions) => http.post('/item/findItemForDistributor', data, loadingOptions)
 //订单汇总-筛选

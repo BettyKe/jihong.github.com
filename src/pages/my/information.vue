@@ -5,15 +5,10 @@
             <div class="box user_avatar dfb">
                 <span class="fs28 c_33292B">头像</span>
                 <div class="df ais jct-end">
-                    <form name="imgForm" id="imgForm" enctype="multipart/form-data" action="https://app.ji-hong.com.cn/api/attachment/upload" method='post'>
-                        <label for="imgLocal">
-                            <input hidden class="input-loc-img"  name="imgLocal" id="imgLocal" type='file' accept="image/*" @change="selectImg(this)" />
-                            <img class="avatar" src="../../image/f_ic_soi_2@2x.png" alt="">
-                        </label>
-                    </form>
                     <!-- <img class="avatar" src="../../image/f_ic_soi_2@2x.png" alt=""> -->
-                    <van-uploader :after-read="afterRead" max-count="1" >
-                        <img class="avatar" src="../../image/f_ic_soi_2@2x.png" alt="">
+                    <van-uploader :after-read="afterRead" max-count="1" result-type="file">
+                        <img class="avatar" v-if="info.imgUrl" :src="ImageTool.getImg(info.imgUrl)" alt="">
+                        <img class="avatar" v-else src="../../image/f_ic_soi_2@2x.png" alt="">
                     </van-uploader>
                     <img class="img32" src="../../image/f_ic_more@2x.png" alt="">
                 </div>
@@ -43,7 +38,8 @@
     </div>
 </template>
 <script>
-import {personaInformation,upload} from '@/js/api'
+import axios from 'axios'
+import {personaInformation,upload,uploads} from '@/js/api'
 export default {
     data(){
         return{
@@ -62,20 +58,15 @@ export default {
             }
         },
         async afterRead(tt){
-            console.log(tt)
-            console.log(tt.file)
-            let formData = new FormData();
-            formData.append("file", tt);
-            let res = await upload({file:formData})
+            let param = new FormData()  // 创建form对象
+            param.append('file', tt.file)
+            let res = await upload(param)
             if(res.code==200){
                 console.log('success')
+                this.info.imgUrl = res.data
             }
         },
-        selectImg(that){
-            console.log(that)
-            // console.log(file)
-            console.log(this.files)
-        }
+        
     }
 }
 </script>

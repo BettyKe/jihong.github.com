@@ -41,7 +41,7 @@ export default {
                 console.log(str)
                 localStorage.setItem('keywords',str)
             }
-            this.$router.push({path: `/goods/goodsList?keyword=${keyword}&storeId=${storeId}`})
+            this.$router.push({path: `/goods/goodsList?keyword=${keyword}&storeId=${this.storeId}`})
         },
         clear(){
             this.hotList = []

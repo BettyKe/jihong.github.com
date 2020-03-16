@@ -32,7 +32,7 @@
                                     <div class="theme flex fs20">¥<span class="fs28">{{items.productDTO.totalAmount}}</span>/{{items.productDTO.unitName}}</div>
                                     <div class="num_box dfc">
                                         <img class="img32" src="../../image/ic_add_1@2x.png" alt="" @click="changeGoodNum(index,indexs,1)">
-                                        <input class="dfc" type="number" v-model="items.productDTO.unitQuantity" />
+                                        <input class="dfc" type="number" v-model="items.productDTO.unitQuantity" disabled />
                                         <img class="img32" src="../../image/ic_add@2x.png" alt="" @click="changeGoodNum(index,indexs,2)">
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="dfc">
                                     <img class="img32" src="../../image/ic_add_1@2x.png" alt="" @click="changeServiceNum(index,indexs,idx,1)">
-                                    <input type="number" v-model="itm.unitQuantity" max-length="6" />
+                                    <input type="number" v-model="itm.unitQuantity" max-length="6" disabled />
                                     <img class="img32" src="../../image/ic_add@2x.png" alt="" @click="changeServiceNum(index,indexs,idx,2)">
                                 </div>
                             </div>
@@ -93,8 +93,8 @@
                 全选
             </div>
             <div class="flex df jct-around fdc" v-show="!showEdit">
-                <div>共<span class="theme">{{sumNum}}</span>件</div>
-                <div>合计：<span class="theme fs34">¥{{sum}}</span><span class="fs20 c_999">(不含运费)</span></div>
+                <div>共<span class="theme"> {{sumNum}} </span>件</div>
+                <div>合计：<span class="theme fs34">¥{{sum}} </span><span class="fs20 c_999">(不含运费)</span></div>
             </div>
             <div class="sum_btn dfc">
                 <span v-show="!showEdit" @click="checkout">结算</span>

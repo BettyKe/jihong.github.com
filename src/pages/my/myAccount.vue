@@ -32,7 +32,7 @@
             </div>
         </div>
         <van-list class="item_list" v-model="loading" :finished="finished" finished-text="没有更多了" @load="toLoad">
-            <div class="item_info bg_FFF dfb" v-for="(item,index) in list" :key="index" @click="$router.push({path:'/my/returnOrderDetail'})">
+            <div class="item_info bg_FFF dfb" v-for="(item,index) in list" :key="index" @click="$router.push({path:`/my/returnOrderDetail?id=${item.id}`})">
                 <div class="df ais-start jct-around fdc item_l">
                     <span class="fs32 b c_33292B    ">{{item.type}}</span>
                     <span class="fs22 c_666">{{item.createAt}}</span>

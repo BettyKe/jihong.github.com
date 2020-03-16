@@ -34,9 +34,9 @@ let that = this
 axios.defaults.timeout = 120000
 /** 默认基础请求地址 */
 if (process.env.NODE_ENV === 'development') {
-  // axios.defaults.baseURL = 'https://app.ji-hong.com.cn/api' // 开发地址
+  // axios.defaults.baseURL = 'https://consoletest.ji-hong.com.cn/api' // 开发地址
 } else if (process.env.NODE_ENV === 'production') {
-  // axios.defaults.baseURL = 'https://app.ji-hong.com.cn/api' // 正式库地址
+  // axios.defaults.baseURL = 'https://consoletest.ji-hong.com.cn/api' // 正式库地址
 }
 
 /** 请求配置拦截 */
@@ -51,18 +51,18 @@ axios.interceptors.request.use(config => {
   
   // 判断是否是form表单提交
   if (config.params && config.params.isForm) {
-    config.data = qs.stringify(config.data)
+    // config.data = qs.stringify(config.data)
+    // config.headers['Content-Type'] = 'multipart/form-data'
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
   } else {
     config.headers['Content-Type'] = 'application/json; charset=utf-8'
   }
   // 请求头添加判断是否有token
-  // console.log(router.history.current.path)
+  console.log(router.history.current.path)
   let path = router.history.current.path
   let token = localStorage.getItem('token') || ''
   if((!token || token=='') && !path.startsWith('/login') && !path.startsWith('/register') && !path.startsWith('/retrievePassword') && !path.startsWith('/setPassword') && !path.startsWith('/loginPhone')){
     router.push({path:'/login'})
-    return;
   }
   config.headers['Access-Token'] = token
   // config.headers['X-AUTH-TOKEN'] = store.getters.getSessionKey || ''
@@ -118,7 +118,8 @@ function setPostSessionKey (data) {
 //   if (tempData.sortField == null) {
 //     tempData.sortField = 0;
 //   }
-//   data.data = JSON.stringify(tempData)
+  // data.data = JSON.stringify(tempData)
+// data = JSON.stringify(data)
   return data;
 }
 

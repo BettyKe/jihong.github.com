@@ -9,7 +9,7 @@
                         <div>
                             <span class="collect_btn dfc" @click="collect">
                                 <img class="img36" src="../../image/d_ic_attention@2x.png" alt="">
-                                关注
+                                {{isCollect=='yes'?'取消':''}}关注
                             </span>
                         </div>
                     </div>
@@ -145,7 +145,7 @@
 import goodsItem from "@/components/goods-item";
 import condition from '@/components/condition'
 import scroll from '@/components/scroll'
-import {findProductByProviderId,findAllCategoryByProviderId,findProductByCategoryId,addProviderToCollect,providerGet,deleteBatch,productFilter} from "@/js/api";
+import {findProductByProviderId,findAllCategoryByProviderId,findProductByCategoryId,addProviderToCollect,providerGet,deleteBatch,productFilter,checkShopIsCollection} from "@/js/api";
 export default {
   components: {
     goodsItem,
@@ -163,6 +163,7 @@ export default {
       indexLoading:false,
       indexFinished:false,
       indexPage:1,
+      isCollect:'',
 
       allGoodsList:[],//全部宝贝商品列表
       loading: false,
@@ -204,7 +205,10 @@ export default {
       if(res.code==200){
         this.storeInfo = res.data
       }
-      
+      let rex = await checkShopIsCollection({providerId:this.storeId})
+      if(rex.code==200){
+        this.isCollect = rex.data
+      }
     },
     //首页商品列表
     async getIndexGoods(page=1) {
@@ -290,17 +294,18 @@ export default {
 
     //收藏
     async collect(){
+      if(this.isCollect=='yes'){
+        let res = await deleteBatch({connectionId:[this.storeId]})
+        if(res.code==200){
+          this.$toast('取消关注成功')
+        }
+      }else{
         let res = await addProviderToCollect({connectionId:[this.storeId]})
         if(res.code==200){
           this.$toast('关注成功')
         }
-    },
-    //取消收藏
-    async cancelCollect(){
-        let res = await deleteBatch({id:[this.storeId]})
-        if(res.code==200){
-          this.$toast('取消关注成功')
-        }
+      }
+        
     },
     //加载首页商品数据
     updateIndexGoods(){

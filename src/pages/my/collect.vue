@@ -14,7 +14,7 @@
             <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="toLoad">
             <div class="goods_item dfb pd30" v-for="(item,index) in goodsList" :key="index" @click="$router.push('/goods/goodsDetail')">
                 <img v-if="edit" class="img40 mgr30" src="../../image/e_ic_circle_d@2x.png" alt="">
-                <img class="img140 br20 mgr20" src="../../image/default.png" alt="">
+                <img class="img140 br20 mgr20" :src="ImageTool.initImage(item.jpgUrl)[0]" alt="">
                 <div class="flex df ais-start jct-between fdc">
                     <div class="to-line2 lh15 fs28 mgb20">{{item.plantName}}</div>
                     <div class="theme">￥<span class="fs30">{{item.unitPrice}}</span>/{{item.unitName}}</div>
@@ -121,6 +121,7 @@ export default {
     background: #F7F4F8;
     padding:30px;
     box-sizing: border-box;
+    overflow: hidden;
 }
 .header-box{
     background: #fff;

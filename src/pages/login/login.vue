@@ -48,7 +48,7 @@ export default {
         }
     },
     created(){
-        this.getPhone()
+        
     },
     mounted() {
         console.log(this.$store.state.isLogin)
@@ -70,7 +70,7 @@ export default {
                 localStorage.setItem('token',res.data.token)
                 this.$router.push({path:'/index'})
             }else{
-                Toast(res.message);
+                this.$toast(res.message);
             }
         }
     }
